@@ -1,0 +1,99 @@
+---
+import { Label } from "@/shared/components/ui/label";
+import { ArrowRight, EyeOff, Lock, Mail } from "lucide-react";
+import { Input } from "@/shared/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+---
+
+<form class="space-y-6" id="login-form">
+  <div class="space-y-4">
+    <div class="space-y-2">
+      <Label htmlFor="email" className="text-sm font-medium text-foreground">
+        Correo Electrónico
+      </Label>
+      <div class="relative">
+        <Mail
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"
+        />
+        <Input
+          id="email"
+          type="email"
+          placeholder="tu@email.com"
+          className="pl-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+          required
+        />
+      </div>
+    </div>
+    <div class="space-y-2">
+      <Label htmlFor="password" className="text-sm font-medium text-foreground">
+        Contraseña
+      </Label>
+      <div class="relative">
+        <Lock
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"
+        />
+        <Input
+          id="password"
+          type="password"
+          placeholder="********"
+          className="pl-10 pr-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+          required
+        />
+        <button
+          type="button"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          <EyeOff className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+    <div class="flex items-center justify-between">
+      <!-- <div class="flex items-center space-x-2"> -->
+      <!--   <Checkbox -->
+      <!--     id="remember" -->
+      <!--     className="border-border/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" -->
+      <!--   /> -->
+      <!--   <Label -->
+      <!--     htmlFor="remember" -->
+      <!--     className="text-sm text-muted-foreground cursor-pointer" -->
+      <!--   > -->
+      <!--     Recordarme -->
+      <!--   </Label> -->
+      <!-- </div> -->
+      <a
+        href="/auth/forgot-password"
+        class="text-sm text-primary hover:text-primary/80 transition-colors"
+      >
+        ¿Olvidaste tu contraseña?
+      </a>
+    </div>
+    <Button
+      type="submit"
+      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2.5 transition-all duration-200 group flex justify-center items-center"
+      id="button-content"
+    >
+      Iniciar Sesión
+      <ArrowRight
+        className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform"
+      />
+    </Button>
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById("login-form") as HTMLFormElement;
+  const buttonContent = document.getElementById(
+    "button-content"
+  ) as HTMLDivElement;
+  const originalButtonContent = buttonContent.innerHTML;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    try {
+      buttonContent.innerHTML = "Iniciando Sesión...";
+    } catch (error) {
+      console.error("Error during login:", error);
+      buttonContent.innerHTML = originalButtonContent;
+    }
+  });
+</script>

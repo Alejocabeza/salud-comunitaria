@@ -1,0 +1,42 @@
+---
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import LoginForm from "@/features/auth/components/forms/LoginForm.astro";
+---
+
+<div
+  class="min-h-screen bg-background grid-pattern flex items-center justify-center p-4"
+>
+  <div class="w-full max-w-md">
+    <div class="mb-8 flex justify-center items-center flex-col">
+      <a href="/" class="flex justify-center items-center flex-col gap-2">
+        <div
+          class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
+        >
+          <span class="text-primary-foreground font-bold text-lg">L</span>
+        </div>
+        <h1 class="text-3xl font-bold text-foreground mb-2">Lazarus</h1>
+      </a>
+      <p class="text-muted-foreground">Salud comunitaria inteligente</p>
+    </div>
+
+    <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+      <CardHeader className="text-center">
+        <CardTitle className="text-2xl text-foreground"
+          >Iniciar Sesión</CardTitle
+        >
+        <CardDescription className="text-muted-foreground">
+          Accede a tu cuenta para gestionar la salud de tu comunidad
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <LoginForm />
+      </CardContent>
+    </Card>
+  </div>
+</div>

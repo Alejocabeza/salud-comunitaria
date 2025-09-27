@@ -1,0 +1,64 @@
+---
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CheckCircle } from "lucide-react";
+---
+
+<section
+  class="py-20 bg-gradient-to-b from-background to-secondary/20"
+  id="cta"
+>
+  <div class="container mx-auto px-4">
+    <Card className="p-12 bg-card border-border text-center max-w-4xl mx-auto">
+      <div class="space-y-8">
+        <div class="space-y-4">
+          <h2 class="text-3xl lg:text-4xl font-bold text-balance">
+            Comienza a transformar tu comunidad <span class="text-primary"
+              >hoy mismo</span
+            >
+          </h2>
+          <p
+            class="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto"
+          >
+            Únete a cientos de organizaciones que ya están mejorando la salud de
+            sus comunidades con Lazarus
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            Comenzar Prueba Gratuita
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="border-border hover:bg-secondary bg-transparent"
+          >
+            Agendar Demo
+          </Button>
+        </div>
+
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6 text-sm text-muted-foreground"
+        >
+          <div class="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span>30 días gratis</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span>Sin tarjeta de crédito</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span>Soporte 24/7</span>
+          </div>
+        </div>
+      </div>
+    </Card>
+  </div>
+</section>
