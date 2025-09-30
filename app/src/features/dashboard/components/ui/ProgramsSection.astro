@@ -1,0 +1,88 @@
+---
+import { Card } from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
+import { Progress } from "@/shared/components/ui/progress";
+import { Calendar, Heart, Target, Users } from "lucide-react";
+
+const programs = [
+  {
+    name: "Programa de Diabetes",
+    participants: 156,
+    capacity: 200,
+    status: "active",
+    completion: 78,
+    icon: Target,
+    color: "text-[color:var(--health-warning)]",
+  },
+  {
+    name: "Salud Cardiovascular",
+    participants: 89,
+    capacity: 120,
+    status: "active",
+    completion: 74,
+    icon: Heart,
+    color: "text-[color:var(--health-critical)]",
+  },
+  {
+    name: "Bienestar Mental",
+    participants: 234,
+    capacity: 250,
+    status: "active",
+    completion: 94,
+    icon: Users,
+    color: "text-[color:var(--health-info)]",
+  },
+  {
+    name: "Nutrición Familiar",
+    participants: 67,
+    capacity: 100,
+    status: "planning",
+    completion: 67,
+    icon: Calendar,
+    color: "text-[color:var(--health-success)]",
+  },
+];
+---
+
+<Card className="health-chart-container">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-lg font-semibold">Programas de Salud</h3>
+    <Badge variant="secondary">4 Activos</Badge>
+  </div>
+
+  <div class="space-y-4">
+    {
+      programs.map((program) => {
+        const Icon = program.icon;
+        return (
+          <div class="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+            <div class="flex items-center gap-4">
+              <div class={`p-2 rounded-lg bg-background ${program.color}`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 class="font-medium">{program.name}</h4>
+                <p class="text-sm text-muted-foreground">
+                  {program.participants}/{program.capacity} participantes
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="text-right">
+                <p class="text-sm font-medium">{program.completion}%</p>
+                <Progress value={program.completion} className="w-20 h-2" />
+              </div>
+              <Badge
+                variant={program.status === "active" ? "default" : "secondary"}
+                className="capitalize"
+              >
+                {program.status === "active" ? "Activo" : "Planificando"}
+              </Badge>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</Card>

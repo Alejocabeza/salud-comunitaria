@@ -122,3 +122,28 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom grid pattern for background */
+.grid-pattern {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Adding custom healthcare dashboard styles */
+.health-metric-card {
+  @apply bg-card border border-border rounded-lg p-6 hover:bg-card/80 transition-colors;
+}
+
+.health-chart-container {
+  @apply bg-card border border-border rounded-lg p-4;
+}
+
+.sidebar-nav-item {
+  @apply flex items-center gap-3 px-3 py-2 rounded-md text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors;
+}
+
+.sidebar-nav-item.active {
+  @apply bg-sidebar-primary text-sidebar-primary-foreground;
+}
+

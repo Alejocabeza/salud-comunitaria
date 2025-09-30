@@ -1,0 +1,113 @@
+---
+import { Button } from "@/shared/components/ui/button";
+import Layout from "@/shared/layouts/Layout.astro";
+import { Activity, ArrowLeft, Home } from "lucide-react";
+---
+
+<Layout title="Página no encontrada - Lazarus">
+  <div
+    class="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden"
+  >
+    <div class="absolute inset-0 grid-pattern opacity-50"></div>
+
+    <div
+      class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse"
+    >
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000"
+    >
+    </div>
+
+    <div class="relative z-10 max-w-2xl w-full text-center">
+      <div class="flex items-center justify-center gap-4 mb-8">
+        <div class="relative">
+          <span
+            class="text-9xl md:text-[12rem] font-bold text-primary/20 select-none"
+            >4</span
+          >
+        </div>
+        <div class="relative">
+          <Activity
+            className="w-24 h-24 md:w-32 md:h-32 text-primary animate-pulse"
+            strokeWidth={1.5}
+          />
+          <div
+            class="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"
+          >
+          </div>
+        </div>
+        <div class="relative">
+          <span
+            class="text-9xl md:text-[12rem] font-bold text-primary/20 select-none"
+            >4</span
+          >
+        </div>
+      </div>
+
+      <div class="space-y-4 mb-12">
+        <h1 class="text-3xl md:text-4xl font-bold text-foreground text-balance">
+          Página no encontrada
+        </h1>
+        <p class="text-lg text-muted-foreground max-w-md mx-auto text-pretty">
+          Lo sentimos, la página que buscas no existe o ha sido movida. Verifica
+          la URL o regresa al inicio.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <Button asChild size="lg" className="w-full sm:w-auto">
+          <a href="/" class="flex items-center gap-2">
+            <Home className="w-4 h-4" />
+            Volver al inicio
+          </a>
+        </Button>
+
+        <Button
+          asChild
+          variant="outline"
+          size="lg"
+          className="w-full sm:w-auto bg-transparent"
+        >
+          <a href="/dashboard" class="flex items-center gap-2">
+            <Activity className="w-4 h-4" />
+            Ir al panel
+          </a>
+        </Button>
+      </div>
+
+      <div class="mt-16 pt-8 border-t border-border">
+        <p class="text-sm text-muted-foreground mb-4">Enlaces útiles:</p>
+        <div class="flex flex-wrap items-center justify-center gap-6 text-sm">
+          <a
+            href="/"
+            class="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+          >
+            <Home className="w-4 h-4" />
+            Inicio
+          </a>
+          <a
+            href="/login"
+            class="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Iniciar sesión
+          </a>
+          <a
+            href="/dashboard"
+            class="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+          >
+            <Activity className="w-4 h-4" />
+            Panel de control
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <p class="text-xs text-muted-foreground/50 font-mono">
+          ERROR_CODE: 404_PAGE_NOT_FOUND
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>

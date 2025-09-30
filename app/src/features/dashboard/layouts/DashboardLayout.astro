@@ -4,20 +4,15 @@ import { Toaster } from "@/shared/components/ui/sonner";
 import { ClientRouter } from "astro:transitions";
 import DashboardHeader from "@/features/dashboard/components/dashboard/DashboardHeader.astro";
 import DashboardSidebar from "@/features/dashboard/components/dashboard/DashboardSidebar.astro";
+import { NAVIGATION_SIDEBAR } from "@/shared/lib/navigation.ts";
 
 type Props = {
   title?: string;
-  navigation?: Array<{
-    name: string;
-    href: string;
-    icon: any;
-    current?: boolean;
-  }>;
 };
 
-const { title = "Dashboard - Lazarus", navigation }: Props = Astro.props;
-const user = Astro.locals.user;
-console.log(user);
+const pathname = Astro.originPathname.replaceAll("/", "");
+const { title = "Dashboard - Lazarus" }: Props = Astro.props;
+const user = Astro.locals?.user;
 ---
 
 <!doctype html>
@@ -32,9 +27,13 @@ console.log(user);
   </head>
   <body class="bg-background text-foreground">
     <section class="min-h-screen bg-background">
-      <DashboardSidebar client:load navigation={navigation} user={user} />
+      <DashboardSidebar
+        client:load
+        navigation={NAVIGATION_SIDEBAR}
+        user={user}
+      />
       <article class="pl-64">
-        <DashboardHeader client:load />
+        <DashboardHeader client:load pathname={pathname} />
         <main class="min-h-[calc(100vh-4rem)]">
           <slot />
         </main>

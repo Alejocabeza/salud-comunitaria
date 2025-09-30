@@ -1,0 +1,81 @@
+---
+import { Badge } from "@/shared/components/ui/badge";
+import { Card } from "@/shared/components/ui/card";
+import { AlertTriangle, CheckCircle, Clock, XCircle } from "lucide-react";
+
+const resources = [
+  {
+    name: "Medicamentos",
+    status: "good",
+    level: 85,
+    icon: CheckCircle,
+    color: "text-[color:var(--health-success)]",
+  },
+  {
+    name: "Equipos Médicos",
+    status: "warning",
+    level: 45,
+    icon: AlertTriangle,
+    color: "text-[color:var(--health-warning)]",
+  },
+  {
+    name: "Personal Médico",
+    status: "good",
+    level: 92,
+    icon: CheckCircle,
+    color: "text-[color:var(--health-success)]",
+  },
+  {
+    name: "Suministros",
+    status: "critical",
+    level: 15,
+    icon: XCircle,
+    color: "text-[color:var(--health-critical)]",
+  },
+];
+---
+
+<Card className="health-chart-container">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-lg font-semibold">Estado de Recursos</h3>
+    <Clock className="w-5 h-5 text-muted-foreground" />
+  </div>
+
+  <div class="space-y-4">
+    {
+      resources.map((resource) => {
+        const Icon = resource.icon;
+        return (
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <Icon className={`w-5 h-5 ${resource.color}`} />
+              <span class="font-medium">{resource.name}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-muted-foreground">
+                {resource.level}%
+              </span>
+              <Badge
+                variant={
+                  resource.status === "good"
+                    ? "default"
+                    : resource.status === "warning"
+                      ? "secondary"
+                      : "destructive"
+                }
+                className="capitalize"
+              >
+                {resource.status === "good"
+                  ? "Bueno"
+                  : resource.status === "warning"
+                    ? "Atención"
+                    : "Crítico"}
+              </Badge>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</Card>

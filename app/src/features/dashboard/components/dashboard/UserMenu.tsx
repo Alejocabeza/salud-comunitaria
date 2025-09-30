@@ -20,7 +20,11 @@ export function UserMenu() {
         <DropdownMenuItem>Perfil</DropdownMenuItem>
         <DropdownMenuItem>Configuración</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Cerrar sesión</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => (window.location.href = "/api/auth/logout")}
+        >
+          Cerrar sesión
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

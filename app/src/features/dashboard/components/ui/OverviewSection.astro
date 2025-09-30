@@ -1,0 +1,71 @@
+---
+import { Card } from "@/shared/components/ui/card";
+import { Activity, Calendar, TrendingUp, Users } from "lucide-react";
+
+const metrics = [
+  {
+    title: "Pacientes Activos",
+    value: "1,247",
+    change: "+12%",
+    changeType: "positive" as const,
+    icon: Users,
+    color: "text-[color:var(--health-success)]",
+  },
+  {
+    title: "Citas Hoy",
+    value: "89",
+    change: "+5%",
+    changeType: "positive" as const,
+    icon: Calendar,
+    color: "text-[color:var(--health-info)]",
+  },
+  {
+    title: "Programas Activos",
+    value: "24",
+    change: "+2",
+    changeType: "positive" as const,
+    icon: Activity,
+    color: "text-[color:var(--health-warning)]",
+  },
+  {
+    title: "Tasa de Satisfacción",
+    value: "94.2%",
+    change: "+1.2%",
+    changeType: "positive" as const,
+    icon: TrendingUp,
+    color: "text-primary",
+  },
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  {
+    metrics.map((metric) => {
+      const Icon = metric.icon;
+      return (
+        <Card className="health-metric-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-muted-foreground">
+                {metric.title}
+              </p>
+              <p class="text-2xl font-bold mt-2">{metric.value}</p>
+              <p
+                class={`text-sm mt-1 ${
+                  metric.changeType === "positive"
+                    ? "text-[color:var(--health-success)]"
+                    : "text-[color:var(--health-critical)]"
+                }`}
+              >
+                {metric.change} desde ayer
+              </p>
+            </div>
+            <div class={`p-3 rounded-lg bg-muted ${metric.color}`}>
+              <Icon className="w-6 h-6" />
+            </div>
+          </div>
+        </Card>
+      );
+    })
+  }
+</div>

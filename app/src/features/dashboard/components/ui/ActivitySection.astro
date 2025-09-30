@@ -1,0 +1,69 @@
+---
+import { Badge } from "@/shared/components/ui/badge";
+import { Card } from "@/shared/components/ui/card";
+import { AlertTriangle, Calendar, CheckCircle, UserPlus } from "lucide-react";
+
+const activities = [
+  {
+    type: "patient",
+    message: "Nuevo paciente registrado",
+    details: "María Rodríguez - Programa Diabetes",
+    time: "Hace 5 min",
+    icon: UserPlus,
+    color: "text-[color:var(--health-success)]",
+  },
+  {
+    type: "appointment",
+    message: "Cita completada",
+    details: "Dr. García - Consulta cardiovascular",
+    time: "Hace 15 min",
+    icon: CheckCircle,
+    color: "text-[color:var(--health-info)]",
+  },
+  {
+    type: "alert",
+    message: "Alerta de suministros",
+    details: "Nivel bajo de medicamentos para diabetes",
+    time: "Hace 1 hora",
+    icon: AlertTriangle,
+    color: "text-[color:var(--health-warning)]",
+  },
+  {
+    type: "schedule",
+    message: "Programa programado",
+    details: "Taller de Nutrición - Próximo lunes",
+    time: "Hace 2 horas",
+    icon: Calendar,
+    color: "text-primary",
+  },
+];
+---
+
+<Card className="health-chart-container">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-lg font-semibold">Actividad Reciente</h3>
+    <Badge variant="outline">En vivo</Badge>
+  </div>
+
+  <div class="space-y-4">
+    {
+      activities.map((activity, index) => {
+        const Icon = activity.icon;
+        return (
+          <div class="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
+            <div class={`p-2 rounded-full bg-background ${activity.color}`}>
+              <Icon className="w-4 h-4" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm">{activity.message}</p>
+              <p class="text-xs text-muted-foreground mt-1">
+                {activity.details}
+              </p>
+              <p class="text-xs text-muted-foreground mt-2">{activity.time}</p>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</Card>

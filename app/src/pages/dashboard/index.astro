@@ -2,8 +2,9 @@
 export const prerender = false;
 
 import DashboardLayout from "@/features/dashboard/layouts/DashboardLayout.astro";
+import Dashboard from "@/features/dashboard/page/dashboard.astro";
 ---
 
 <DashboardLayout title="Dashboard - Lazarus">
-  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+  <Dashboard />
 </DashboardLayout>

@@ -9,7 +9,7 @@ type DashboardSidebarProps = {
     icon: any;
     current?: boolean;
   }>;
-  user?: any;
+  user?: Record<string, any>;
 };
 
 const { navigation, user }: DashboardSidebarProps = Astro.props;
@@ -32,19 +32,18 @@ const { navigation, user }: DashboardSidebarProps = Astro.props;
   <nav class="mt-6 px-3">
     <div class="space-y-1">
       {
-        navigation &&
-          navigation.map((item) => {
-            const Icon = item.icon;
-            return (
-              <a
-                href={item.href}
-                class={`sidebar-nav-item ${item.current ? "active" : ""}`}
-              >
-                <Icon className="w-5 h-5" />
-                <span class="text-sm font-medium">{item.name}</span>
-              </a>
-            );
-          })
+        navigation?.map((item) => {
+          const Icon = item.icon;
+          return (
+            <a
+              href={item.href}
+              class={`sidebar-nav-item ${item.current ? "active" : ""}`}
+            >
+              <Icon class="w-5 h-5" />
+              <span class="text-sm font-medium">{item.name}</span>
+            </a>
+          );
+        })
       }
     </div>
   </nav>
