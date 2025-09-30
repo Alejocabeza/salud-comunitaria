@@ -1,29 +1,39 @@
+import type { AstroSession } from "astro";
 import { defineMiddleware } from "astro:middleware";
 
+const protectedRoutes = ["/dashboard"];
+
 export const onRequest = defineMiddleware(async (context, next) => {
-  const { url, locals } = context;
+  const currentPath = new URL(context.request.url).pathname;
 
-  // Define protected routes
-  const protectedRoutes = ["/dashboard"];
+  const locals = context.locals as typeof context.locals & {
+    session?: AstroSession;
+    user?: { id: string } | null;
+  };
 
-  // Check if the current path is protected
-  const isProtected = protectedRoutes.some((route) =>
-    url.pathname.startsWith(route)
-  );
-
-  if (isProtected) {
-    // Get user from session
-    const user = context.session!.get("user");
-
-    // Check if user is authenticated
-    if (!user) {
-      // Redirect to login if not authenticated
-      return context.redirect("/login");
+  const sessionFromContext = (
+    context as typeof context & {
+      session?: AstroSession;
     }
+  ).session;
 
-    // Attach user to locals for use in pages
-    (locals as any).user = user;
+  const session = locals.session ?? sessionFromContext;
+
+  if (session && !locals.session) {
+    locals.session = session;
   }
 
+  const user = session ? await session.get("user") : null;
+  const userId = user?.id ?? null;
+
+  if (protectedRoutes.includes(currentPath) && !userId) {
+    return context.redirect("/auth/login");
+  }
+
+  if (currentPath === "/auth/login" && userId) {
+    return context.redirect("/dashboard");
+  }
+
+  locals.user = userId ? user : null;
   return next();
 });

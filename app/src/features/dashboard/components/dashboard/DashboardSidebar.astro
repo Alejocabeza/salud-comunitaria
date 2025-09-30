@@ -1,18 +1,23 @@
 ---
-import {Heart, Shield} from 'lucide-react'
+import { undefined } from "astro:schema";
+import { Heart, Shield } from "lucide-react";
 
 type DashboardSidebarProps = {
   navigation?: Array<{
-    name: string
-    href: string
-    icon: any
-    current?: boolean
-  }>
-}
+    name: string;
+    href: string;
+    icon: any;
+    current?: boolean;
+  }>;
+  user?: any;
+};
 
-const {navigation}: DashboardSidebarProps = Astro.props
+const { navigation, user }: DashboardSidebarProps = Astro.props;
 ---
-<div class="fixed inset-y-0 left-0 z-50 w-64 bg-sidebar border-r border-sidebar-border">
+
+<div
+  class="fixed inset-y-0 left-0 z-50 w-64 bg-sidebar border-r border-sidebar-border"
+>
   <div class="flex h-16 items-center px-6 border-b border-sidebar-border">
     <div class="flex items-center gap-2">
       <div
@@ -26,26 +31,38 @@ const {navigation}: DashboardSidebarProps = Astro.props
 
   <nav class="mt-6 px-3">
     <div class="space-y-1">
-      {navigation && navigation.map((item) => {
-        const Icon = item.icon
-        return (
-          <a href={item.href} class={`sidebar-nav-item ${item.current ? "active" : ""}`}>
-            <Icon className="w-5 h-5" />
-            <span class="text-sm font-medium">{item.name}</span>
-          </a>
-        )
-      })}
+      {
+        navigation &&
+          navigation.map((item) => {
+            const Icon = item.icon;
+            return (
+              <a
+                href={item.href}
+                class={`sidebar-nav-item ${item.current ? "active" : ""}`}
+              >
+                <Icon className="w-5 h-5" />
+                <span class="text-sm font-medium">{item.name}</span>
+              </a>
+            );
+          })
+      }
     </div>
   </nav>
 
-  <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-sidebar-border">
+  <div
+    class="absolute bottom-0 left-0 right-0 p-4 border-t border-sidebar-border"
+  >
     <div class="flex items-center gap-3">
-      <div class="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+      <div
+        class="w-8 h-8 bg-muted rounded-full flex items-center justify-center"
+      >
         <Shield className="w-4 h-4" />
       </div>
       <div class="flex-1 min-w-0">
-        <p class="text-sm font-medium text-sidebar-foreground truncate">Dr. María González</p>
-        <p class="text-xs text-muted-foreground truncate">Administradora</p>
+        <p class="text-sm font-medium text-sidebar-foreground truncate">
+          {user?.username}
+        </p>
+        <p class="text-xs text-muted-foreground truncate">{user?.email}</p>
       </div>
     </div>
   </div>

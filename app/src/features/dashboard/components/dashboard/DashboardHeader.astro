@@ -1,6 +1,7 @@
 ---
-import { Search, Bell, User } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { UserMenu } from "./UserMenu";
 ---
 
 <header
@@ -26,10 +27,6 @@ import { Button } from "@/shared/components/ui/button";
         3
       </span>
     </Button>
-    <a href="/api/logout">
-      <Button variant="ghost" size="sm">
-        <User className="w-5 h-5" />
-      </Button>
-    </a>
+    <UserMenu client:load />
   </div>
 </header>

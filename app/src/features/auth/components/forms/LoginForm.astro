@@ -17,6 +17,7 @@ import { Button } from "@/shared/components/ui/button";
         />
         <Input
           id="email"
+          name="email"
           type="email"
           placeholder="tu@email.com"
           className="pl-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
@@ -34,6 +35,7 @@ import { Button } from "@/shared/components/ui/button";
         />
         <Input
           id="password"
+          name="password"
           type="password"
           placeholder="********"
           className="pl-10 pr-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
@@ -81,19 +83,43 @@ import { Button } from "@/shared/components/ui/button";
 </form>
 
 <script>
-  const form = document.getElementById("login-form") as HTMLFormElement;
-  const buttonContent = document.getElementById(
-    "button-content"
-  ) as HTMLDivElement;
-  const originalButtonContent = buttonContent.innerHTML;
+  import { toast } from "sonner";
 
-  form.addEventListener("submit", (e) => {
+  const form = document.getElementById("login-form") as HTMLFormElement;
+  const button = document.getElementById("button-content") as HTMLButtonElement;
+  const originalButtonContent = button.innerHTML;
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    button.disabled = true;
+    button.innerHTML = "Cargando...";
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
     try {
-      buttonContent.innerHTML = "Iniciando Sesión...";
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast.success("Inicio de sesión exitoso");
+        window.location.href = "/dashboard";
+      } else {
+        const result = await response.json();
+        toast.error(result.message || "Error al iniciar sesión");
+      }
     } catch (error) {
-      console.error("Error during login:", error);
-      buttonContent.innerHTML = originalButtonContent;
+      console.error("Error:", error);
+      toast.error("Error al iniciar sesión");
+    } finally {
+      button.disabled = false;
+      button.innerHTML = originalButtonContent;
     }
   });
 </script>

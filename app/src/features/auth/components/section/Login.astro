@@ -7,6 +7,12 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import LoginForm from "@/features/auth/components/forms/LoginForm.astro";
+
+interface Props {
+  error?: string;
+}
+
+const { error } = Astro.props;
 ---
 
 <div
@@ -33,6 +39,13 @@ import LoginForm from "@/features/auth/components/forms/LoginForm.astro";
         <CardDescription className="text-muted-foreground">
           Accede a tu cuenta para gestionar la salud de tu comunidad
         </CardDescription>
+        {
+          error && (
+            <div class="text-destructive text-sm mt-2">
+              {decodeURIComponent(error)}
+            </div>
+          )
+        }
       </CardHeader>
       <CardContent>
         <LoginForm />

@@ -39,11 +39,16 @@ def login(form_data: LoginRequest, session: Session = Depends(get_session)):
     refresh_token = create_refresh_token(data={"sub": user.email})
     return {
         "statusCode": 200,
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-        "token_type": "bearer",
-        "username": user.username,
-        "email": user.email,
+        "data": {
+            "id": user.id,
+            "email": user.email,
+            "username": user.username,
+        },
+        "token": {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "bearer",
+        },
     }
 
 
@@ -89,14 +94,20 @@ def reset_password(
 
 
 @router.post("/refresh", response_model=Token)
-def refresh_token(request: RefreshTokenRequest, session: Session = Depends(get_session)):
+def refresh_token(
+    request: RefreshTokenRequest, session: Session = Depends(get_session)
+):
     # Check if refresh_token is blacklisted
-    blacklisted = session.exec(select(TokenBlacklist).where(TokenBlacklist.token == request.refresh_token)).first()
+    blacklisted = session.exec(
+        select(TokenBlacklist).where(TokenBlacklist.token == request.refresh_token)
+    ).first()
     if blacklisted:
         raise HTTPException(status_code=401, detail="Refresh token revoked")
 
     # Decode refresh_token
-    payload = decode_access_token(request.refresh_token)  # Use same decode since same key
+    payload = decode_access_token(
+        request.refresh_token
+    )  # Use same decode since same key
     if not payload or "sub" not in payload:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 

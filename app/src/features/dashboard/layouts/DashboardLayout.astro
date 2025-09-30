@@ -16,6 +16,8 @@ type Props = {
 };
 
 const { title = "Dashboard - Lazarus", navigation }: Props = Astro.props;
+const user = Astro.locals.user;
+console.log(user);
 ---
 
 <!doctype html>
@@ -30,7 +32,7 @@ const { title = "Dashboard - Lazarus", navigation }: Props = Astro.props;
   </head>
   <body class="bg-background text-foreground">
     <section class="min-h-screen bg-background">
-      <DashboardSidebar client:load navigation={navigation} />
+      <DashboardSidebar client:load navigation={navigation} user={user} />
       <article class="pl-64">
         <DashboardHeader client:load />
         <main class="min-h-[calc(100vh-4rem)]">

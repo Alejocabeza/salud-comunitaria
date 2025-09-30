@@ -1,12 +1,9 @@
 from pydantic import BaseModel, EmailStr, ConfigDict, ConfigDict
 
 class Token(BaseModel):
-    statusCode: int
-    username: str
-    email: str
-    access_token: str
-    refresh_token: str
-    token_type: str
+    data: dict
+    token: dict
+    statusCode: int = 200
 
 class TokenData(BaseModel):
     email: str = None

@@ -1,8 +1,11 @@
 ---
 import Layout from "@/shared/layouts/Layout.astro";
 import LoginSection from "@/features/auth/components/section/Login.astro";
+
+const url = Astro.url;
+const error = url.searchParams.get("error");
 ---
 
 <Layout title="Inicio de Sesión - Lazarus">
-  <LoginSection />
+  <LoginSection error={error || undefined} />
 </Layout>

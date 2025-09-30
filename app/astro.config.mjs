@@ -7,6 +7,7 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
+  output: "server",
   vite: {
     plugins: [tailwindcss()],
   },
@@ -18,7 +19,7 @@ export default defineConfig({
   },
   env: {
     schema: {
-      PUBLIC_API_URL: envField.string({ context: "client", access: "public" }),
+      PUBLIC_API_URL: envField.string({ context: "server", access: "public" }),
     },
   },
   integrations: [react()],
