@@ -2,9 +2,9 @@
 import "@/shared/styles/global.css";
 import { Toaster } from "@/shared/components/ui/sonner";
 import { ClientRouter } from "astro:transitions";
-import DashboardHeader from "@/features/dashboard/components/dashboard/DashboardHeader.astro";
-import DashboardSidebar from "@/features/dashboard/components/dashboard/DashboardSidebar.astro";
 import { NAVIGATION_SIDEBAR } from "@/shared/lib/navigation.ts";
+import Sidebar from '@/features/dashboard/components/ui/Sidebar.astro'
+import Header from '@/features/dashboard/components/ui/Header.astro'
 
 type Props = {
   title?: string;
@@ -27,13 +27,13 @@ const user = Astro.locals?.user;
   </head>
   <body class="bg-background text-foreground">
     <section class="min-h-screen bg-background">
-      <DashboardSidebar
+      <Sidebar
         client:load
         navigation={NAVIGATION_SIDEBAR}
         user={user}
       />
       <article class="pl-64">
-        <DashboardHeader client:load pathname={pathname} />
+        <Header client:load pathname={pathname} />
         <main class="min-h-[calc(100vh-4rem)]">
           <slot />
         </main>

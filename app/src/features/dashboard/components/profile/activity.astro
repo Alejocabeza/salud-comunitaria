@@ -1,0 +1,84 @@
+---
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { ActivityIcon, Calendar, FileText, Users } from "lucide-react";
+
+const activities = [
+  {
+    icon: FileText,
+    title: "Reporte actualizado",
+    description: "Reporte mensual de pacientes",
+    time: "Hace 2 horas",
+    color: "text-chart-1",
+  },
+  {
+    icon: Users,
+    title: "Nuevo programa creado",
+    description: "Programa de Vacunación Infantil",
+    time: "Hace 5 horas",
+    color: "text-chart-2",
+  },
+  {
+    icon: Calendar,
+    title: "Cita programada",
+    description: "Consulta con paciente #1234",
+    time: "Hace 1 día",
+    color: "text-chart-3",
+  },
+  {
+    icon: ActivityIcon,
+    title: "Métricas revisadas",
+    description: "Dashboard de salud comunitaria",
+    time: "Hace 2 días",
+    color: "text-chart-4",
+  },
+  {
+    icon: FileText,
+    title: "Documento firmado",
+    description: "Protocolo de atención COVID-19",
+    time: "Hace 3 días",
+    color: "text-chart-5",
+  },
+];
+---
+
+<Card className="h-fit">
+  <CardHeader>
+    <CardTitle>Actividad Reciente</CardTitle>
+    <CardDescription>Tu actividad en los últimos 7 días</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div class="space-y-4">
+      {
+        activities.map((activity, index) => {
+          const Icon = activity.icon;
+          return (
+            <div class="flex gap-3">
+              <div
+                class={`w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 ${activity.color}`}
+              >
+                <Icon className="w-5 h-5" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-foreground">
+                  {activity.title}
+                </p>
+                <p class="text-sm text-muted-foreground truncate">
+                  {activity.description}
+                </p>
+                <p class="text-xs text-muted-foreground mt-1">
+                  {activity.time}
+                </p>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </CardContent>
+</Card>

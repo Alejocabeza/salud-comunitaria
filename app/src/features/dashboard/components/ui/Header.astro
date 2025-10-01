@@ -1,5 +1,5 @@
 ---
-import { UserMenu } from "./UserMenu";
+import { UserMenu } from "../dashboard/UserMenu";
 
 type DashboardHeaderProps = {
   pathname: string;
@@ -9,7 +9,7 @@ const { pathname } = Astro.props;
 ---
 
 <header
-  class="h-16 bg-background border-b border-border flex items-center justify-between px-6"
+  class="h-16 bg-white border-b border-border flex items-center justify-between px-6 sticky top-0 z-10"
 >
   <p class="capitalize font-bold text-xl">{pathname}</p>
   <div class="flex items-center gap-4">

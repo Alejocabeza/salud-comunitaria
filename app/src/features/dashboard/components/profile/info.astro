@@ -1,0 +1,74 @@
+---
+import { Button } from "@/shared/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Información Personal</CardTitle>
+    <CardDescription
+      >Actualiza tu información personal y de contacto</CardDescription
+    >
+  </CardHeader>
+  <CardContent className="space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <Label htmlFor="firstName">Nombre</Label>
+        <Input id="firstName" defaultValue="Juan" />
+      </div>
+      <div class="space-y-2">
+        <Label htmlFor="lastName">Apellido</Label>
+        <Input id="lastName" defaultValue="Delgado" />
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <Label htmlFor="email">Correo Electrónico</Label>
+      <Input
+        id="email"
+        type="email"
+        defaultValue="juan.delgado@lazarus.health"
+      />
+    </div>
+
+    <div class="space-y-2">
+      <Label htmlFor="phone">Teléfono</Label>
+      <Input id="phone" type="tel" defaultValue="+1 (555) 123-4567" />
+    </div>
+
+    <div class="space-y-2">
+      <Label htmlFor="specialty">Especialidad</Label>
+      <Input id="specialty" defaultValue="Medicina General" />
+    </div>
+
+    <div class="space-y-2">
+      <Label htmlFor="license">Número de Licencia Médica</Label>
+      <Input id="license" defaultValue="MED-2024-12345" />
+    </div>
+
+    <div class="space-y-2">
+      <Label htmlFor="bio">Biografía</Label>
+      <Textarea
+        id="bio"
+        rows={4}
+        defaultValue="Médico general con más de 10 años de experiencia en salud comunitaria. Apasionado por mejorar el acceso a la atención médica en comunidades desatendidas."
+      />
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <Button variant="outline">Cancelar</Button>
+      <Button className="bg-primary text-primary-foreground hover:bg-primary/90"
+        >Guardar Cambios</Button
+      >
+    </div>
+  </CardContent>
+</Card>

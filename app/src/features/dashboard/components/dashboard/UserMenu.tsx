@@ -17,8 +17,16 @@ export function UserMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>Perfil</DropdownMenuItem>
-        <DropdownMenuItem>Configuración</DropdownMenuItem>
+        <DropdownMenuItem>
+          <a href="/profile" aria-label="Perfil">
+            Perfil
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <a href="/settings" aria-label="Ajustes">
+            Configuración
+          </a>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => (window.location.href = "/api/auth/logout")}

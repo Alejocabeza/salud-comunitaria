@@ -1,0 +1,212 @@
+---
+import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Switch } from "@/shared/components/ui/switch";
+import { Shield, Key, Smartphone, AlertTriangle } from "lucide-react";
+import { useState } from "react";
+---
+
+<Card id="security" className="p-6 scroll-mt-24" client:load>
+  <div class="space-y-6">
+    <!-- Encabezado -->
+    <div>
+      <h2 class="text-xl font-semibold text-foreground">Seguridad</h2>
+      <p class="text-sm text-muted-foreground mt-1">
+        Protege tu cuenta con configuraciones de seguridad avanzadas
+      </p>
+    </div>
+
+    <!-- Cambiar contraseña -->
+    <div class="space-y-4 pb-6 border-b border-border">
+      <div class="flex items-start gap-3">
+        <div class="p-2 rounded-lg bg-primary/10">
+          <Key className="h-5 w-5 text-primary" />
+        </div>
+        <div class="flex-1">
+          <h3 class="font-medium text-foreground">Cambiar Contraseña</h3>
+          <p class="text-sm text-muted-foreground">
+            Actualiza tu contraseña regularmente para mantener tu cuenta segura
+          </p>
+        </div>
+      </div>
+
+      <div class="ml-14 space-y-3" id="password-section">
+        <!-- Inicialmente oculto, se controla con JS -->
+        <div class="hidden space-y-3" id="password-form">
+          <div class="space-y-2">
+            <Label htmlFor="current-password">Contraseña Actual</Label>
+            <Input id="current-password" type="password" />
+          </div>
+          <div class="space-y-2">
+            <Label htmlFor="new-password">Nueva Contraseña</Label>
+            <Input id="new-password" type="password" />
+          </div>
+          <div class="space-y-2">
+            <Label htmlFor="confirm-password">Confirmar Nueva Contraseña</Label>
+            <Input id="confirm-password" type="password" />
+          </div>
+          <div class="flex gap-2">
+            <Button>Actualizar Contraseña</Button>
+            <Button variant="outline" id="cancel-password">Cancelar</Button>
+          </div>
+        </div>
+
+        <!-- Botón mostrar formulario -->
+        <div id="change-password-btn">
+          <Button variant="outline">Cambiar Contraseña</Button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Autenticación de dos factores -->
+    <div class="space-y-4 pb-6 border-b border-border">
+      <div class="flex items-start gap-3">
+        <div class="p-2 rounded-lg bg-primary/10">
+          <Smartphone className="h-5 w-5 text-primary" />
+        </div>
+        <div class="flex-1">
+          <h3 class="font-medium text-foreground">
+            Autenticación de Dos Factores
+          </h3>
+          <p class="text-sm text-muted-foreground">
+            Añade una capa extra de seguridad a tu cuenta
+          </p>
+        </div>
+      </div>
+
+      <div class="ml-14 space-y-3">
+        <div class="flex items-center justify-between">
+          <Label
+            htmlFor="2fa-sms"
+            className="text-sm font-normal cursor-pointer"
+          >
+            Autenticación por SMS
+          </Label>
+          <Switch id="2fa-sms" client:load />
+        </div>
+        <div class="flex items-center justify-between">
+          <Label
+            htmlFor="2fa-app"
+            className="text-sm font-normal cursor-pointer"
+          >
+            Aplicación de Autenticación
+          </Label>
+          <Switch id="2fa-app" client:load />
+        </div>
+        <div class="flex items-center justify-between">
+          <Label
+            htmlFor="2fa-email"
+            className="text-sm font-normal cursor-pointer"
+          >
+            Autenticación por Email
+          </Label>
+          <Switch id="2fa-email" defaultChecked client:load />
+        </div>
+      </div>
+    </div>
+
+    <!-- Sesiones activas -->
+    <div class="space-y-4 pb-6 border-b border-border">
+      <div class="flex items-start gap-3">
+        <div class="p-2 rounded-lg bg-primary/10">
+          <Shield className="h-5 w-5 text-primary" />
+        </div>
+        <div class="flex-1">
+          <h3 class="font-medium text-foreground">Sesiones Activas</h3>
+          <p class="text-sm text-muted-foreground">
+            Administra los dispositivos donde has iniciado sesión
+          </p>
+        </div>
+      </div>
+
+      <div class="ml-14 space-y-3">
+        <div
+          class="flex items-center justify-between p-3 rounded-lg bg-secondary"
+        >
+          <div>
+            <p class="text-sm font-medium text-foreground">
+              MacBook Pro - Chrome
+            </p>
+            <p class="text-xs text-muted-foreground">
+              Ciudad de México • Activo ahora
+            </p>
+          </div>
+          <span class="text-xs text-primary font-medium">Este dispositivo</span>
+        </div>
+        <div
+          class="flex items-center justify-between p-3 rounded-lg bg-secondary"
+        >
+          <div>
+            <p class="text-sm font-medium text-foreground">
+              iPhone 14 - Safari
+            </p>
+            <p class="text-xs text-muted-foreground">
+              Ciudad de México • Hace 2 horas
+            </p>
+          </div>
+          <Button variant="ghost" size="sm" className="text-destructive">
+            Cerrar sesión
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zona de peligro -->
+    <div class="space-y-4">
+      <div class="flex items-start gap-3">
+        <div class="p-2 rounded-lg bg-destructive/10">
+          <AlertTriangle className="h-5 w-5 text-destructive" />
+        </div>
+        <div class="flex-1">
+          <h3 class="font-medium text-foreground">Zona de Peligro</h3>
+          <p class="text-sm text-muted-foreground">
+            Acciones irreversibles que afectan tu cuenta
+          </p>
+        </div>
+      </div>
+
+      <div class="ml-14 space-y-3">
+        <Button variant="destructive" className="w-full"
+          >Desactivar Cuenta</Button
+        >
+        <Button
+          variant="outline"
+          className="w-full text-destructive border-destructive bg-transparent"
+        >
+          Eliminar Cuenta Permanentemente
+        </Button>
+      </div>
+    </div>
+  </div>
+</Card>
+
+<!-- Script para manejar el estado del cambio de contraseña -->
+<script>
+  const btn = document.querySelector(
+    "#change-password-btn button"
+  ) as HTMLButtonElement;
+  const form = document.querySelector("#password-form") as HTMLDivElement;
+  const btnContainer = document.querySelector(
+    "#change-password-btn"
+  ) as HTMLDivElement;
+  const cancelBtn = document.querySelector(
+    "#cancel-password"
+  ) as HTMLButtonElement;
+
+  if (btn) {
+    btn.addEventListener("click", () => {
+      btnContainer.classList.add("hidden");
+      form.classList.remove("hidden");
+    });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      form.classList.add("hidden");
+      btnContainer.classList.remove("hidden");
+    });
+  }
+</script>

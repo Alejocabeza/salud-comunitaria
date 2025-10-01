@@ -1,0 +1,19 @@
+---
+import ProfileHeader from "@/features/dashboard/components/profile/header.astro";
+import ProfileInfo from "@/features/dashboard/components/profile/info.astro";
+import ProfileSetting from "@/features/dashboard/components/profile/setting.astro";
+import ProfileActivity from "@/features/dashboard/components/profile/activity.astro";
+---
+
+<div class="p-8 space-y-6">
+  <ProfileHeader />
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 space-y-6">
+      <ProfileInfo />
+      <ProfileSetting />
+    </div>
+    <div class="lg:col-span-1">
+      <ProfileActivity />
+    </div>
+  </div>
+</div>

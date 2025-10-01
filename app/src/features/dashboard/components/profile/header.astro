@@ -1,0 +1,59 @@
+---
+import { Button } from "@/shared/components/ui/button";
+import { Calendar, Camera, Mail, MapPin } from "lucide-react";
+---
+
+<div class="bg-card border border-border rounded-lg overflow-hidden">
+  <div class="h-32 bg-gradient-to-r from-primary/20 to-accent/20 relative">
+    <div class="absolute inset-0 grid-pattern"></div>
+  </div>
+
+  <div class="px-6 pb-6">
+    <div
+      class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-16"
+    >
+      <div class="flex items-end gap-4">
+        <div class="relative">
+          <div
+            class="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-accent p-1"
+          >
+            <div
+              class="w-full h-full rounded-full bg-card flex items-center justify-center text-4xl font-bold text-primary"
+            >
+              JD
+            </div>
+          </div>
+          <button
+            class="absolute bottom-0 right-0 w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors border-4 border-card"
+          >
+            <Camera className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div class="pb-2">
+          <h1 class="text-2xl font-bold text-foreground">Dr. Juan Delgado</h1>
+          <p class="text-muted-foreground">Administrador del Centro</p>
+        </div>
+      </div>
+
+      <Button className="bg-primary text-primary-foreground hover:bg-primary/90"
+        >Editar Perfil</Button
+      >
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
+      <div class="flex items-center gap-2">
+        <Mail className="w-4 h-4" />
+        <span>juan.delgado@lazarus.health</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <MapPin className="w-4 h-4" />
+        <span>Centro Comunitario Norte</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <Calendar className="w-4 h-4" />
+        <span>Miembro desde Enero 2024</span>
+      </div>
+    </div>
+  </div>
+</div>

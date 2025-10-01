@@ -1,0 +1,31 @@
+---
+import SidebarSetting from "@/features/dashboard/components/settings/sidebar.astro";
+import GeneralSettings from "@/features/dashboard/components/settings/general.astro";
+import NotificationSettings from "@/features/dashboard/components/settings/notification.astro";
+import SecuritySettings from "@/features/dashboard/components/settings/security.astro";
+import { PrivacySettings } from "@/features/dashboard/components/settings/privacy.tsx";
+import IntegrationSettings from "@/features/dashboard/components/settings/integration.astro";
+import { AppearanceSettings } from "@/features/dashboard/components/settings/appearance.tsx";
+---
+
+<div class="p-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-foreground">Configuraciones</h1>
+    <p class="text-muted-foreground mt-2">
+      Administra las preferencias y configuraciones de tu cuenta
+    </p>
+  </div>
+
+  <div class="flex gap-8">
+    <SidebarSetting />
+
+    <div class="flex-1 space-y-8">
+      <GeneralSettings />
+      <NotificationSettings />
+      <SecuritySettings />
+      <PrivacySettings client:load />
+      <IntegrationSettings />
+      <AppearanceSettings />
+    </div>
+  </div>
+</div>

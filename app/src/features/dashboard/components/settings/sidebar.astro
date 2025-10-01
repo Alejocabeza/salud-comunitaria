@@ -1,0 +1,52 @@
+---
+import { User, Bell, Shield, Lock, Plug, Palette } from "lucide-react";
+
+const settingsSections = [
+  { id: "general", label: "General", icon: User },
+  { id: "notifications", label: "Notificaciones", icon: Bell },
+  { id: "security", label: "Seguridad", icon: Shield },
+  { id: "privacy", label: "Privacidad", icon: Lock },
+  { id: "integrations", label: "Integraciones", icon: Plug },
+  { id: "appearance", label: "Apariencia", icon: Palette },
+];
+---
+
+<div class="w-64 flex-shrink-0">
+  <nav class="sticky top-24 space-y-1" id="settings-sidebar">
+    {
+      settingsSections.map((section) => (
+        <button
+          id={`btn-${section.id}`}
+          class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors text-muted-foreground hover:bg-secondary hover:text-foreground"
+          data-section={section.id}
+        >
+          <section.icon className="h-4 w-4" />
+          {section.label}
+        </button>
+      ))
+    }
+  </nav>
+</div>
+
+<script>
+  const sidebar = document.getElementById("settings-sidebar") as HTMLElement;
+  const buttons = sidebar.querySelectorAll(
+    "button"
+  ) as NodeListOf<HTMLButtonElement>;
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const sectionId = btn.dataset.section as string;
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      // Marcar activo
+      buttons.forEach((b) =>
+        b.classList.remove("bg-primary", "text-primary-foreground")
+      );
+      btn.classList.add("bg-primary", "text-primary-foreground");
+    });
+  });
+</script>

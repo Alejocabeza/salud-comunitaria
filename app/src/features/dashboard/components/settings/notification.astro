@@ -1,0 +1,126 @@
+---
+import { Card } from "@/shared/components/ui/card";
+import { Label } from "@/shared/components/ui/label";
+import { Switch } from "@/shared/components/ui/switch";
+import { Bell, CalendarCheck, Mail, MessageSquare } from "lucide-react";
+
+const notificationCategories = [
+  {
+    title: "Notificaciones de Citas",
+    description: "Recibe alertas sobre citas programadas y recordatorios",
+    icon: CalendarCheck,
+    settings: [
+      {
+        id: "appointment-reminders",
+        label: "Recordatorios de citas",
+        defaultChecked: true,
+      },
+      {
+        id: "appointment-changes",
+        label: "Cambios en citas",
+        defaultChecked: true,
+      },
+      {
+        id: "appointment-cancellations",
+        label: "Cancelaciones",
+        defaultChecked: true,
+      },
+    ],
+  },
+  {
+    title: "Notificaciones de Mensajes",
+    description: "Alertas sobre mensajes y comunicaciones",
+    icon: MessageSquare,
+    settings: [
+      { id: "new-messages", label: "Nuevos mensajes", defaultChecked: true },
+      {
+        id: "message-replies",
+        label: "Respuestas a mensajes",
+        defaultChecked: true,
+      },
+      { id: "mentions", label: "Menciones", defaultChecked: false },
+    ],
+  },
+  {
+    title: "Notificaciones del Sistema",
+    description: "Actualizaciones y alertas importantes del sistema",
+    icon: Bell,
+    settings: [
+      {
+        id: "system-updates",
+        label: "Actualizaciones del sistema",
+        defaultChecked: true,
+      },
+      {
+        id: "security-alerts",
+        label: "Alertas de seguridad",
+        defaultChecked: true,
+      },
+      {
+        id: "maintenance",
+        label: "Mantenimiento programado",
+        defaultChecked: false,
+      },
+    ],
+  },
+  {
+    title: "Notificaciones por Email",
+    description: "Resúmenes y reportes enviados por correo",
+    icon: Mail,
+    settings: [
+      { id: "daily-summary", label: "Resumen diario", defaultChecked: false },
+      { id: "weekly-report", label: "Reporte semanal", defaultChecked: true },
+      { id: "newsletter", label: "Boletín informativo", defaultChecked: false },
+    ],
+  },
+];
+---
+
+<Card id="notifications" className="p-6 scroll-mt-24">
+  <div class="space-y-6">
+    <div>
+      <h2 class="text-xl font-semibold text-foreground">Notificaciones</h2>
+      <p class="text-sm text-muted-foreground mt-1">
+        Configura cómo y cuándo quieres recibir notificaciones
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {
+        notificationCategories.map((category) => (
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <div class="p-2 rounded-lg bg-primary/10">
+                <category.icon className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 class="font-medium text-foreground">{category.title}</h3>
+                <p class="text-sm text-muted-foreground">
+                  {category.description}
+                </p>
+              </div>
+            </div>
+
+            <div class="ml-14 space-y-3">
+              {category.settings.map((setting) => (
+                <div class="flex items-center justify-between">
+                  <Label
+                    htmlFor={setting.id}
+                    className="text-sm font-normal cursor-pointer"
+                  >
+                    {setting.label}
+                  </Label>
+                  <Switch
+                    id={setting.id}
+                    defaultChecked={setting.defaultChecked}
+                    client:load
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Card>

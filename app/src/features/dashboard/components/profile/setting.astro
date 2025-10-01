@@ -1,0 +1,126 @@
+---
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { Switch } from "@/shared/components/ui/switch";
+import { Label } from "@/shared/components/ui/label";
+import { Bell, Eye, Shield } from "lucide-react";
+import { Button } from "@/shared/components/ui/button";
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Configuración de Cuenta</CardTitle>
+    <CardDescription
+      >Administra tus preferencias y configuración de privacidad</CardDescription
+    >
+  </CardHeader>
+  <CardContent className="space-y-6">
+    {/* Notifications */}
+    <div class="space-y-4">
+      <div class="flex items-center gap-2 text-sm font-medium">
+        <Bell className="w-4 h-4 text-primary" />
+        <span>Notificaciones</span>
+      </div>
+
+      <div class="space-y-3 pl-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <Label htmlFor="email-notifications">Notificaciones por Email</Label
+            >
+            <p class="text-sm text-muted-foreground">
+              Recibe actualizaciones importantes por correo
+            </p>
+          </div>
+          <Switch id="email-notifications" defaultChecked />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <Label htmlFor="push-notifications">Notificaciones Push</Label>
+            <p class="text-sm text-muted-foreground">
+              Recibe alertas en tiempo real
+            </p>
+          </div>
+          <Switch id="push-notifications" defaultChecked />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <Label htmlFor="sms-notifications">Notificaciones SMS</Label>
+            <p class="text-sm text-muted-foreground">
+              Recibe mensajes de texto para emergencias
+            </p>
+          </div>
+          <Switch id="sms-notifications" />
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-border pt-6"></div>
+
+    <div class="space-y-4">
+      <div class="flex items-center gap-2 text-sm font-medium">
+        <Shield className="w-4 h-4 text-primary" />
+        <span>Privacidad</span>
+      </div>
+
+      <div class="space-y-3 pl-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <Label htmlFor="profile-visibility">Perfil Público</Label>
+            <p class="text-sm text-muted-foreground">
+              Permite que otros usuarios vean tu perfil
+            </p>
+          </div>
+          <Switch id="profile-visibility" defaultChecked />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <Label htmlFor="activity-visibility">Mostrar Actividad</Label>
+            <p class="text-sm text-muted-foreground">
+              Comparte tu actividad con el equipo
+            </p>
+          </div>
+          <Switch id="activity-visibility" defaultChecked />
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-border pt-6"></div>
+
+    {/* Security */}
+    <div class="space-y-4">
+      <div class="flex items-center gap-2 text-sm font-medium">
+        <Eye className="w-4 h-4 text-primary" />
+        <span>Seguridad</span>
+      </div>
+
+      <div class="space-y-3 pl-6">
+        <Button
+          variant="outline"
+          className="w-full justify-start bg-transparent"
+        >
+          Cambiar Contraseña
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full justify-start bg-transparent"
+        >
+          Autenticación de Dos Factores
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full justify-start text-destructive hover:text-destructive bg-transparent"
+        >
+          Cerrar Sesión en Todos los Dispositivos
+        </Button>
+      </div>
+    </div>
+  </CardContent>
+</Card>

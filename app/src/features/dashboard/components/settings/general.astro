@@ -1,0 +1,64 @@
+---
+import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Switch } from "@/shared/components/ui/switch";
+---
+
+<Card id="general" className="p-6 scroll-mt-24">
+  <div class="space-y-6">
+    <div>
+      <h2 class="text-xl font-semibold text-foreground">General</h2>
+      <p class="text-sm text-muted-foreground mt-1">
+        Configura la información básica de tu cuenta
+      </p>
+    </div>
+
+    <form class="space-y-6">
+      <div class="space-y-2">
+        <Label htmlFor="name">Nombre</Label>
+        <Input
+          id="name"
+          type="text"
+          placeholder="Tu nombre"
+          value="Alejandro Cabeza"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <Label htmlFor="email">Correo electrónico</Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="tu@correo.com"
+          value="alejandro@example.com"
+        />
+      </div>
+
+      <div class="flex items-center justify-between">
+        <Label
+          htmlFor="public-profile"
+          className="text-sm font-normal cursor-pointer"
+        >
+          Perfil público
+        </Label>
+        <Switch id="public-profile" defaultChecked={true} client:load />
+      </div>
+
+      <div class="flex items-center justify-between">
+        <Label
+          htmlFor="dark-mode"
+          className="text-sm font-normal cursor-pointer"
+        >
+          Activar modo oscuro
+        </Label>
+        <Switch id="dark-mode" defaultChecked={false} client:load />
+      </div>
+
+      <div class="pt-4">
+        <Button type="submit">Guardar cambios</Button>
+      </div>
+    </form>
+  </div>
+</Card>
