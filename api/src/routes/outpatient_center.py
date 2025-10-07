@@ -10,9 +10,10 @@ from ..core.security import get_password_hash, generate_secure_password
 from ..schemas.outpatient_center import (
     OutpatientCenterCreate,
     OutpatientCenterRead,
+    OutpatientCenterResponse,
     OutpatientCenterUpdate,
     OutpatientCenterUserRead,
-    OutpatientCenterReadOne
+    OutpatientCenterReadOne,
 )
 
 router = APIRouter(
@@ -21,11 +22,12 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+
 @router.post("/", response_model=OutpatientCenterRead)
 def create_centro_ambulatorio(
     centro: OutpatientCenterCreate,
     session: Session = Depends(get_session),
-    current_user=Depends(require_role("admin"))
+    current_user=Depends(require_role("admin")),
 ):
     role = session.exec(select(Role).where(Role.name == "outpatient_center")).first()
     if not role:
@@ -37,10 +39,10 @@ def create_centro_ambulatorio(
     password = get_password_hash(generate_secure_password())
 
     data_user = {
-        'username': centro.name.lower().replace(" ", "_"),
-        'email': centro.email,
-        'hashed_password': password,
-        'is_active': True
+        "username": centro.name.lower().replace(" ", "_"),
+        "email": centro.email,
+        "hashed_password": password,
+        "is_active": True,
     }
     user = User.from_orm(data_user)
     session.add(user)
@@ -57,7 +59,7 @@ def create_centro_ambulatorio(
         phone=centro.phone,
         email=centro.email,
         responsible=centro.responsible,
-        user_id=user.id
+        user_id=user.id,
     )
     session.add(db_centro)
     session.commit()
@@ -65,33 +67,40 @@ def create_centro_ambulatorio(
 
     return OutpatientCenterRead(
         **db_centro.dict(),
-        user=OutpatientCenterUserRead.model_validate(user, from_attributes=True)
+        user=OutpatientCenterUserRead.model_validate(user, from_attributes=True),
     )
 
-@router.get("/", response_model=list[OutpatientCenterReadOne])
+
+@router.get("/", response_model=OutpatientCenterResponse)
 def list_outpatient_centers(
-    session: Session = Depends(get_session),
-    current_user=Depends(require_role("admin"))
+    session: Session = Depends(get_session), current_user=Depends(require_role("admin"))
 ):
-    return session.exec(select(OutpatientCenter)).all()
+    outpatient_centers = session.exec(select(OutpatientCenter)).all()
+    return {
+        "statusCode": 200,
+        "message": "Successfully retrieved outpatient centers",
+        "data": outpatient_centers,
+    }
+
 
 @router.get("/{centro_id}", response_model=OutpatientCenterReadOne)
 def get_outpatient_center(
     centro_id: int,
     session: Session = Depends(get_session),
-    current_user=Depends(require_role("admin"))
+    current_user=Depends(require_role("admin")),
 ):
     centro = session.get(OutpatientCenter, centro_id)
     if not centro:
         raise HTTPException(status_code=404, detail="Centro ambulatorio no encontrado")
     return centro
 
+
 @router.patch("/{centro_id}", response_model=OutpatientCenterRead)
 def update_outpatient_center(
     centro_id: int,
     centro_update: OutpatientCenterUpdate,
     session: Session = Depends(get_session),
-    current_user=Depends(require_role("admin"))
+    current_user=Depends(require_role("admin")),
 ):
     centro = session.get(OutpatientCenter, centro_id)
     if not centro:
@@ -103,23 +112,25 @@ def update_outpatient_center(
     session.refresh(centro)
     return centro
 
+
 @router.delete("/{centro_id}")
 def delete_outpatient_center(
     centro_id: int,
     session: Session = Depends(get_session),
-    current_user=Depends(require_role("admin"))
+    current_user=Depends(require_role("admin")),
 ):
     centro = session.get(OutpatientCenter, centro_id)
     if not centro:
         raise HTTPException(status_code=404, detail="Centro ambulatorio no encontrado")
-    
+
     user = session.exec(select(User).where(User.email == centro.email)).first()
-    
+
     session.delete(centro)
     session.commit()
-    
+
     if user:
         session.delete(user)
         session.commit()
-    
+
     return {"msg": "Centro ambulatorio y usuario asociado eliminados"}
+

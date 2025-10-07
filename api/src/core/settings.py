@@ -2,11 +2,16 @@ import os
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-load_dotenv()
+# Explicitly load the .env file from the project root
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path=dotenv_path)
+else:
+    print(f"Warning: .env file not found at {dotenv_path}")
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "sqlite:///./database.db"
+    DATABASE_URL: str = os.getenv("DATABASE_URL")
 
     APP_TITLE: str = "Salud Comunitaria API"
     APP_DESCRIPTION: str = "Aplicación de gestión de salud comunitaria"

@@ -51,3 +51,8 @@ class OutpatientCenterReadOne(BaseModel):
     active: bool
 
     model_config = ConfigDict(from_attributes=True)
+
+class OutpatientCenterResponse(BaseModel):
+    statusCode: int
+    message: str
+    data: list[OutpatientCenterRead]

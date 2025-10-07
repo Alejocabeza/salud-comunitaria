@@ -9,6 +9,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const locals = context.locals as typeof context.locals & {
     session?: AstroSession;
     user?: { id: string } | null;
+    token?: string | null;
   };
 
   const sessionFromContext = (
@@ -24,6 +25,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const user = session ? await session.get("user") : null;
+  const token = session ? await session.get("token") : null;
   const userId = user?.id ?? null;
 
   if (protectedRoutes.includes(currentPath) && !userId) {
@@ -35,5 +37,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   locals.user = userId ? user : null;
+  locals.token = token;
   return next();
 });

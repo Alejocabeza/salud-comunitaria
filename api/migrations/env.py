@@ -2,18 +2,26 @@
 import os
 import sys
 from logging.config import fileConfig
+from dotenv import load_dotenv
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from alembic import context
 
-# Esto es necesario para que Alembic pueda importar módulos de tu aplicación
-# Añade el directorio raíz de tu proyecto (donde está `app/`) al sys.path
+# This is necessary for Alembic to import modules from your application
+# Add the root directory of your project (where `app/`) is to sys.path
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Importa tus settings y modelos
-from src.core.settings import settings # Para obtener DATABASE_URL
+# Load .env file
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path=dotenv_path)
+else:
+    print(f"Warning: .env file not found at {dotenv_path}")
+
+# Import your settings and models
+from src.core.settings import settings # To get DATABASE_URL
 from sqlmodel import SQLModel  # Importa SQLModel desde el paquete correcto
 from src.models.user import User
 from src.models.role import Role
@@ -26,54 +34,37 @@ from src.models.patient import Patient
 from src.models.medical_resource import MedicalResource
 from src.models.medication_request import MedicationRequest
 from src.models.external_document import ExternalDocument
-# Importa aquí otros modelos según sea necesario
+from src.models.token_blacklist import TokenBlacklist
 
-# Configuración de Alembic, lee la configuración desde alembic.ini
+# Alembic config, read from alembic.ini
 config = context.config
 
-# Interpreta el archivo de configuración para logging de Python.
-# Esta línea básicamente configura los loggers solo una vez.
+# Interpret the config file for Python logging.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Establece la URL de la base de datos desde tus settings
-# Esto sobreescribe cualquier valor de sqlalchemy.url en alembic.ini
-url = os.environ.get("DATABASE_URL", settings.DATABASE_URL)
-config.set_main_option('sqlalchemy.url', url)
+# Set the database URL from your settings
+config.set_main_option('sqlalchemy.url', settings.DATABASE_URL)
 
-# target_metadata para operaciones de 'autogenerate'
-# SQLModel.metadata contiene la metadata de todas tus tablas definidas con SQLModel
+# target_metadata for 'autogenerate' operations
 target_metadata = SQLModel.metadata
-# Para SQLAlchemy puro sería:
-# from myapp.mymodel import Base
-# target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode.
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-    Calls to context.execute() here emit the given string to the
-    script output.
-    """
+    """Run migrations in 'offline' mode."""
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        render_as_batch=True # IMPORTANTE para SQLite y algunas alteraciones
+        render_as_batch=True # IMPORTANT for SQLite
     )
 
     with context.begin_transaction():
         context.run_migrations()
 
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-    """
+    """Run migrations in 'online' mode."""
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
@@ -84,7 +75,7 @@ def run_migrations_online() -> None:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            render_as_batch=True # IMPORTANTE para SQLite y algunas alteraciones
+            render_as_batch=True # IMPORTANT for SQLite
         )
 
         with context.begin_transaction():
