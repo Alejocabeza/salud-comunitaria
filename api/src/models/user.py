@@ -9,3 +9,5 @@ class User(SQLModel, table=True):
     hashed_password: str
     is_active: bool = Field(default=True)
     roles: List["Role"] = Relationship(back_populates="users", link_model=UserRole)
+    outpatient_center: Optional["OutpatientCenter"] = Relationship(back_populates="user")
+    refresh_token: Optional[str] = Field(default=None)

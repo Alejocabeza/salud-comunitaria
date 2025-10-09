@@ -23,12 +23,12 @@ else:
 # Import your settings and models
 from src.core.settings import settings # To get DATABASE_URL
 from sqlmodel import SQLModel  # Importa SQLModel desde el paquete correcto
+from src.models.outpatient_center import OutpatientCenter
 from src.models.user import User
 from src.models.role import Role
 from src.models.permission import Permission
 from src.models.user_role import UserRole
 from src.models.role_permission import RolePermission
-from src.models.outpatient_center import OutpatientCenter
 from src.models.doctor import Doctor
 from src.models.patient import Patient
 from src.models.medical_resource import MedicalResource

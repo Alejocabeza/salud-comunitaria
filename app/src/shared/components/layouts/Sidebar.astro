@@ -12,39 +12,75 @@ type DashboardSidebarProps = {
 };
 
 const { navigation, user }: DashboardSidebarProps = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
 ---
 
+
+
 <div
+
   class="fixed inset-y-0 left-0 z-50 w-64 bg-sidebar border-r border-sidebar-border"
+
 >
+
   <div class="flex h-16 items-center px-6 border-b border-sidebar-border">
+
     <div class="flex items-center gap-2">
+
       <div
+
         class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
+
       >
+
         <span class="text-primary-foreground font-bold text-lg">L</span>
+
       </div>
+
       <span class="text-xl font-bold text-foreground">Lazarus</span>
+
     </div>
+
   </div>
 
+
+
   <nav class="mt-6 px-3">
+
     <div class="space-y-1">
+
       {
+
         navigation?.map((item) => {
+
           const Icon = item.icon;
+
+          const isCurrent = item.href === "/" ? currentPath === "/" : currentPath.startsWith(item.href);
+
           return (
+
             <a
+
               href={item.href}
-              class={`sidebar-nav-item ${item.current ? "active" : ""}`}
-            >
+
+              class={`sidebar-nav-item ${isCurrent ? "active" : ""}`}>
+
               <Icon class="w-5 h-5" />
+
               <span class="text-sm font-medium">{item.name}</span>
+
             </a>
+
           );
+
         })
+
       }
+
     </div>
+
   </nav>
 
   <div

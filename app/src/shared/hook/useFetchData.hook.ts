@@ -1,27 +1,27 @@
 import { toast } from "sonner";
-import { useState, useCallback } from "react";
-import type {
-  CreateOutpatientCenterDto,
-  UpdateOutpatientCenterDto,
-} from "../type/outpatient-center.type";
+import { useState, useCallback, useEffect } from "react";
+import type { OutpatientCenter } from "../type/outpatient-center.type";
+import { api } from "../lib/api";
 
 export const useFetchData = <T>(token: string, path: string) => {
-  const [data, setData] = useState<T[] | null>(null);
+  const [data, setData] = useState<T[] | T | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const url = import.meta.env.PUBLIC_API_URL + path;
+  const [reload, setReload] = useState(false);
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+    Accept: "application/json",
+  };
 
   const handleFindAll = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(url, {
+      const res = await api(path, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
+        headers,
       });
       const response = await res.json();
+      console.log(response)
       setData(response.data);
     } catch (error) {
       console.error(error);
@@ -29,37 +29,91 @@ export const useFetchData = <T>(token: string, path: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [token, url]);
+  }, [token, path]);
+
+  useEffect(() => {
+    if (reload) {
+      handleFindAll();
+      setReload(false);
+    }
+  }, [reload, handleFindAll]);
 
   const handleFindOne = async (id: number) => {
     try {
+      setIsLoading(true);
+      const res = await api(`${path}/${id}`, {
+        method: "GET",
+        headers,
+      });
+      const response = await res.json();
+      setData(response.data);
     } catch (error) {
       console.error(error);
       toast.error("Error al obtener el dato");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleCreate = async (formData: CreateOutpatientCenterDto) => {
+  const handleCreate = async (formData: Partial<OutpatientCenter>) => {
     try {
+      setIsLoading(true);
+      const res = await api(path, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(formData),
+      });
+      const response = await res.json();
+      if (response.ok) {
+        toast.success("Creado con éxito");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Error al crear el dato");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleUpdate = async (id: number, formData: UpdateOutpatientCenterDto) => {
+  const handleUpdate = async (
+    id: number,
+    formData: Partial<OutpatientCenter>,
+  ) => {
     try {
+      setIsLoading(true);
+      const res = await api(`${path}/${id}`, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify(formData),
+      });
+      const response = await res.json();
+      if (response.ok) {
+        toast.success("Actualizado con éxito");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Error al actualizar el dato");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleRemove = async (id: number) => {
     try {
+      setIsLoading(true);
+      const res = await api(`${path}/${id}`, {
+        method: "DELETE",
+        headers,
+      });
+      const response = await res.json();
+      if (response.ok) {
+        toast.success("Eliminado con éxito");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Error al eliminar el dato");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,5 +125,6 @@ export const useFetchData = <T>(token: string, path: string) => {
     handleUpdate,
     handleRemove,
     isLoading,
+    setReload,
   };
 };

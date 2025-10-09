@@ -29,6 +29,10 @@ def create_centro_ambulatorio(
     session: Session = Depends(get_session),
     current_user=Depends(require_role("admin")),
 ):
+    existing_user = session.exec(select(User).where(User.email == centro.email)).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
     role = session.exec(select(Role).where(Role.name == "outpatient_center")).first()
     if not role:
         role = Role(name="outpatient_center", description="Centro ambulatorio")
@@ -43,6 +47,7 @@ def create_centro_ambulatorio(
         "email": centro.email,
         "hashed_password": password,
         "is_active": True,
+        "refresh_token": None,
     }
     user = User.from_orm(data_user)
     session.add(user)
@@ -65,10 +70,7 @@ def create_centro_ambulatorio(
     session.commit()
     session.refresh(db_centro)
 
-    return OutpatientCenterRead(
-        **db_centro.dict(),
-        user=OutpatientCenterUserRead.model_validate(user, from_attributes=True),
-    )
+    return db_centro
 
 
 @router.get("/", response_model=OutpatientCenterResponse)
@@ -133,4 +135,3 @@ def delete_outpatient_center(
         session.commit()
 
     return {"msg": "Centro ambulatorio y usuario asociado eliminados"}
-

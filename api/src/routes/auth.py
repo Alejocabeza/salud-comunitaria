@@ -37,6 +37,13 @@ def login(form_data: LoginRequest, session: Session = Depends(get_session)):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     access_token = create_access_token(data={"sub": user.email})
     refresh_token = create_refresh_token(data={"sub": user.email})
+
+    ## Update user for add new refresh token
+    user.refresh_token = refresh_token
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
     return {
         "statusCode": 200,
         "data": {

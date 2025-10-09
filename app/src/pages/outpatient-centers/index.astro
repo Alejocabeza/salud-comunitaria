@@ -7,6 +7,6 @@ import DashboardLayout from "@/shared/layouts/DashboardLayout.astro";
 const token = Astro.locals.token;
 ---
 
-<DashboardLayout title="Dashboard - Lazarus">
+<DashboardLayout title="Centro Ambulatorio">
   <OutpatientCenterPage client:only="react" token={token.access_token} />
 </DashboardLayout>

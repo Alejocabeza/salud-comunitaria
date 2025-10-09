@@ -1,10 +1,16 @@
 "use client";
 
-import React, { useReducer, useMemo, useRef } from "react";
+import React, {
+  useReducer,
+  useMemo,
+  useRef,
+  type FormEventHandler,
+  type ReactNode,
+} from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Plus, MoreVertical, Edit, Trash2, Eye } from "lucide-react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import {
   Table,
   TableBody,
@@ -12,20 +18,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "./ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "./ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "../ui/sheet";
+} from "./ui/sheet";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,9 +41,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../ui/alert-dialog";
+} from "./ui/alert-dialog";
 
-// ===== Tipos Genéricos =====
 export type TableDataColumn<T> = {
   header: string;
   accessor: (item: T) => React.ReactNode;
@@ -57,14 +62,16 @@ export type TableDataConfig<T> = {
     initialData?: T;
     onSubmit: (data: Partial<T>) => void;
   }>;
-  onCreate?: (data: Partial<T>) => void;
-  onEdit?: (id: string, data: Partial<T>) => void;
-  onDelete?: (id: string) => void;
+  viewComponent: React.ComponentType<{
+    initialData?: T;
+  }>;
+  onCreate?: (data: Partial<T>) => Promise<void>;
+  onEdit?: (id: number, data: Partial<T>) => Promise<void>;
+  onDelete?: (id: number) => Promise<void>;
   searchAccessor?: (item: T) => string[];
-  infoCards?: React.ReactNode;
+  infoCards?: ReactNode;
 };
 
-// ===== Estado Reducido =====
 type State<T> = {
   searchQuery: string;
   sheet: { isOpen: boolean; mode: "create" | "edit" | "view" };
@@ -79,19 +86,20 @@ type Action<T> =
   | { type: "OPEN_DELETE_DIALOG"; item: T }
   | { type: "CLOSE_DELETE_DIALOG" };
 
-export function TableData<T>({
+export const TableData = <T,>({
   title,
   data,
   columns,
   idAccessor,
   createComponent: CreateComponent,
   editComponent: EditComponent,
+  viewComponent: ViewComponent,
   onCreate,
   onEdit,
   onDelete,
   searchAccessor,
   infoCards,
-}: TableDataConfig<T>) {
+}: TableDataConfig<T>) => {
   const [state, dispatch] = useReducer(
     (s: State<T>, a: Action<T>): State<T> => {
       switch (a.type) {
@@ -122,7 +130,7 @@ export function TableData<T>({
       sheet: { isOpen: false, mode: "create" },
       deleteDialog: false,
       selectedItem: null,
-    },
+    }
   );
 
   const filteredData = useMemo(() => {
@@ -130,9 +138,9 @@ export function TableData<T>({
     return data.filter((item) =>
       searchAccessor
         ? searchAccessor(item).some((field) =>
-            field.toLowerCase().includes(state.searchQuery.toLowerCase()),
+            field.toLowerCase().includes(state.searchQuery.toLowerCase())
           )
-        : true,
+        : true
     );
   }, [data, state.searchQuery, searchAccessor]);
 
@@ -156,7 +164,7 @@ export function TableData<T>({
             (typeof c.width === "number"
               ? c.width
               : parseFloat(String(c.width)) || 0),
-          0,
+          0
         );
 
       const remainingCols = columns.filter((c) => !c.width).length;
@@ -176,30 +184,34 @@ export function TableData<T>({
     ];
   }, [columns]);
 
-  const handleCreate = (data: Partial<T>) => {
-    onCreate?.(data);
+  const handleCreate = async (data: Partial<T>) => {
+    await onCreate?.(data);
     dispatch({ type: "CLOSE_SHEET" });
   };
 
-  const handleEdit = (data: Partial<T>) => {
+  const handleEdit = async (data: Partial<T>) => {
     if (!state.selectedItem || !idAccessor) return;
-    onEdit?.(idAccessor(state.selectedItem), data);
+    const id = parseInt(idAccessor(state.selectedItem), 10);
+    if (isNaN(id)) return;
+    await onEdit?.(id, data);
     dispatch({ type: "CLOSE_SHEET" });
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!state.selectedItem || !idAccessor) return;
-    onDelete?.(idAccessor(state.selectedItem));
+    const id = parseInt(idAccessor(state.selectedItem), 10);
+    if (isNaN(id)) return;
+    await onDelete?.(id);
     dispatch({ type: "CLOSE_DELETE_DIALOG" });
   };
 
   return (
     <div className="space-y-4 p-4">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        {infoCards && <div className="w-full md:w-auto">{infoCards}</div>}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 animate-zoom-in animate-delay-0 animate-duration-slow">
+        {infoCards}
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 animate-zoom-in animate-delay-150 animate-duration-slow ">
         <Input
           placeholder="Buscar..."
           value={state.searchQuery}
@@ -218,7 +230,7 @@ export function TableData<T>({
 
       <div
         ref={parentRef}
-        className="h-[800px] overflow-auto border rounded-lg relative"
+        className="h-max overflow-auto border rounded-lg relative animate-zoom-in animate-delay-300 animate-duration-slow "
       >
         <Table className="relative w-full table-fixed">
           <TableHeader className="sticky top-0 bg-background z-10">
@@ -230,7 +242,13 @@ export function TableData<T>({
                     width: columnWidths[idx],
                     minWidth: columnWidths[idx],
                   }}
-                  className={`px-4 ${col.align === "right" ? "text-right" : col.align === "center" ? "text-center" : "text-left"}`}
+                  className={`px-4 ${
+                    col.align === "right"
+                      ? "text-right"
+                      : col.align === "center"
+                      ? "text-center"
+                      : "text-left"
+                  }`}
                 >
                   {col.header}
                 </TableHead>
@@ -271,7 +289,13 @@ export function TableData<T>({
                         width: columnWidths[idx],
                         minWidth: columnWidths[idx],
                       }}
-                      className={`overflow-hidden text-ellipsis whitespace-nowrap px-4 ${col.align === "right" ? "text-right" : col.align === "center" ? "text-center" : "text-left"}`}
+                      className={`overflow-hidden text-ellipsis whitespace-nowrap px-4 ${
+                        col.align === "right"
+                          ? "text-right"
+                          : col.align === "center"
+                          ? "text-center"
+                          : "text-left"
+                      }`}
                     >
                       {col.accessor(item)}
                     </TableCell>
@@ -345,7 +369,7 @@ export function TableData<T>({
 
           <div className="mt-2 px-4">
             {state.sheet.mode === "view" && state.selectedItem ? (
-              <pre>{JSON.stringify(state.selectedItem, null, 2)}</pre>
+              <ViewComponent initialData={state.selectedItem || undefined} />
             ) : state.sheet.mode === "edit" ? (
               <EditComponent
                 initialData={state.selectedItem || undefined}
@@ -381,4 +405,4 @@ export function TableData<T>({
       </AlertDialog>
     </div>
   );
-}
+};

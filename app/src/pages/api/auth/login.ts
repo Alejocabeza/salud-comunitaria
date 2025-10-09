@@ -1,3 +1,4 @@
+import { setAccessToken } from "@/shared/lib/api";
 import type { APIRoute, AstroSession } from "astro";
 import { PUBLIC_API_URL } from "astro:env/server";
 
@@ -22,7 +23,7 @@ export const POST: APIRoute = async (context) => {
       JSON.stringify({
         message: errorResult.message || "Error en la autenticación",
       }),
-      { status: 401, headers: { "Content-Type": "application/json" } }
+      { status: 401, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -52,6 +53,16 @@ export const POST: APIRoute = async (context) => {
 
   await session.set("user", result.data);
   await session.set("token", result.token);
+
+  setAccessToken(result.token.access_token);
+
+  context.cookies.set("refresh_token", result.token.refresh_token, {
+    httpOnly: true,
+    secure: import.meta.env.PROD,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+    sameSite: "strict",
+  });
 
   const userId = result?.user?.id;
   locals.user = userId ? { id: userId } : null;

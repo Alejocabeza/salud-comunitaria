@@ -18,13 +18,8 @@ export function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem>
-          <a href="/profile" aria-label="Perfil">
-            Perfil
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <a href="/settings" aria-label="Ajustes">
-            Configuración
+          <a href="/profile" aria-label="Ajustes">
+            profile
           </a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

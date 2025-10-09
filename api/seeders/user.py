@@ -9,6 +9,7 @@ sys.path.insert(0, project_root)
 from sqlmodel import Session
 from src.core.database import get_engine
 from src.models.user import User
+from src.models.outpatient_center import OutpatientCenter  # Import to register
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

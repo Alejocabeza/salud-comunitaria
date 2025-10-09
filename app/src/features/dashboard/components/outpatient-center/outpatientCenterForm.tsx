@@ -2,34 +2,44 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Switch } from "@/shared/components/ui/switch";
-import type { CreateOutpatientCenterDto } from "@/shared/type/outpatient-center.type";
-import { useState, type FC } from "react";
+import type { OutpatientCenter } from "@/shared/type/outpatient-center.type";
+import { useEffect, useState, type FC } from "react";
 
 type OutpatientCenterFormProps = {
-  handleCreate?: () => Promise<void>;
   isLoading?: boolean;
+  initialData?: OutpatientCenter;
+  onSubmit: (data: Partial<OutpatientCenter>) => void;
 };
 
 export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
-  handleCreate,
   isLoading,
+  initialData,
+  onSubmit,
 }) => {
-  const [formData, setFormData] = useState<CreateOutpatientCenterDto>({});
+  const [formData, setFormData] = useState<Partial<OutpatientCenter>>(
+    initialData || {}
+  );
 
-  const submitHandler = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await handleCreate(formData);
+    onSubmit(formData);
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={submitHandler}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="name">Nombre</Label>
           <Input
             id="name"
             type="text"
-            value={formData.name}
+            value={formData.name || ""}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="Ambulatorio Central"
             required
@@ -39,7 +49,7 @@ export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
           <Label htmlFor="responsible">Director</Label>
           <Input
             id="responsible"
-            value={formData.responsible}
+            value={formData.responsible || ""}
             type="text"
             onChange={(e) =>
               setFormData({ ...formData, responsible: e.target.value })
@@ -52,7 +62,7 @@ export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
           <Label htmlFor="address">Direccion</Label>
           <Input
             id="address"
-            value={formData.address}
+            value={formData.address || ""}
             type="text"
             onChange={(e) =>
               setFormData({ ...formData, address: e.target.value })
@@ -65,7 +75,7 @@ export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
           <Label htmlFor="phone">Telefono</Label>
           <Input
             id="phone"
-            value={formData.phone}
+            value={formData.phone || ""}
             onChange={(e) =>
               setFormData({ ...formData, phone: e.target.value })
             }
@@ -78,7 +88,7 @@ export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
           <Label htmlFor="email">Correo Electronico</Label>
           <Input
             id="email"
-            value={formData.email}
+            value={formData.email || ""}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
             }
@@ -94,14 +104,14 @@ export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
               setFormData({ ...formData, active: checked })
             }
             id="active"
-            value={formData.active ? "true" : "false"}
+            checked={!!formData.active}
           />
         </div>
         <div className="space-y-2 col-span-full flex justify-end gap-2">
-          <Button type="reset" className="cursor-pointer hover:bg-red-800">
+          <Button type="reset" variant="destructive" className="cursor-pointer">
             Cancelar
           </Button>
-          <Button type="submit" className="cursor-pointer hover:bg-green-800">
+          <Button type="submit" variant="outline" className="cursor-pointer">
             {isLoading ? "Guardando..." : "Guardar"}
           </Button>
         </div>

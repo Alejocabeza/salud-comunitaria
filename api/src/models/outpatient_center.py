@@ -10,3 +10,4 @@ class OutpatientCenter(SQLModel, table=True):
     responsible: Optional[str] = None
     active: bool = Field(default=True)
     user_id: int = Field(foreign_key="user.id", unique=True)
+    user: Optional["User"] = Relationship(back_populates="outpatient_center")  # Cambia a string

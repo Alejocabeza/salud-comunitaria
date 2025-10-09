@@ -1,7 +1,12 @@
 import type { AstroSession } from "astro";
 import { defineMiddleware } from "astro:middleware";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = [
+  "/dashboard",
+  "/profile",
+  "/settings",
+  "/outpatient-centers",
+];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const currentPath = new URL(context.request.url).pathname;

@@ -1,14 +1,12 @@
-import { TableData } from "@/shared/components/cruds/table-data";
-import { type TableDataColumn } from "@/shared/components/cruds/table-data";
-import { Badge } from "@/shared/components/ui/badge";
+import { TableData } from "@/shared/components/table-data";
 import { useFetchData } from "@/shared/hook/useFetchData.hook";
-import type {
-  CreateOutpatientCenterDto,
-  OutpatientCenter,
-  UpdateOutpatientCenterDto,
-} from "@/shared/type/outpatient-center.type";
 import { useEffect, type FC } from "react";
-import { OutpatientCenterForm } from "../components/outpatient-center/form/outpatientCenterForm";
+import { columns } from "../components/outpatient-center/column";
+import type { OutpatientCenter } from "@/shared/type/outpatient-center.type";
+import { OutpatientCenterForm } from "../components/outpatient-center/outpatientCenterForm";
+import { OutpatientCenterView } from "../components/outpatient-center/outpatientCenterView";
+import { OutpatientCenterCards } from "../components/outpatient-center/outpatientCenterCards";
+import { Check, Hospital, UserPlus, Users } from "lucide-react";
 
 type OutpatientCenterProps = {
   token: string;
@@ -19,71 +17,88 @@ export const OutpatientCenterPage: FC<OutpatientCenterProps> = ({ token }) => {
     data,
     isLoading,
     handleFindAll,
-    handleFindOne,
     handleCreate,
     handleUpdate,
     handleRemove,
-  } = useFetchData(token, "outpatient_center");
+    setReload,
+  } = useFetchData<OutpatientCenter>(token, "outpatient_center");
 
   useEffect(() => {
     handleFindAll();
   }, [handleFindAll]);
 
-  const columns: TableDataColumn<OutpatientCenter>[] = [
-    {
-      header: "Nombre",
-      accessor: (item) => item.name,
-      align: "center",
-    },
-    {
-      header: "Dirección",
-      accessor: (item) => item.address,
-      align: "center",
-    },
-    {
-      header: "Teléfono",
-      accessor: (item) => item.phone,
-      align: "center",
-    },
-    {
-      header: "Correo Electrónico",
-      accessor: (item) => item.email,
-      align: "center",
-    },
-    {
-      header: "Responsable",
-      accessor: (item) => item.responsible,
-      align: "center",
-    },
-    {
-      header: "Activo",
-      align: "center",
-      accessor: (item) =>
-        item.active ? (
-          <Badge className="bg-green-500 text-white">Verdadero</Badge>
-        ) : (
-          <Badge className="bg-red-500 text-white">Falso</Badge>
-        ),
-    },
-  ];
-
   if (isLoading && !data) {
     return <p>Cargando datos...</p>;
   }
 
+  const onCreate = async (formData: Partial<OutpatientCenter>) => {
+    await handleCreate(formData as OutpatientCenter);
+    setReload(true);
+  };
+
+  const onEdit = async (id: number, formData: Partial<OutpatientCenter>) => {
+    await handleUpdate(id, formData);
+    setReload(true);
+  };
+
+  const onDelete = async (id: number) => {
+    await handleRemove(id);
+    setReload(true);
+  };
+
   return (
     <TableData
       columns={columns}
-      data={data || []}
+      data={(data as OutpatientCenter[]) || []}
       title="Centros de Atención Ambulatoria"
       idAccessor={(item) => item.id.toString()}
-      createComponent={() => (
+      createComponent={({ onSubmit }) => (
+        <OutpatientCenterForm isLoading={isLoading} onSubmit={onSubmit} />
+      )}
+      editComponent={({ initialData, onSubmit }) => (
         <OutpatientCenterForm
-          handleCreate={handleCreate}
           isLoading={isLoading}
+          initialData={initialData}
+          onSubmit={onSubmit}
         />
       )}
-      editComponent={() => null}
+      viewComponent={({ initialData }) => (
+        <OutpatientCenterView data={initialData} />
+      )}
+      onCreate={onCreate}
+      onEdit={onEdit}
+      onDelete={onDelete}
+      searchAccessor={(item: OutpatientCenter): string[] => [
+        item.name,
+        item.email,
+        item.responsible,
+      ]}
+      infoCards={
+        <OutpatientCenterCards
+          data={[
+            {
+              title: "Total de Centros Ambulatorios",
+              data: 3,
+              icon: Hospital,
+            },
+            {
+              title: "Centros Activos",
+              data: 2,
+              icon: Check,
+            },
+            {
+              title: "Capacidad total",
+              data: 330,
+              icon: Users,
+            },
+            {
+              title: "Pacientes Actuales",
+              data: 250,
+              icon: UserPlus,
+            },
+          ]}
+        />
+      }
     />
   );
 };

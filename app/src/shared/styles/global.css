@@ -147,3 +147,4 @@ html {
   @apply bg-sidebar-primary text-sidebar-primary-foreground;
 }
 
+@plugin '@midudev/tailwind-animations';

@@ -7,6 +7,3 @@ export type OutpatientCenter = {
   responsible: string;
   active: boolean;
 };
-
-export type CreateOutpatientCenterDto = OutpatientCenter;
-export type UpdateOutpatientCenterDto = Partial<OutpatientCenter>;
