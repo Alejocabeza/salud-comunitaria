@@ -6,4 +6,7 @@ export type OutpatientCenter = {
   email: string;
   responsible: string;
   active: boolean;
+  city: string;
+  capacity: number;
+  currentPatients: number;
 };

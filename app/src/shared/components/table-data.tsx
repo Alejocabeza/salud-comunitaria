@@ -207,11 +207,11 @@ export const TableData = <T,>({
 
   return (
     <div className="space-y-4 p-4">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 animate-zoom-in animate-delay-0 animate-duration-slow">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 animate-zoom-in animate-delay-0 animate-duration-800">
         {infoCards}
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 animate-zoom-in animate-delay-150 animate-duration-slow ">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 animate-zoom-in animate-delay-150 animate-duration-800 ">
         <Input
           placeholder="Buscar..."
           value={state.searchQuery}
@@ -230,7 +230,7 @@ export const TableData = <T,>({
 
       <div
         ref={parentRef}
-        className="h-max overflow-auto border rounded-lg relative animate-zoom-in animate-delay-300 animate-duration-slow "
+        className="h-max overflow-auto border rounded-lg relative animate-zoom-in animate-delay-300 animate-duration-800 "
       >
         <Table className="relative w-full table-fixed">
           <TableHeader className="sticky top-0 bg-background z-10">

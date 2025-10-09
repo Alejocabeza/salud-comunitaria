@@ -14,6 +14,11 @@ export const columns: TableDataColumn<OutpatientCenter>[] = [
     align: "center",
   },
   {
+    header: "Ciudad",
+    accessor: (item) => item.city,
+    align: "center",
+  },
+  {
     header: "Teléfono",
     accessor: (item) => item.phone,
     align: "center",
@@ -26,11 +31,11 @@ export const columns: TableDataColumn<OutpatientCenter>[] = [
   {
     header: "Responsable",
     accessor: (item) => item.responsible,
-    align: "center",
+    align: "right",
   },
   {
     header: "Activo",
-    align: "center",
+    align: "right",
     accessor: (item) =>
       item.active ? (
         <Badge className="bg-green-500 text-white">Verdadero</Badge>

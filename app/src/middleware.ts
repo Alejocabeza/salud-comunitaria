@@ -3,9 +3,9 @@ import { defineMiddleware } from "astro:middleware";
 
 const protectedRoutes = [
   "/dashboard",
-  "/profile",
   "/settings",
   "/outpatient-centers",
+  "/doctors",
 ];
 
 export const onRequest = defineMiddleware(async (context, next) => {

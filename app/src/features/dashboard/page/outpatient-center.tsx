@@ -8,11 +8,9 @@ import { OutpatientCenterView } from "../components/outpatient-center/outpatient
 import { OutpatientCenterCards } from "../components/outpatient-center/outpatientCenterCards";
 import { Check, Hospital, UserPlus, Users } from "lucide-react";
 
-type OutpatientCenterProps = {
-  token: string;
-};
+type OutpatientCenterProps = {};
 
-export const OutpatientCenterPage: FC<OutpatientCenterProps> = ({ token }) => {
+export const OutpatientCenterPage: FC<OutpatientCenterProps> = () => {
   const {
     data,
     isLoading,
@@ -21,7 +19,7 @@ export const OutpatientCenterPage: FC<OutpatientCenterProps> = ({ token }) => {
     handleUpdate,
     handleRemove,
     setReload,
-  } = useFetchData<OutpatientCenter>(token, "outpatient_center");
+  } = useFetchData<OutpatientCenter>("outpatient_center");
 
   useEffect(() => {
     handleFindAll();

@@ -42,12 +42,15 @@ class TestOutpatientCenterRoutes:
         return {"Authorization": f"Bearer {token}"}
 
     def test_create_outpatient_center_success(self, client, session, auth_headers):
+        import uuid
+        unique_email = f"centro_{uuid.uuid4()}@test.com"
         center_data = {
             "name": "Centro Ambulatorio Test",
             "address": "Calle Falsa 123",
             "phone": "123456789",
-            "email": "centro@test.com",
-            "responsible": "Dr. Smith"
+            "email": unique_email,
+            "responsible": "Dr. Smith",
+            "capacity": 100
         }
         response = client.post("/api/v1/outpatient_center/", json=center_data, headers=auth_headers)
         assert response.status_code == 200

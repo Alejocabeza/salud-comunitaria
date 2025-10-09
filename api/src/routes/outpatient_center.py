@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlmodel import Session, select
+import json
 from ..core.database import get_session
 from ..core.dependencies import require_role
 from ..models.outpatient_center import OutpatientCenter
@@ -25,10 +26,15 @@ router = APIRouter(
 
 @router.post("/", response_model=OutpatientCenterRead)
 def create_centro_ambulatorio(
-    centro: OutpatientCenterCreate,
+    centro_data = Body(...),
     session: Session = Depends(get_session),
     current_user=Depends(require_role("admin")),
 ):
+    if isinstance(centro_data, str):
+        centro_dict = json.loads(centro_data)
+    else:
+        centro_dict = centro_data
+    centro = OutpatientCenterCreate(**{k: v for k, v in centro_dict.items() if k in OutpatientCenterCreate.model_fields})
     existing_user = session.exec(select(User).where(User.email == centro.email)).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -65,7 +71,12 @@ def create_centro_ambulatorio(
         email=centro.email,
         responsible=centro.responsible,
         user_id=user.id,
+        capacity=int(centro.capacity),
+        city=centro.city,
+        currentPatients=0,
+        active=centro.active,
     )
+
     session.add(db_centro)
     session.commit()
     session.refresh(db_centro)
@@ -100,10 +111,19 @@ def get_outpatient_center(
 @router.patch("/{centro_id}", response_model=OutpatientCenterRead)
 def update_outpatient_center(
     centro_id: int,
-    centro_update: OutpatientCenterUpdate,
+    centro_data = Body(...),
     session: Session = Depends(get_session),
     current_user=Depends(require_role("admin")),
 ):
+    if isinstance(centro_data, bytes):
+        centro_data = centro_data.decode('utf-8')
+    if isinstance(centro_data, bytes):
+        centro_data = centro_data.decode('utf-8')
+    if isinstance(centro_data, str):
+        centro_dict = json.loads(centro_data)
+    else:
+        centro_dict = centro_data
+    centro_update = OutpatientCenterUpdate(**{k: v for k, v in centro_dict.items() if k in OutpatientCenterUpdate.model_fields})
     centro = session.get(OutpatientCenter, centro_id)
     if not centro:
         raise HTTPException(status_code=404, detail="Centro ambulatorio no encontrado")

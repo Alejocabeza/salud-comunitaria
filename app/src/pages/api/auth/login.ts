@@ -23,7 +23,7 @@ export const POST: APIRoute = async (context) => {
       JSON.stringify({
         message: errorResult.message || "Error en la autenticación",
       }),
-      { status: 401, headers: { "Content-Type": "application/json" } },
+      { status: 401, headers: { "Content-Type": "application/json" } }
     );
   }
 
@@ -54,8 +54,6 @@ export const POST: APIRoute = async (context) => {
   await session.set("user", result.data);
   await session.set("token", result.token);
 
-  setAccessToken(result.token.access_token);
-
   context.cookies.set("refresh_token", result.token.refresh_token, {
     httpOnly: true,
     secure: import.meta.env.PROD,
@@ -67,8 +65,14 @@ export const POST: APIRoute = async (context) => {
   const userId = result?.user?.id;
   locals.user = userId ? { id: userId } : null;
 
-  return new Response(JSON.stringify({ message: "Autenticación exitosa" }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  return new Response(
+    JSON.stringify({
+      message: "Autenticación exitosa",
+      access_token: result.token.access_token,
+    }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 };

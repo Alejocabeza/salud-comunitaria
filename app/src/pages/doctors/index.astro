@@ -1,0 +1,10 @@
+---
+export const prerender = false;
+
+import { Doctors } from "@/features/dashboard/page/doctors";
+import DashboardLayout from "@/shared/layouts/DashboardLayout.astro";
+---
+
+<DashboardLayout title="Medicos">
+  <Doctors client:only="react" />
+</DashboardLayout>

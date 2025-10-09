@@ -72,6 +72,17 @@ export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
           />
         </div>
         <div className="space-y-2">
+          <Label htmlFor="city">Ciudad</Label>
+          <Input
+            id="city"
+            value={formData.city || ""}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+            type="text"
+            placeholder="Tachira"
+            required
+          />
+        </div>
+        <div className="space-y-2">
           <Label htmlFor="phone">Telefono</Label>
           <Input
             id="phone"
@@ -95,6 +106,34 @@ export const OutpatientCenterForm: FC<OutpatientCenterFormProps> = ({
             type="email"
             placeholder="ambulatoriocentral@gmail.com"
             required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="capacity">Capacidad</Label>
+          <Input
+            id="capacity"
+            value={formData.capacity || 0}
+            onChange={(e) =>
+              setFormData({ ...formData, capacity: Number(e.target.value) })
+            }
+            type="number"
+            placeholder="300"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="current-patients">Pacientes Actuales</Label>
+          <Input
+            id="current-patients"
+            value={formData.currentPatients || 0}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                currentPatients: Number(e.target.value),
+              })
+            }
+            type="number"
+            placeholder="200"
           />
         </div>
         <div className="space-y-2 col-span-full">

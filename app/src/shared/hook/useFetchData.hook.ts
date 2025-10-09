@@ -3,25 +3,18 @@ import { useState, useCallback, useEffect } from "react";
 import type { OutpatientCenter } from "../type/outpatient-center.type";
 import { api } from "../lib/api";
 
-export const useFetchData = <T>(token: string, path: string) => {
+export const useFetchData = <T>(path: string) => {
   const [data, setData] = useState<T[] | T | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [reload, setReload] = useState(false);
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-    Accept: "application/json",
-  };
 
   const handleFindAll = useCallback(async () => {
     try {
       setIsLoading(true);
       const res = await api(path, {
         method: "GET",
-        headers,
       });
       const response = await res.json();
-      console.log(response)
       setData(response.data);
     } catch (error) {
       console.error(error);
@@ -29,7 +22,7 @@ export const useFetchData = <T>(token: string, path: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [token, path]);
+  }, [path]);
 
   useEffect(() => {
     if (reload) {
@@ -43,7 +36,6 @@ export const useFetchData = <T>(token: string, path: string) => {
       setIsLoading(true);
       const res = await api(`${path}/${id}`, {
         method: "GET",
-        headers,
       });
       const response = await res.json();
       setData(response.data);
@@ -60,7 +52,6 @@ export const useFetchData = <T>(token: string, path: string) => {
       setIsLoading(true);
       const res = await api(path, {
         method: "POST",
-        headers,
         body: JSON.stringify(formData),
       });
       const response = await res.json();
@@ -77,13 +68,12 @@ export const useFetchData = <T>(token: string, path: string) => {
 
   const handleUpdate = async (
     id: number,
-    formData: Partial<OutpatientCenter>,
+    formData: Partial<OutpatientCenter>
   ) => {
     try {
       setIsLoading(true);
       const res = await api(`${path}/${id}`, {
         method: "PATCH",
-        headers,
         body: JSON.stringify(formData),
       });
       const response = await res.json();
@@ -103,7 +93,6 @@ export const useFetchData = <T>(token: string, path: string) => {
       setIsLoading(true);
       const res = await api(`${path}/${id}`, {
         method: "DELETE",
-        headers,
       });
       const response = await res.json();
       if (response.ok) {

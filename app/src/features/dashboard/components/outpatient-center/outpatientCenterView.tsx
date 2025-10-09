@@ -21,6 +21,10 @@ export const OutpatientCenterView: FC<OutpatientCenterViewProps> = ({
           <span>{data?.address}</span>
         </div>
         <div className='space-y-2 border rounded-lg p-4 shadow-lg'>
+          <h3 className='text-md font-bold'>Ciudad:</h3>
+          <span>{data?.city}</span>
+        </div>
+        <div className='space-y-2 border rounded-lg p-4 shadow-lg'>
           <h3 className='text-md font-bold'>Telefono:</h3>
           <span>{data?.phone}</span>
         </div>
@@ -35,6 +39,14 @@ export const OutpatientCenterView: FC<OutpatientCenterViewProps> = ({
         <div className='space-y-2 border rounded-lg p-4 shadow-lg'>
           <h3 className='text-md font-bold'>Esta Activo:</h3>
           <Switch checked={data?.active} disabled />
+        </div>
+        <div className='space-y-2 border rounded-lg p-4 shadow-lg'>
+          <h3 className='text-md font-bold'>Capacidad:</h3>
+          <span>{data?.capacity}</span>
+        </div>
+        <div className='space-y-2 border rounded-lg p-4 shadow-lg'>
+          <h3 className='text-md font-bold'>Pacientes Actuales:</h3>
+          <span>{data?.currentPatients}</span>
         </div>
       </div>
     </div>

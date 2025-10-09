@@ -1,8 +1,19 @@
 let accessToken: string | null = null;
 const API_URL = import.meta.env.PUBLIC_API_URL;
 
+if (typeof window !== "undefined") {
+  accessToken = localStorage.getItem("accessToken");
+}
+
 export const setAccessToken = (token: string | null) => {
   accessToken = token;
+  if (typeof window !== "undefined") {
+    if (token) {
+      localStorage.setItem("accessToken", token);
+    } else {
+      localStorage.removeItem("accessToken");
+    }
+  }
 };
 
 let isRefreshing = false;
@@ -51,13 +62,13 @@ export const api = async (endpoint: string, options: RequestInit = {}) => {
   isRefreshing = true;
 
   try {
-    const refreshResponse = await fetch('/api/auth/refresh', {
-      method: 'POST',
-      credentials: 'include',
+    const refreshResponse = await fetch("/api/auth/refresh", {
+      method: "POST",
+      credentials: "include",
     });
 
     if (!refreshResponse.ok) {
-      throw new Error('Failed to refresh token');
+      throw new Error("Failed to refresh token");
     }
 
     const { access_token } = await refreshResponse.json();
@@ -70,7 +81,7 @@ export const api = async (endpoint: string, options: RequestInit = {}) => {
     console.error("Fallo al refrescar el token, cerrando sesión.", error);
     processQueue(error, null);
     setAccessToken(null);
-    window.location.href = '/api/auth/logout';
+    window.location.href = "/api/auth/logout";
     return Promise.reject(error);
   } finally {
     isRefreshing = false;
