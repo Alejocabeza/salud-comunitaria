@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 # Explicitly load the .env file from the project root
@@ -35,7 +36,12 @@ class Settings(BaseSettings):
     USE_CREDENTIALS: bool = os.getenv("USE_CREDENTIALS", "True").lower() == "true"
     VALIDATE_CERTS: bool = os.getenv("VALIDATE_CERTS", "True").lower() == "true"
 
-    BACKEND_CORS_ORIGINS: list[str] = os.getenv("BACKEND_CORS_ORIGINS", "*").split(",")
+    BACKEND_CORS_ORIGINS_STR: str = Field(alias="BACKEND_CORS_ORIGINS", default="*")
+    BACKEND_CORS_ALLOW_CREDENTIALS: bool = Field(alias="BACKEND_CORS_ALLOW_CREDENTIALS", default=False)
+
+    @property
+    def BACKEND_CORS_ORIGINS(self) -> list[str]:
+        return self.BACKEND_CORS_ORIGINS_STR.split(",")
 
     ALLOWED_EXTENSIONS: list[str] = {"pdf", "jpg", "png", "docx", "txt", "jpeg"}
     MAX_FILE_SIZE_MB: int = int(os.getenv("MAX_FILE_SIZE_MB", 5))
@@ -44,6 +50,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        populate_by_name = True
 
 
 settings = Settings()

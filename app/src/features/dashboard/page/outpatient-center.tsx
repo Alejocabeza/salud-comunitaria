@@ -8,9 +8,7 @@ import { OutpatientCenterView } from "../components/outpatient-center/outpatient
 import { OutpatientCenterCards } from "../components/outpatient-center/outpatientCenterCards";
 import { Check, Hospital, UserPlus, Users } from "lucide-react";
 
-type OutpatientCenterProps = {};
-
-export const OutpatientCenterPage: FC<OutpatientCenterProps> = () => {
+export const OutpatientCenterPage = () => {
   const {
     data,
     isLoading,

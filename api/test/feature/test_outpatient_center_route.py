@@ -34,11 +34,11 @@ class TestOutpatientCenterRoutes:
     @pytest.fixture
     def auth_headers(self, client, admin_user):
         """Obtiene headers de autenticación para el usuario admin"""
-        response = client.post("/api/v1/auths/login", data={
-            "username": "admin_test",
+        response = client.post("/api/v1/auths/login", json={
+            "email": "admin@test.com",
             "password": "testpass"
         })
-        token = response.json()["access_token"]
+        token = response.json()["token"]["access_token"]
         return {"Authorization": f"Bearer {token}"}
 
     def test_create_outpatient_center_success(self, client, session, auth_headers):
@@ -66,15 +66,17 @@ class TestOutpatientCenterRoutes:
                 "address": f"Dirección {i}",
                 "phone": f"11122233{i}",
                 "email": f"centro{i}@test.com",
-                "responsible": f"Responsable {i}"
+                "responsible": f"Responsable {i}",
+                "capacity": 100 + i
             }
             client.post("/api/v1/outpatient_center/", json=center_data, headers=auth_headers)
         
         response = client.get("/api/v1/outpatient_center/", headers=auth_headers)
         assert response.status_code == 200
         data = response.json()
-        assert len(data) >= 3 # May contain centers from other tests
-        assert all("name" in c for c in data)
+        assert data["statusCode"] == 200
+        assert len(data["data"]) >= 3 # May contain centers from other tests
+        assert all("name" in c for c in data["data"])
 
     def test_get_outpatient_center_success(self, client, session, auth_headers):
         center_data = {

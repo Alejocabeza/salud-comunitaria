@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlmodel import Session, select
+from sqlalchemy.orm import joinedload
 import json
 from ..core.database import get_session
 from ..core.dependencies import require_role
@@ -88,7 +89,7 @@ def create_centro_ambulatorio(
 def list_outpatient_centers(
     session: Session = Depends(get_session), current_user=Depends(require_role("admin"))
 ):
-    outpatient_centers = session.exec(select(OutpatientCenter)).all()
+    outpatient_centers = session.exec(select(OutpatientCenter).options(joinedload(OutpatientCenter.user))).all()
     return {
         "statusCode": 200,
         "message": "Successfully retrieved outpatient centers",
