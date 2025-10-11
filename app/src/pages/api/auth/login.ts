@@ -15,6 +15,7 @@ export const POST: APIRoute = async (context) => {
       Accept: "application/json",
     },
     body: JSON.stringify({ email, password }),
+    credentials: "include",
   });
 
   if (!apiResponse.ok) {

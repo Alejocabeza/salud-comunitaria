@@ -1,56 +1,45 @@
 import os
-from dotenv import load_dotenv
-from pydantic import Field
-from pydantic_settings import BaseSettings
-
-# Explicitly load the .env file from the project root
-dotenv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path=dotenv_path)
-else:
-    print(f"Warning: .env file not found at {dotenv_path}")
-
+from typing import List
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = os.getenv("DATABASE_URL")
+    model_config = SettingsConfigDict(
+        env_file=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env'),
+        env_file_encoding='utf-8',
+        case_sensitive=True
+    )
 
+    DATABASE_URL: str
     APP_TITLE: str = "Salud Comunitaria API"
     APP_DESCRIPTION: str = "Aplicación de gestión de salud comunitaria"
     APP_VERSION: str = "1.0.0"
 
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "default-secret-key")
+    SECRET_KEY: str = "default-secret-key"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     # SMTP
-    MAIL_USERNAME: str = os.getenv("MAIL_USERNAME", "")
-    MAIL_PASSWORD: str = os.getenv("MAIL_PASSWORD", "")
-    MAIL_PORT: int = int(os.getenv('MAIL_PORT', 587))
-    MAIL_FROM: str = os.getenv("MAIL_FROM", "")
-    MAIL_FROM_NAME: str = os.getenv("MAIL_FROM_NAME", "Salud Comunitaria API")
-    MAIL_SERVER: str = os.getenv("MAIL_SERVER", "")
-    MAIL_STARTTLS: bool = os.getenv("MAIL_STARTTLS", "True").lower() == "true"
-    MAIL_SSL_TLS: bool = os.getenv("MAIL_SSL_TLS", "False").lower() == "true"
-    MAIL_TLS: bool = os.getenv("MAIL_TLS", "True").lower() == "true"
-    MAIL_SSL: bool = os.getenv("MAIL_SSL", "False").lower() == "true"
-    USE_CREDENTIALS: bool = os.getenv("USE_CREDENTIALS", "True").lower() == "true"
-    VALIDATE_CERTS: bool = os.getenv("VALIDATE_CERTS", "True").lower() == "true"
+    MAIL_USERNAME: str = ""
+    MAIL_PASSWORD: str = ""
+    MAIL_PORT: int = 587
+    MAIL_FROM: str = ""
+    MAIL_FROM_NAME: str = "Salud Comunitaria API"
+    MAIL_SERVER: str = ""
+    MAIL_STARTTLS: bool = True
+    MAIL_SSL_TLS: bool = False
+    USE_CREDENTIALS: bool = True
+    VALIDATE_CERTS: bool = True
 
-    BACKEND_CORS_ORIGINS_STR: str = Field(alias="BACKEND_CORS_ORIGINS", default="*")
-    BACKEND_CORS_ALLOW_CREDENTIALS: bool = Field(alias="BACKEND_CORS_ALLOW_CREDENTIALS", default=False)
+    # CORS
+    BACKEND_CORS_ORIGINS: List[str] = ["*"]
+    BACKEND_CORS_ALLOW_CREDENTIALS: bool = False
+
+    # Allowed Files
+    ALLOWED_EXTENSIONS: List[str] = ["pdf", "jpg", "png", "docx", "txt", "jpeg"]
+    MAX_FILE_SIZE_MB: int = 5
 
     @property
-    def BACKEND_CORS_ORIGINS(self) -> list[str]:
-        return self.BACKEND_CORS_ORIGINS_STR.split(",")
-
-    ALLOWED_EXTENSIONS: list[str] = {"pdf", "jpg", "png", "docx", "txt", "jpeg"}
-    MAX_FILE_SIZE_MB: int = int(os.getenv("MAX_FILE_SIZE_MB", 5))
-    MAX_FILE_SIZE_BYTES: int = MAX_FILE_SIZE_MB * 1024 * 1024
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        populate_by_name = True
-
+    def MAX_FILE_SIZE_BYTES(self) -> int:
+        return self.MAX_FILE_SIZE_MB * 1024 * 1024
 
 settings = Settings()

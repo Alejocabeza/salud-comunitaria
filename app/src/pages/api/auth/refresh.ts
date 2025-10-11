@@ -22,6 +22,7 @@ export const POST: APIRoute = async (context) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ refresh_token: refreshToken }),
+      credentials: "include",
     });
 
     if (!apiResponse.ok) {

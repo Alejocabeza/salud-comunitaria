@@ -41,7 +41,13 @@ export const api = async (endpoint: string, options: RequestInit = {}) => {
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
-    const newOptions = { ...options, headers, credentials: "include" as const };
+    const newOptions = {
+      ...options,
+      headers,
+      credentials: "include" as const,
+      Acept: "application/json",
+      ContentType: "application/json",
+    };
     return fetch(url, newOptions);
   };
 

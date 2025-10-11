@@ -16,8 +16,8 @@ export const OutpatientCenterCards: FC<OutpatientCenterCardsProps> = ({
   return (
     <>
       {data &&
-        data.map(({ title, data, icon: Icon }) => (
-          <Card className="flex-1">
+        data.map(({ title, data, icon: Icon }, index) => (
+          <Card key={index} className="flex-1">
             <CardContent className="flex gap-6 justify-start items-center">
               {Icon && (
                 <Icon className="bg-black rounded-full p-2 text-white h-10 w-10" />
