@@ -1,4 +1,5 @@
 import os
+import json
 from typing import List
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -31,8 +32,39 @@ class Settings(BaseSettings):
     VALIDATE_CERTS: bool = True
 
     # CORS
-    BACKEND_CORS_ORIGINS: List[str] = ["*"]
+    # Keep the raw env value as a string to avoid pydantic's env-source JSON decoding
+    BACKEND_CORS_ORIGINS: str = ""
     BACKEND_CORS_ALLOW_CREDENTIALS: bool = False
+
+    @property
+    def BACKEND_CORS_ORIGINS_LIST(self) -> List[str]:
+        """Return a list of origins parsed from the env value.
+
+        Behavior:
+        - empty string or unset -> ['*']
+        - JSON array string -> parsed
+        - comma-separated string -> split
+        """
+        v = self.BACKEND_CORS_ORIGINS
+        if isinstance(v, (list, tuple)):
+            return list(v)
+
+        if not v:
+            return ["*"]
+
+        s = v.strip()
+        if not s:
+            return ["*"]
+
+        if s.startswith("[") or s.startswith("{"):
+            try:
+                parsed = json.loads(s)
+                if isinstance(parsed, list):
+                    return [str(x) for x in parsed]
+            except Exception:
+                pass
+
+        return [item.strip() for item in s.split(",") if item.strip()]
 
     # Allowed Files
     ALLOWED_EXTENSIONS: List[str] = ["pdf", "jpg", "png", "docx", "txt", "jpeg"]

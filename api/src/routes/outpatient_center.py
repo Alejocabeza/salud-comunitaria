@@ -31,6 +31,9 @@ def create_centro_ambulatorio(
     session: Session = Depends(get_session),
     current_user=Depends(require_role("admin")),
 ):
+    # Request body can come in as bytes when not typed; decode if needed
+    if isinstance(centro_data, bytes):
+        centro_data = centro_data.decode("utf-8")
     if isinstance(centro_data, str):
         centro_dict = json.loads(centro_data)
     else:
@@ -56,6 +59,7 @@ def create_centro_ambulatorio(
         "is_active": True,
         "refresh_token": None,
     }
+
     user = User.from_orm(data_user)
     session.add(user)
     session.commit()
@@ -74,13 +78,16 @@ def create_centro_ambulatorio(
         user_id=user.id,
         capacity=int(centro.capacity),
         city=centro.city,
-        currentPatients=0,
+        currentPatients=centro.currentPatients,
         active=centro.active,
     )
 
     session.add(db_centro)
     session.commit()
     session.refresh(db_centro)
+
+    # Load the user relationship for the response
+    db_centro = session.exec(select(OutpatientCenter).where(OutpatientCenter.id == db_centro.id).options(joinedload(OutpatientCenter.user))).first()
 
     return db_centro
 
@@ -133,6 +140,10 @@ def update_outpatient_center(
     session.add(centro)
     session.commit()
     session.refresh(centro)
+
+    # Load the user relationship for the response
+    centro = session.exec(select(OutpatientCenter).where(OutpatientCenter.id == centro.id).options(joinedload(OutpatientCenter.user))).first()
+
     return centro
 
 

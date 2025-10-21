@@ -45,8 +45,8 @@ export const api = async (endpoint: string, options: RequestInit = {}) => {
       ...options,
       headers,
       credentials: "include" as const,
-      Acept: "application/json",
-      ContentType: "application/json",
+      Accept: "application/json",
+      "Content-Type": "application/json",
     };
     return fetch(url, newOptions);
   };

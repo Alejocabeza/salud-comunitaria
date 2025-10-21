@@ -84,7 +84,8 @@ class TestOutpatientCenterRoutes:
             "address": "Dirección Get",
             "phone": "999888777",
             "email": "get@test.com",
-            "responsible": "Dr. Get"
+            "responsible": "Dr. Get",
+            "capacity": 50
         }
         create_response = client.post("/api/v1/outpatient_center/", json=center_data, headers=auth_headers)
         center_id = create_response.json()["id"]
@@ -105,7 +106,8 @@ class TestOutpatientCenterRoutes:
             "address": "Dirección Update",
             "phone": "555444333",
             "email": "update@test.com",
-            "responsible": "Dr. Update"
+            "responsible": "Dr. Update",
+            "capacity": 60
         }
         create_response = client.post("/api/v1/outpatient_center/", json=center_data, headers=auth_headers)
         center_id = create_response.json()["id"]
@@ -132,7 +134,8 @@ class TestOutpatientCenterRoutes:
             "address": "Dirección Delete",
             "phone": "111000999",
             "email": "delete@test.com",
-            "responsible": "Dr. Delete"
+            "responsible": "Dr. Delete",
+            "capacity": 70
         }
         create_response = client.post("/api/v1/outpatient_center/", json=center_data, headers=auth_headers)
         center_id = create_response.json()["id"]
