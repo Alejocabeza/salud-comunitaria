@@ -11,7 +11,7 @@ class DoctorCreate(BaseModel):
     specialty: Optional[str] = None
     phone: Optional[str] = None
     email: Optional[EmailStr] = None
-    outpatient_center_id: int
+    outpatientCenterId: int
     user: DoctorUserCreate
 
 class DoctorUserRead(BaseModel):

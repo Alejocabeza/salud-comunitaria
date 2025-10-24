@@ -86,7 +86,6 @@ def create_centro_ambulatorio(
     session.commit()
     session.refresh(db_centro)
 
-    # Load the user relationship for the response
     db_centro = session.exec(select(OutpatientCenter).where(OutpatientCenter.id == db_centro.id).options(joinedload(OutpatientCenter.user))).first()
 
     return db_centro
@@ -141,7 +140,6 @@ def update_outpatient_center(
     session.commit()
     session.refresh(centro)
 
-    # Load the user relationship for the response
     centro = session.exec(select(OutpatientCenter).where(OutpatientCenter.id == centro.id).options(joinedload(OutpatientCenter.user))).first()
 
     return centro

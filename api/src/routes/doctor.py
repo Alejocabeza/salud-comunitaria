@@ -59,14 +59,15 @@ async def create_doctor(
         specialty=doctor.specialty,
         phone=doctor.phone,
         email=doctor.email,
-        outpatient_center_id=doctor.outpatient_center_id,
-        user_id=user.id
+        outpatientCenterId=doctor.outpatientCenterId,
+        user=user.id
     )
     session.add(db_doctor)
     session.commit()
     session.refresh(db_doctor)
 
-    await  welcome(
+    # Send welcome email asynchronously
+    await welcome(
         email_to=user.email,
         username=user.username,
         password=password
