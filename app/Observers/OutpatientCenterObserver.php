@@ -18,7 +18,7 @@ class OutpatientCenterObserver
             $user = User::create([
                 'name' => $outpatientCenter->title,
                 'email' => $outpatientCenter->email,
-                'password' => bcrypt(PasswordGenerate::make('password')),
+                'password' => PasswordGenerate::make('password'),
             ]);
             $user->assignRole('manager');
             event(new ActionLoggerEvent(

@@ -23,9 +23,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         OutpatientCenter::observe(OutpatientCenterObserver::class);
-
-        Auth::provider('active-eloquent', function ($app, array $config) {
-            return new ActiveEloquentUserProvider($app['hash'], $config['model']);
-        });
     }
 }

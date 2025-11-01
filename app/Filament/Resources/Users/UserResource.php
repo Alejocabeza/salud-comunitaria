@@ -116,4 +116,13 @@ class UserResource extends Resource
             'index' => ManageUsers::route('/'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+        return $user->can('ViewAny:User');
+    }
 }

@@ -11,7 +11,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class LoggerPolicy
 {
     use HandlesAuthorization;
-    
+
     public function verTodo(AuthUser $authUser): bool
     {
         return $authUser->can('VerTodo:Logger');
@@ -67,4 +67,26 @@ class LoggerPolicy
         return $authUser->can('Reordenar:Logger');
     }
 
+    // Standard Laravel policy methods (English) used by some callers
+    public function viewAny(AuthUser $authUser): bool
+    {
+        // admins can view all; otherwise allow if they have the generated permission
+        return method_exists($authUser, 'hasRole') && $authUser->hasRole('admin')
+            || $authUser->can('ViewAny:Logger')
+            || $authUser->can('VerTodo:Logger');
+    }
+
+    public function view(AuthUser $authUser, Logger $logger): bool
+    {
+        // admins can view any; owners can view their own logs; or users with explicit permission
+        if (method_exists($authUser, 'hasRole') && $authUser->hasRole('admin')) {
+            return true;
+        }
+
+        if ($authUser->id === $logger->user_id) {
+            return true;
+        }
+
+        return $authUser->can('View:Logger') || $authUser->can('Ver:Logger');
+    }
 }

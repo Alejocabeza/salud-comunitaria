@@ -11,7 +11,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class RolePolicy
 {
     use HandlesAuthorization;
-    
+
     public function verTodo(AuthUser $authUser): bool
     {
         return $authUser->can('VerTodo:Role');
@@ -67,7 +67,7 @@ class RolePolicy
         return $authUser->can('Reordenar:Role');
     }
 
-    public function viewAny(AuthUser $authUser, Role $role): bool
+    public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Role');
     }
@@ -77,7 +77,7 @@ class RolePolicy
         return $authUser->can('View:Role');
     }
 
-    public function create(AuthUser $authUser, Role $role): bool
+    public function create(AuthUser $authUser): bool
     {
         return $authUser->can('Create:Role');
     }
@@ -91,5 +91,4 @@ class RolePolicy
     {
         return $authUser->can('Delete:Role');
     }
-
 }

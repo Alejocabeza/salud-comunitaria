@@ -16,6 +16,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
+use Illuminate\Database\Eloquent\Builder;
 
 class LoggerResource extends Resource
 {
@@ -67,5 +68,26 @@ class LoggerResource extends Resource
         return [
             'index' => ManageLoggers::route('/'),
         ];
+    }
+
+    /**
+     * Limit the query depending on the current user.
+     * Admins see everything; non-admins only see their own log entries.
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        $user = auth()->user();
+
+        if (! $user) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        if (method_exists($user, 'hasRole') && $user->hasRole('admin')) {
+            return $query;
+        }
+
+        return $query->where('user_id', $user->id);
     }
 }

@@ -200,4 +200,13 @@ class OutpatientCenterResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+        return $user->can('ViewAny:OutpatientCenter');
+    }
 }

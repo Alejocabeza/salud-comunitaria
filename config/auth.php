@@ -61,7 +61,10 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'active-eloquent',
+            // Use the standard eloquent driver. The previous custom driver
+            // 'active-eloquent' is not registered and caused
+            // "Authentication user provider [active-eloquent] is not defined.".
+            'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
