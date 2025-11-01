@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,17 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('outpatient_centers', function (Blueprint $table) {
+        Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('responsible');
-            $table->string('address');
-            $table->integer('capacity');
-            $table->integer('current_occupancy')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('phone')->nullable();
+            $table->string('specialty');
             $table->string('dni')->unique();
+            $table->boolean('is_active')->default(true);
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->softDeletes();
             $table->timestamps();
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('outpatient_centers');
+        Schema::dropIfExists('doctors');
     }
 };

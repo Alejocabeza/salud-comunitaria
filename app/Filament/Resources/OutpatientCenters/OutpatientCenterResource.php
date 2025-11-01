@@ -64,10 +64,10 @@ class OutpatientCenterResource extends Resource
                 TextInput::make('email')
                     ->label('Correo Electrónico')
                     ->email()
+                    ->unique(ignoreRecord: true)
                     ->required(),
                 TextInput::make('phone')
                     ->label('Teléfono')
-                    ->tel()
                     ->required(),
                 TextInput::make('responsible')
                     ->label('Responsable')
@@ -83,7 +83,14 @@ class OutpatientCenterResource extends Resource
                     ->label('Ocupación Actual')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->minValue(0)
+                    ->maxValue(fn(callable $get) => $get('capacity'))
+                    ->helperText('Debe ser menor o igual a la capacidad.'),
+                TextInput::make('dni')
+                    ->label('RIF')
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 Checkbox::make('is_active')
                     ->columnSpanFull()
                     ->label('¿Activo?')
@@ -102,6 +109,8 @@ class OutpatientCenterResource extends Resource
                     ->label('Teléfono'),
                 TextEntry::make('responsible')
                     ->label('Responsable'),
+                TextEntry::make('dni')
+                    ->label('RIF'),
                 TextEntry::make('address')
                     ->label('Dirección'),
                 TextEntry::make('capacity')
@@ -132,6 +141,9 @@ class OutpatientCenterResource extends Resource
                     ->searchable(),
                 TextColumn::make('responsible')
                     ->label('Responsable')
+                    ->searchable(),
+                TextColumn::make('dni')
+                    ->label('RIF')
                     ->searchable(),
                 TextColumn::make('address')
                     ->label('Dirección')

@@ -15,11 +15,12 @@ class OutpatientCenterObserver
     public function created(OutpatientCenter $outpatientCenter): void
     {
         if ($outpatientCenter->is_active) {
-            User::create([
+            $user = User::create([
                 'name' => $outpatientCenter->title,
                 'email' => $outpatientCenter->email,
-                'password' => bcrypt(PasswordGenerate::make()),
+                'password' => bcrypt(PasswordGenerate::make('password')),
             ]);
+            $user->assignRole('manager');
             event(new ActionLoggerEvent(
                 'Crear Centro de Atención Ambulatoria',
                 OutpatientCenter::class,
