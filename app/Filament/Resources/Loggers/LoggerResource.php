@@ -32,7 +32,7 @@ class LoggerResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Sistema de Registro';
+        return 'Logs';
     }
 
     public static function getNavigationGroup(): string|UnitEnum|null
@@ -84,7 +84,7 @@ class LoggerResource extends Resource
             return $query->whereRaw('1 = 0');
         }
 
-        if (method_exists($user, 'hasRole') && $user->hasRole('admin')) {
+        if (method_exists($user, 'hasRole') && ($user->hasRole('admin'))) {
             return $query;
         }
 

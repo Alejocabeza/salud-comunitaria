@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('doctors', function (Blueprint $table) {
+        Schema::create('communities', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->string('specialty');
-            $table->string('dni')->unique();
-            $table->string('address')->nullable();
-            $table->string('registration_number');
-            $table->boolean('is_active')->default(true);
+            $table->string('name');
+            $table->string('address');
+            $table->integer('number_of_house');
+            $table->integer('number_of_people');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->softDeletes();
             $table->timestamps();
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('doctors');
+        Schema::dropIfExists('communities');
     }
 };

@@ -21,7 +21,7 @@ class OutpatientCenter extends Model
         'current_occupancy',
         'is_active',
         'dni',
-        'created_by'
+        'community_id'
     ];
 
     protected $casts = [
@@ -39,5 +39,10 @@ class OutpatientCenter extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function community()
+    {
+        return $this->belongsTo(Community::class);
     }
 }
