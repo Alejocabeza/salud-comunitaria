@@ -71,7 +71,7 @@ return [
         //    that bypasses authorization for users with the super-admin role.
         // Setting define_via_gate to false prevents that bypass.
         'enabled' => true,
-        'name' => 'super_admin',
+        'name' => 'Super Admin',
         'define_via_gate' => false,
         'intercept_gate' => null,
     ],

@@ -155,6 +155,6 @@ class CommunityResource extends Resource
             return false;
         }
 
-        return $user->can('ViewAny:Community');
+        return $user->can('ViewAll:Community');
     }
 }

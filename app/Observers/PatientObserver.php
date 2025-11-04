@@ -19,7 +19,7 @@ class PatientObserver
                 'email' => $patient->email,
                 'password' => bcrypt('password'),
             ]);
-            $user->assignRole('patient');
+            $user->assignRole('Paciente');
             event(new ActionLoggerEvent(
                 'Crear Paciente',
                 Patient::class,

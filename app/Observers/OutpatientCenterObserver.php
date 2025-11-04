@@ -20,7 +20,7 @@ class OutpatientCenterObserver
                 'email' => $outpatientCenter->email,
                 'password' => PasswordGenerate::make('password'),
             ]);
-            $user->assignRole('manager');
+            $user->assignRole('Manager');
             event(new ActionLoggerEvent(
                 'Crear Centro de Atención Ambulatoria',
                 OutpatientCenter::class,

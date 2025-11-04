@@ -20,7 +20,7 @@ class DoctorObserver
                 'email' => $doctor->email,
                 'password' => PasswordGenerate::make('password'),
             ]);
-            $user->assignRole('doctor');
+            $user->assignRole('Doctor');
             event(new ActionLoggerEvent(
                 'Crear Doctor',
                 Doctor::class,
