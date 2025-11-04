@@ -9,4 +9,11 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageLoggers extends ManageRecords
 {
     protected static string $resource = LoggerResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            CreateAction::make(),
+        ];
+    }
 }
