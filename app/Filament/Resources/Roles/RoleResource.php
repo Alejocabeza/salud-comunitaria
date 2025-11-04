@@ -9,7 +9,7 @@ use Filament\Support\Icons\Heroicon;
 
 class RoleResource extends ShieldRoleResource
 {
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ShieldCheck;
 
     public static function getNavigationGroup(): ?string
@@ -20,5 +20,15 @@ class RoleResource extends ShieldRoleResource
     public static function getEssentialsPlugin(): ?FilamentShieldPlugin
     {
         return null;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        return $user->can('ViewAll:Role');
     }
 }

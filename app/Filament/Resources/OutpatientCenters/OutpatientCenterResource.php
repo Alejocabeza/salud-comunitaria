@@ -209,6 +209,16 @@ class OutpatientCenterResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        return $user->can('Create:OutpatientCenter');
+    }
+
     public static function shouldRegisterNavigation(): bool
     {
         $user = auth()->user();
@@ -216,6 +226,6 @@ class OutpatientCenterResource extends Resource
             return false;
         }
 
-        return $user->can('ViewAny:OutpatientCenter');
+        return $user->can('ViewAll:OutpatientCenter');
     }
 }

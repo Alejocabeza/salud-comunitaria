@@ -184,6 +184,16 @@ class DoctorResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        return $user->can('Create:Doctor');
+    }
+
     public static function shouldRegisterNavigation(): bool
     {
         $user = auth()->user();
@@ -191,6 +201,6 @@ class DoctorResource extends Resource
             return false;
         }
 
-        return $user->can('ViewAny:Doctor');
+        return $user->can('ViewAll:Doctor');
     }
 }

@@ -45,4 +45,9 @@ class OutpatientCenter extends Model
     {
         return $this->belongsTo(Community::class);
     }
+
+    public function medicalResources()
+    {
+        return $this->hasMany(MedicalResource::class);
+    }
 }

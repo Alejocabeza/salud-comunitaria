@@ -12,59 +12,59 @@ class OutpatientCenterPolicy
 {
     use HandlesAuthorization;
     
-    public function verTodo(AuthUser $authUser): bool
+    public function viewAll(AuthUser $authUser): bool
     {
-        return $authUser->can('VerTodo:OutpatientCenter');
+        return $authUser->can('ViewAll:OutpatientCenter');
     }
 
-    public function ver(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
+    public function view(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
     {
-        return $authUser->can('Ver:OutpatientCenter');
+        return $authUser->can('View:OutpatientCenter');
     }
 
-    public function crear(AuthUser $authUser): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Crear:OutpatientCenter');
+        return $authUser->can('Create:OutpatientCenter');
     }
 
-    public function actualizar(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
+    public function update(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
     {
-        return $authUser->can('Actualizar:OutpatientCenter');
+        return $authUser->can('Update:OutpatientCenter');
     }
 
-    public function eliminar(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
+    public function delete(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
     {
-        return $authUser->can('Eliminar:OutpatientCenter');
+        return $authUser->can('Delete:OutpatientCenter');
     }
 
-    public function restaurar(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
+    public function restore(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
     {
-        return $authUser->can('Restaurar:OutpatientCenter');
+        return $authUser->can('Restore:OutpatientCenter');
     }
 
-    public function forzarEliminacion(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
+    public function forceDelete(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
     {
-        return $authUser->can('ForzarEliminacion:OutpatientCenter');
+        return $authUser->can('ForceDelete:OutpatientCenter');
     }
 
-    public function forzarEliminacionTodo(AuthUser $authUser): bool
+    public function forceDeleteTodo(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
     {
-        return $authUser->can('ForzarEliminacionTodo:OutpatientCenter');
+        return $authUser->can('ForceDeleteTodo:OutpatientCenter');
     }
 
-    public function restaurarTodo(AuthUser $authUser): bool
+    public function forceDeleteAll(AuthUser $authUser): bool
     {
-        return $authUser->can('RestaurarTodo:OutpatientCenter');
+        return $authUser->can('ForceDeleteAll:OutpatientCenter');
     }
 
-    public function replicar(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
+    public function replicate(AuthUser $authUser, OutpatientCenter $outpatientCenter): bool
     {
-        return $authUser->can('Replicar:OutpatientCenter');
+        return $authUser->can('Replicate:OutpatientCenter');
     }
 
-    public function reordenar(AuthUser $authUser): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reordenar:OutpatientCenter');
+        return $authUser->can('Reorder:OutpatientCenter');
     }
 
 }

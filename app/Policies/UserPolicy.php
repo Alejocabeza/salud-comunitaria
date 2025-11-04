@@ -9,59 +9,59 @@ class UserPolicy
 {
     use HandlesAuthorization;
     
-    public function verTodo(AuthUser $authUser): bool
+    public function viewAll(AuthUser $authUser): bool
     {
-        return $authUser->can('VerTodo:User');
+        return $authUser->can('ViewAll:User');
     }
 
-    public function ver(AuthUser $authUser): bool
+    public function view(AuthUser $authUser): bool
     {
-        return $authUser->can('Ver:User');
+        return $authUser->can('View:User');
     }
 
-    public function crear(AuthUser $authUser): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Crear:User');
+        return $authUser->can('Create:User');
     }
 
-    public function actualizar(AuthUser $authUser): bool
+    public function update(AuthUser $authUser): bool
     {
-        return $authUser->can('Actualizar:User');
+        return $authUser->can('Update:User');
     }
 
-    public function eliminar(AuthUser $authUser): bool
+    public function delete(AuthUser $authUser): bool
     {
-        return $authUser->can('Eliminar:User');
+        return $authUser->can('Delete:User');
     }
 
-    public function restaurar(AuthUser $authUser): bool
+    public function restore(AuthUser $authUser): bool
     {
-        return $authUser->can('Restaurar:User');
+        return $authUser->can('Restore:User');
     }
 
-    public function forzarEliminacion(AuthUser $authUser): bool
+    public function forceDelete(AuthUser $authUser): bool
     {
-        return $authUser->can('ForzarEliminacion:User');
+        return $authUser->can('ForceDelete:User');
     }
 
-    public function forzarEliminacionTodo(AuthUser $authUser): bool
+    public function forceDeleteTodo(AuthUser $authUser): bool
     {
-        return $authUser->can('ForzarEliminacionTodo:User');
+        return $authUser->can('ForceDeleteTodo:User');
     }
 
-    public function restaurarTodo(AuthUser $authUser): bool
+    public function forceDeleteAll(AuthUser $authUser): bool
     {
-        return $authUser->can('RestaurarTodo:User');
+        return $authUser->can('ForceDeleteAll:User');
     }
 
-    public function replicar(AuthUser $authUser): bool
+    public function replicate(AuthUser $authUser): bool
     {
-        return $authUser->can('Replicar:User');
+        return $authUser->can('Replicate:User');
     }
 
-    public function reordenar(AuthUser $authUser): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reordenar:User');
+        return $authUser->can('Reorder:User');
     }
 
 }

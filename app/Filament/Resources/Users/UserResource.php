@@ -123,6 +123,6 @@ class UserResource extends Resource
         if (! $user) {
             return false;
         }
-        return $user->can('ViewAny:User');
+        return $user->can('ViewAll:User');
     }
 }

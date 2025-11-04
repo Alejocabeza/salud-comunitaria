@@ -63,10 +63,17 @@ return [
     */
 
     'super_admin' => [
+        // Disable Gate-based super-admin bypass so the super admin is
+        // governed by the same role & permission checks as other users.
+        // Options:
+        //  - enabled: whether to create/maintain the role record itself
+        //  - define_via_gate: if true, Shield will register a Gate::before
+        //    that bypasses authorization for users with the super-admin role.
+        // Setting define_via_gate to false prevents that bypass.
         'enabled' => true,
         'name' => 'super_admin',
-        'define_via_gate' => true,
-        'intercept_gate' => 'before',
+        'define_via_gate' => false,
+        'intercept_gate' => null,
     ],
 
     /*
@@ -120,25 +127,25 @@ return [
         'merge' => true,
         'generate' => true,
         'methods' => [
-            'verTodo',
-            'ver',
-            'crear',
-            'actualizar',
-            'eliminar',
-            'restaurar',
-            'forzarEliminacion',
-            'forzarEliminacionTodo',
-            'restaurarTodo',
-            'replicar',
-            'reordenar',
+            'viewAll',
+            'view',
+            'create',
+            'update',
+            'delete',
+            'restore',
+            'forceDelete',
+            'forceDeleteTodo',
+            'forceDeleteAll',
+            'replicate',
+            'reorder',
         ],
         'single_parameter_methods' => [
-            'verTodo',
-            'crear',
-            'eliminarTodo',
-            'forzarEliminacionTodo',
-            'restaurarTodo',
-            'reordenar',
+            'viewAll',
+            'create',
+            'deleteAll',
+            'forceDeleteAll',
+            'restoreAll',
+            'reorder',
         ],
     ],
 
@@ -173,11 +180,11 @@ return [
         'subject' => 'model',
         'manage' => [
             \App\Filament\Resources\Roles\RoleResource::class => [
-                'verTodo',
-                'ver',
-                'crear',
-                'actualizar',
-                'eliminar',
+                'viewAll',
+                'view',
+                'create',
+                'update',
+                'delete',
             ],
         ],
         'exclude' => [

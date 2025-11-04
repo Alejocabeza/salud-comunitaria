@@ -23,7 +23,7 @@ class LoggerResource extends Resource
     protected static ?string $model = Logger::class;
     protected static string|BackedEnum|null $navigationIcon = null;
     protected static ?string $recordTitleAttribute = 'Logger';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationIcon(): string|BackedEnum|null
     {
@@ -89,5 +89,15 @@ class LoggerResource extends Resource
         }
 
         return $query->where('user_id', $user->id);
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        return $user->can('ViewAll:Logger');
     }
 }

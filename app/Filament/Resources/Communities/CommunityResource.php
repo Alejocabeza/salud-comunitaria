@@ -138,6 +138,16 @@ class CommunityResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        return $user->can('Create:Community');
+    }
+
     public static function shouldRegisterNavigation(): bool
     {
         $user = auth()->user();
@@ -145,6 +155,6 @@ class CommunityResource extends Resource
             return false;
         }
 
-        return $user->can('ViewAny:OutpatientCenter');
+        return $user->can('ViewAny:Community');
     }
 }
