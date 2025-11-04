@@ -16,7 +16,7 @@ class DoctorObserver
     {
         if ($doctor->is_active) {
             $user = User::create([
-                'name' => $doctor->name,
+                'name' => $doctor->full_name,
                 'email' => $doctor->email,
                 'password' => PasswordGenerate::make('password'),
             ]);

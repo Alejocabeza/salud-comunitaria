@@ -15,7 +15,7 @@ class PatientObserver
     {
         if ($patient->is_active) {
             $user = User::create([
-                'name' => $patient->name,
+                'name' => $patient->full_name,
                 'email' => $patient->email,
                 'password' => bcrypt('password'),
             ]);

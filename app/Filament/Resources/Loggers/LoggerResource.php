@@ -84,7 +84,7 @@ class LoggerResource extends Resource
             return $query->whereRaw('1 = 0');
         }
 
-        if (method_exists($user, 'hasRole') && ($user->hasRole('admin'))) {
+        if (method_exists($user, 'hasRole') && ($user->hasRole('Super Admin') || $user->hasRole('super_admin'))) {
             return $query;
         }
 
