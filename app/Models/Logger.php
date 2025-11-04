@@ -13,6 +13,14 @@ class Logger extends Model
         'action',
         'model',
         'user_id',
+        'level',
+        'message',
+        'context',
+        'trace',
+    ];
+
+    protected $casts = [
+        'context' => 'array',
     ];
 
     public function user()
