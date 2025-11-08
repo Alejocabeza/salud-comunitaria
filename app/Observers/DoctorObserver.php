@@ -20,6 +20,7 @@ class DoctorObserver
             $user = User::create([
                 'name' => $doctor->full_name,
                 'email' => $doctor->email,
+                'dni' => $doctor->dni,
                 'password' => $plainPassword,
             ]);
             $user->assignRole('Doctor');
@@ -40,6 +41,7 @@ class DoctorObserver
         if ($doctor->is_active) {
             User::where('email', $doctor->email)->update([
                 'name' => $doctor->name,
+                'dni' => $doctor->dni,
                 'email' => $doctor->email,
             ]);
             event(new ActionLoggerEvent(

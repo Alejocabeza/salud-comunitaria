@@ -46,8 +46,12 @@ new class extends Component {
         } catch (ValidationException $e) {
             foreach ($e->errors() as $field => $messages) {
                 foreach ($messages as $message) {
-                    Notification::make()->title($message)->danger()->send();
                     $this->addError($field, $message);
+                    $this->dispatch('toast', [
+                        'type' => 'danger',
+                        'message' => $message,
+                        'time' => now()->toDateTimeString(),
+                    ]);
                 }
             }
         }
@@ -79,6 +83,7 @@ new class extends Component {
 ?>
 
 <section class="bg-gray-50 dark:bg-gray-900">
+    @include('components.toast')
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="/" class="flex items-center gap-2 mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <x-logo />

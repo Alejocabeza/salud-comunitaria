@@ -20,6 +20,7 @@ class OutpatientCenterObserver
             $user = User::create([
                 'name' => $outpatientCenter->title,
                 'email' => $outpatientCenter->email,
+                'dni' => $outpatientCenter->dni,
                 'password' => $plainPassword,
             ]);
             $user->assignRole('Manager');
@@ -40,6 +41,7 @@ class OutpatientCenterObserver
         if ($outpatientCenter->is_active) {
             User::where('email', $outpatientCenter->email)->update([
                 'name' => $outpatientCenter->title,
+                'dni' => $outpatientCenter->dni,
                 'email' => $outpatientCenter->email,
             ]);
             event(new ActionLoggerEvent(

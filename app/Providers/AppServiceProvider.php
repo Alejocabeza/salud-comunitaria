@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Auth\DniEloquentUserProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,9 +26,13 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\Doctor::observe(\App\Observers\DoctorObserver::class);
         \App\Models\Patient::observe(\App\Observers\PatientObserver::class);
 
-        // Register custom user provider that allows login using DNI (mapped to email)
         Auth::provider('dni-eloquent', function ($app, array $config) {
             return new DniEloquentUserProvider($app['hash'], $config['model']);
+        });
+
+        ResetPassword::createUrlUsing(function ($notifiable, string $token): string {
+            $email = $notifiable->getEmailForPasswordReset();
+            return rtrim(config('app.url'), '/') . '/reset-password/' . $token . '?email=' . urlencode($email);
         });
     }
 }
