@@ -23,7 +23,6 @@ class DoctorObserver
                 'password' => $plainPassword,
             ]);
             $user->assignRole('Doctor');
-            // Notificar al usuario con la contraseña en claro (el cast 'hashed' del modelo hará el hash)
             $user->notify(new SendInitialPassword($plainPassword));
             event(new ActionLoggerEvent(
                 'create',
