@@ -62,6 +62,7 @@ class DniEloquentUserProvider extends EloquentUserProvider
         if ($email) {
             $newCredentials = $credentials;
             $newCredentials['email'] = $email;
+            unset($newCredentials['dni']);
 
             return parent::retrieveByCredentials($newCredentials);
         }
