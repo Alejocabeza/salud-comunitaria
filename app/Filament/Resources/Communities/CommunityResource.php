@@ -30,7 +30,9 @@ use UnitEnum;
 class CommunityResource extends Resource
 {
     protected static ?string $model = Community::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
     protected static ?string $recordTitleAttribute = 'Community';
 
     public static function getNavigationIcon(): string|BackedEnum|null

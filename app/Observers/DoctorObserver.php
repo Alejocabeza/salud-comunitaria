@@ -6,6 +6,7 @@ use App\Events\ActionLoggerEvent;
 use App\Helps\PasswordGenerate;
 use App\Models\Doctor;
 use App\Models\User;
+use App\Notifications\SendInitialPassword;
 
 class DoctorObserver
 {
@@ -15,14 +16,17 @@ class DoctorObserver
     public function created(Doctor $doctor): void
     {
         if ($doctor->is_active) {
+            $plainPassword = PasswordGenerate::make('password');
             $user = User::create([
                 'name' => $doctor->full_name,
                 'email' => $doctor->email,
-                'password' => PasswordGenerate::make('password'),
+                'password' => $plainPassword,
             ]);
             $user->assignRole('Doctor');
+            // Notificar al usuario con la contraseña en claro (el cast 'hashed' del modelo hará el hash)
+            $user->notify(new SendInitialPassword($plainPassword));
             event(new ActionLoggerEvent(
-                'Crear Doctor',
+                'create',
                 Doctor::class,
                 auth()->guard('web')->user(),
             ));
@@ -40,7 +44,7 @@ class DoctorObserver
                 'email' => $doctor->email,
             ]);
             event(new ActionLoggerEvent(
-                'Actualizar Doctor',
+                'update',
                 Doctor::class,
                 auth()->guard('web')->user(),
             ));
@@ -54,7 +58,7 @@ class DoctorObserver
     {
         User::where('email', $doctor->email)->update(['active' => false]);
         event(new ActionLoggerEvent(
-            'Eliminar Doctor',
+            'delete',
             Doctor::class,
             auth()->guard('web')->user(),
         ));
@@ -67,7 +71,7 @@ class DoctorObserver
     {
         User::where('email', $doctor->email)->update(['active' => true]);
         event(new ActionLoggerEvent(
-            'Restaurar Doctor',
+            'restore',
             Doctor::class,
             auth()->guard('web')->user(),
         ));
@@ -80,7 +84,7 @@ class DoctorObserver
     {
         User::where('email', $doctor->email)->delete();
         event(new ActionLoggerEvent(
-            'Eliminar Permanentemente Doctor',
+            'force delete',
             Doctor::class,
             auth()->guard('web')->user(),
         ));

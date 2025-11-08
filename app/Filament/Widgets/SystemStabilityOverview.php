@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\ChartWidget;
 use App\Models\Logger;
+use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -29,7 +29,7 @@ class SystemStabilityOverview extends ChartWidget
             } elseif ($driver === 'sqlite') {
                 $dayExpr = "strftime('%Y-%m-%d', created_at)";
             } else {
-                $dayExpr = "DATE(created_at)";
+                $dayExpr = 'DATE(created_at)';
             }
 
             $rows = Logger::selectRaw("{$dayExpr} as day, count(*) as total")
@@ -83,6 +83,7 @@ class SystemStabilityOverview extends ChartWidget
         if (method_exists($user, 'hasRole')) {
             return $user->hasRole('Super Admin') || $user->hasRole('super_admin');
         }
+
         return false;
     }
 }

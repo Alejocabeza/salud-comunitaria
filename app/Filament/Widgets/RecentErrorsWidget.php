@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\Widget;
 use App\Models\Logger;
+use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Cache;
 
 class RecentErrorsWidget extends Widget
@@ -25,6 +25,7 @@ class RecentErrorsWidget extends Widget
         if (method_exists($user, 'hasRole')) {
             return $user->hasRole('Super Admin') || $user->hasRole('super_admin');
         }
+
         return false;
     }
 

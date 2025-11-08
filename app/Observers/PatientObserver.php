@@ -3,8 +3,10 @@
 namespace App\Observers;
 
 use App\Events\ActionLoggerEvent;
+use App\Helps\PasswordGenerate;
 use App\Models\Patient;
 use App\Models\User;
+use App\Notifications\SendInitialPassword;
 
 class PatientObserver
 {
@@ -14,14 +16,16 @@ class PatientObserver
     public function created(Patient $patient): void
     {
         if ($patient->is_active) {
+            $plainPassword = PasswordGenerate::make('password');
             $user = User::create([
                 'name' => $patient->full_name,
                 'email' => $patient->email,
-                'password' => bcrypt('password'),
+                'password' => $plainPassword,
             ]);
             $user->assignRole('Paciente');
+            $user->notify(new SendInitialPassword($plainPassword));
             event(new ActionLoggerEvent(
-                'Crear Paciente',
+                'create',
                 Patient::class,
                 auth()->guard('web')->user(),
             ));
@@ -39,7 +43,7 @@ class PatientObserver
                 'email' => $patient->email,
             ]);
             event(new ActionLoggerEvent(
-                'Actualizar Paciente',
+                'update',
                 Patient::class,
                 auth()->guard('web')->user(),
             ));
@@ -53,7 +57,7 @@ class PatientObserver
     {
         User::where('email', $patient->email)->update(['active' => false]);
         event(new ActionLoggerEvent(
-            'Eliminar Paciente',
+            'delete',
             Patient::class,
             auth()->guard('web')->user(),
         ));
@@ -66,7 +70,7 @@ class PatientObserver
     {
         User::where('email', $patient->email)->update(['active' => true]);
         event(new ActionLoggerEvent(
-            'Restaurar Patient',
+            'restore',
             Patient::class,
             auth()->guard('web')->user(),
         ));
@@ -79,7 +83,7 @@ class PatientObserver
     {
         User::where('email', $patient->email)->delete();
         event(new ActionLoggerEvent(
-            'Eliminar Permanentemente Patient',
+            'force delete',
             Patient::class,
             auth()->guard('web')->user(),
         ));

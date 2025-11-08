@@ -2,8 +2,6 @@
 
 namespace App\Helps;
 
-use Illuminate\Support\Facades\Hash;
-
 class PasswordGenerate
 {
     public static function make(?string $password = null): string
@@ -11,6 +9,7 @@ class PasswordGenerate
         if ($password) {
             return $password;
         }
+
         return bin2hex(random_bytes(4));
     }
 }

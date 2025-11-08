@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'dni_users',
         ],
     ],
 
@@ -61,10 +61,14 @@ return [
 
     'providers' => [
         'users' => [
-            // Use the standard eloquent driver. The previous custom driver
-            // 'active-eloquent' is not registered and caused
-            // "Authentication user provider [active-eloquent] is not defined.".
             'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        // Custom provider that resolves DNI to a user email before delegating
+        // to the Eloquent user provider.
+        'dni_users' => [
+            'driver' => 'dni-eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 

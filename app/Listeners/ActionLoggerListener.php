@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\ActionLoggerEvent;
 use App\Models\Logger;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class ActionLoggerListener
 {

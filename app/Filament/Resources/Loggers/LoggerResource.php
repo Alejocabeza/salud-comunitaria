@@ -5,24 +5,21 @@ namespace App\Filament\Resources\Loggers;
 use App\Filament\Resources\Loggers\Pages\ManageLoggers;
 use App\Models\Logger;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use UnitEnum;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class LoggerResource extends Resource
 {
     protected static ?string $model = Logger::class;
+
     protected static string|BackedEnum|null $navigationIcon = null;
+
     protected static ?string $recordTitleAttribute = 'Logger';
+
     protected static ?int $navigationSort = 4;
 
     public static function getNavigationIcon(): string|BackedEnum|null
@@ -39,7 +36,6 @@ class LoggerResource extends Resource
     {
         return 'Gestión del Sistema';
     }
-
 
     public static function table(Table $table): Table
     {

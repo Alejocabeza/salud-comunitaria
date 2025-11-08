@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources\Roles;
 
-use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource as ShieldRoleResource;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource as ShieldRoleResource;
 use Filament\Support\Icons\Heroicon;
 
 class RoleResource extends ShieldRoleResource
 {
     protected static ?int $navigationSort = 4;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ShieldCheck;
 
     public static function getNavigationGroup(): ?string

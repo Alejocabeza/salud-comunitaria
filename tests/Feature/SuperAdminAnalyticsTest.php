@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\User;
 use App\Models\Logger;
+use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 it('shows error widgets to super admin and returns data counts', function () {

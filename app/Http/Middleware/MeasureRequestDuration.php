@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Logger;
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\Logger;
 
 class MeasureRequestDuration
 {

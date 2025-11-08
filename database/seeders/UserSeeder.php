@@ -3,11 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Artisan;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -20,6 +19,7 @@ class UserSeeder extends Seeder
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
+                'dni' => '00000000',
                 'password' => bcrypt('12345678'),
             ]
         );
@@ -35,9 +35,7 @@ class UserSeeder extends Seeder
 
         $permissions = Permission::where('guard_name', $guard)->get();
 
-        // If there are no permissions yet, try to generate them via Filament Shield
         if ($permissions->isEmpty()) {
-            $this->command?->info('No permissions found; generating permissions via Filament Shield...');
             try {
                 Artisan::call('shield:generate', [
                     '--panel' => 'admin',
@@ -56,13 +54,11 @@ class UserSeeder extends Seeder
 
         if ($permissions->isNotEmpty()) {
             $role->syncPermissions($permissions);
-            $this->command?->info("Assigned {$permissions->count()} permissions to role '{$roleName}'.");
         } else {
             $this->command?->info("No permissions found for guard '{$guard}' to assign to '{$roleName}'.");
         }
 
         // Assign the role to the created user
         $user->assignRole($roleName);
-        $this->command?->info("Assigned role '{$roleName}' to user {$user->email}.");
     }
 }

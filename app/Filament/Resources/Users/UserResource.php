@@ -5,13 +5,6 @@ namespace App\Filament\Resources\Users;
 use App\Filament\Resources\Users\Pages\ManageUsers;
 use App\Models\User;
 use BackedEnum;
-use Filament\Actions\ActionGroup;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
@@ -26,7 +19,9 @@ use UnitEnum;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
     protected static string|BackedEnum|null $navigationIcon = null;
+
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationIcon(): string|BackedEnum|null
@@ -130,6 +125,7 @@ class UserResource extends Resource
         if (! $user) {
             return false;
         }
+
         return $user->can('ViewAll:User');
     }
 }

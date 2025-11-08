@@ -29,7 +29,7 @@
                 </div>
             @else
                 <div>
-                    <a href="/admin/login"
+                    <a href="/login"
                         class="cursor-pointer hover:bg-blue-500 transition-colors duration-150 bg-black text-white px-3 py-2 rounded-sm">
                         Iniciar Sesión
                     </a>

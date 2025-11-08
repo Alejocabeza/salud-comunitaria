@@ -2,9 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Models\Logger;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use App\Models\Logger;
 
 class Handler extends ExceptionHandler
 {

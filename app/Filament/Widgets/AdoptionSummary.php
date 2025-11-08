@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\ChartWidget;
 use App\Models\OutpatientCenter;
+use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -84,6 +84,7 @@ class AdoptionSummary extends ChartWidget
         if (method_exists($user, 'hasRole')) {
             return $user->hasRole('Super Admin') || $user->hasRole('super_admin');
         }
+
         return false;
     }
 }

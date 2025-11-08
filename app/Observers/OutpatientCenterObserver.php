@@ -6,6 +6,7 @@ use App\Events\ActionLoggerEvent;
 use App\Helps\PasswordGenerate;
 use App\Models\OutpatientCenter;
 use App\Models\User;
+use App\Notifications\SendInitialPassword;
 
 class OutpatientCenterObserver
 {
@@ -15,14 +16,16 @@ class OutpatientCenterObserver
     public function created(OutpatientCenter $outpatientCenter): void
     {
         if ($outpatientCenter->is_active) {
+            $plainPassword = PasswordGenerate::make('password');
             $user = User::create([
                 'name' => $outpatientCenter->title,
                 'email' => $outpatientCenter->email,
-                'password' => PasswordGenerate::make('password'),
+                'password' => $plainPassword,
             ]);
             $user->assignRole('Manager');
+            $user->notify(new SendInitialPassword($plainPassword));
             event(new ActionLoggerEvent(
-                'Crear Centro de Atención Ambulatoria',
+                'create',
                 OutpatientCenter::class,
                 auth()->guard('web')->user(),
             ));
@@ -40,7 +43,7 @@ class OutpatientCenterObserver
                 'email' => $outpatientCenter->email,
             ]);
             event(new ActionLoggerEvent(
-                'Actualizar Centro de Atención Ambulatoria',
+                'update',
                 OutpatientCenter::class,
                 auth()->guard('web')->user(),
             ));
@@ -54,7 +57,7 @@ class OutpatientCenterObserver
     {
         User::where('email', $outpatientCenter->email)->update(['active' => false]);
         event(new ActionLoggerEvent(
-            'Eliminar Centro de Atención Ambulatoria',
+            'delete',
             OutpatientCenter::class,
             auth()->guard('web')->user(),
         ));
@@ -67,7 +70,7 @@ class OutpatientCenterObserver
     {
         User::where('email', $outpatientCenter->email)->update(['active' => true]);
         event(new ActionLoggerEvent(
-            'Restaurar Centro de Atención Ambulatoria',
+            'restore',
             OutpatientCenter::class,
             auth()->guard('web')->user(),
         ));
@@ -80,7 +83,7 @@ class OutpatientCenterObserver
     {
         User::where('email', $outpatientCenter->email)->delete();
         event(new ActionLoggerEvent(
-            'Eliminar Centro de Atención Ambulatoria Permanentemente',
+            'force delete',
             OutpatientCenter::class,
             auth()->guard('web')->user(),
         ));

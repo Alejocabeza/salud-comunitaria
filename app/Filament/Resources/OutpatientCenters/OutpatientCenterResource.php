@@ -87,7 +87,7 @@ class OutpatientCenterResource extends Resource
                     ->numeric()
                     ->default(0)
                     ->minValue(0)
-                    ->maxValue(fn(callable $get) => $get('capacity'))
+                    ->maxValue(fn (callable $get) => $get('capacity'))
                     ->helperText('Debe ser menor o igual a la capacidad.'),
                 TextInput::make('dni')
                     ->label('RIF')

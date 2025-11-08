@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Medicals;
 
 use App\Filament\Resources\Medicals\Pages\ManageMedicals;
+use App\Models\MedicalResource as Medical;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -13,8 +14,10 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -25,16 +28,16 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Models\MedicalResource as Medical;
-use Filament\Forms\Components\Checkbox;
-use Filament\Infolists\Components\IconEntry;
 use UnitEnum;
 
 class MedicalResource extends Resource
 {
     protected static ?string $model = Medical::class;
+
     protected static string|BackedEnum|null $navigationIcon = null;
+
     protected static ?string $recordTitleAttribute = 'MedicalResource';
+
     protected static ?int $navigationSort = 3;
 
     public static function getNavigationIcon(): string|BackedEnum|null

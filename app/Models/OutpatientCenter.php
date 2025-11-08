@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OutpatientCenter extends Model
 {
-    use HasFactory, SoftDeletes, FillsCreatedBy;
+    use FillsCreatedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -21,7 +21,7 @@ class OutpatientCenter extends Model
         'current_occupancy',
         'is_active',
         'dni',
-        'community_id'
+        'community_id',
     ];
 
     protected $casts = [
@@ -33,7 +33,7 @@ class OutpatientCenter extends Model
     protected $hidden = [
         'deleted_at',
         'updated_at',
-        'created_by'
+        'created_by',
     ];
 
     public function createdBy()

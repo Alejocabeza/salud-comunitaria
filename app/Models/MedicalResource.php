@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MedicalResource extends Model
 {
-    use HasFactory, SoftDeletes, FillsCreatedBy;
+    use FillsCreatedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
