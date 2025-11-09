@@ -65,4 +65,18 @@ class Patient extends Model
     {
         return $this->hasMany(Lesion::class);
     }
+
+    public function medicalHistories()
+    {
+        return $this->hasMany(MedicalHistory::class);
+    }
+
+    /**
+     * Self hasOne relation to allow showing patient info as a RelationManager tab.
+     * This returns the same model so the RelationManager can render a single record.
+     */
+    public function info()
+    {
+        return $this->hasOne(self::class, 'id', 'id');
+    }
 }

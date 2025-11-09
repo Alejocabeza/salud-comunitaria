@@ -23,6 +23,8 @@ class DiseasesRelationManager extends RelationManager
 {
     protected static string $relationship = 'diseases';
 
+    protected static ?string $title = 'Enfermedades';
+
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -86,9 +88,7 @@ class DiseasesRelationManager extends RelationManager
                     ->label('Asociar enfermedad')
                     ->preloadRecordSelect()
                     ->recordSelectOptionsQuery(fn (Builder $q) => $q->where('active', true))
-                    ->schema(fn (AttachAction $action): array => array_merge([
-                        $action->getRecordSelect(),
-                    ], [
+                    ->schema([
                         DatePicker::make('diagnosed_at')
                             ->label('Fecha diagnóstico'),
                         Select::make('status')
@@ -102,7 +102,7 @@ class DiseasesRelationManager extends RelationManager
                         Textarea::make('notes')
                             ->label('Notas')
                             ->columnSpanFull(),
-                    ])),
+                    ]),
             ])
             ->recordActions([
                 DetachAction::make(),

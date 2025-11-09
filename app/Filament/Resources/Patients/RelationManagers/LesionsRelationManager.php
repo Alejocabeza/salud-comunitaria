@@ -21,6 +21,8 @@ class LesionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'lesions';
 
+    protected static ?string $title = 'Lesiones';
+
     public function form(Schema $schema): Schema
     {
         return $schema->components([

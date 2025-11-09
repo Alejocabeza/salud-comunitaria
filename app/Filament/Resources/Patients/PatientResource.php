@@ -8,6 +8,7 @@ use App\Filament\Resources\Patients\Pages\ManagePatients;
 use App\Filament\Resources\Patients\Pages\ViewPatient;
 use App\Filament\Resources\Patients\RelationManagers\DiseasesRelationManager;
 use App\Filament\Resources\Patients\RelationManagers\LesionsRelationManager;
+use App\Filament\Resources\Patients\RelationManagers\MedicalHistoriesRelationManager;
 use App\Models\Doctor;
 use App\Models\Patient;
 use BackedEnum;
@@ -24,8 +25,6 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -98,40 +97,6 @@ class PatientResource extends Resource
             ]);
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return $schema
-            ->components([
-                TextEntry::make('first_name')->label('Nombre'),
-                TextEntry::make('last_name')->label('Apellido'),
-                TextEntry::make('email')
-                    ->label('Correo Electrónico'),
-                TextEntry::make('phone')
-                    ->label('Teléfono')
-                    ->placeholder('-'),
-                TextEntry::make('address')
-                    ->label('Dirección')
-                    ->placeholder('-'),
-                TextEntry::make('dni')
-                    ->label('Cedula')
-                    ->placeholder('-'),
-                TextEntry::make('weight')
-                    ->label('Peso')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('age')
-                    ->label('Edad')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('blood_type')
-                    ->label('Tipo de Sangre')
-                    ->placeholder('-'),
-                IconEntry::make('is_active')
-                    ->label('Activo')
-                    ->boolean(),
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -193,8 +158,8 @@ class PatientResource extends Resource
         return [
             'index' => ManagePatients::route('/'),
             'create' => CreatePatient::route('/create'),
-            'view' => ViewPatient::route('/{record}'),
             'edit' => EditPatient::route('/{record}/edit'),
+            'view' => ViewPatient::route('/{record}'),
         ];
     }
 
@@ -203,6 +168,7 @@ class PatientResource extends Resource
         return [
             DiseasesRelationManager::class,
             LesionsRelationManager::class,
+            MedicalHistoriesRelationManager::class,
         ];
     }
 
