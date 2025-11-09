@@ -39,7 +39,7 @@ class Disease extends Model
 
     public function patients(): BelongsToMany
     {
-        return $this->belongsToMany(Patient::class)
+        return $this->belongsToMany(Patient::class, 'patient_disease')
             ->withPivot(['diagnosed_at', 'status', 'notes'])
             ->withTimestamps();
     }

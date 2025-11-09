@@ -25,8 +25,8 @@ class DniEloquentUserProvider extends EloquentUserProvider
             return null;
         }
 
-    // Support several possible identifiers: email, username, or dni
-    $identifier = $credentials['email'] ?? $credentials['username'] ?? $credentials['dni'] ?? null;
+        // Support several possible identifiers: email, username, or dni
+        $identifier = $credentials['email'] ?? $credentials['username'] ?? $credentials['dni'] ?? null;
 
         if (! $identifier) {
             return parent::retrieveByCredentials($credentials);

@@ -26,7 +26,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'active',
-        'dni'
+        'dni',
     ];
 
     /**
@@ -61,7 +61,7 @@ class User extends Authenticatable implements FilamentUser
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 

@@ -2,7 +2,12 @@
 
 namespace App\Filament\Resources\Patients;
 
+use App\Filament\Resources\Patients\Pages\CreatePatient;
+use App\Filament\Resources\Patients\Pages\EditPatient;
 use App\Filament\Resources\Patients\Pages\ManagePatients;
+use App\Filament\Resources\Patients\Pages\ViewPatient;
+use App\Filament\Resources\Patients\RelationManagers\DiseasesRelationManager;
+use App\Filament\Resources\Patients\RelationManagers\LesionsRelationManager;
 use App\Models\Doctor;
 use App\Models\Patient;
 use BackedEnum;
@@ -28,7 +33,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
@@ -61,7 +65,7 @@ class PatientResource extends Resource
         return $schema
             ->components([
                 Hidden::make('outpatient_center_id')
-                    ->default(fn() => Doctor::where('id', Auth()->user()->id)->first()?->outpatient_center_id),
+                    ->default(fn () => Doctor::where('id', auth()->guard()->user()->id)->first()?->outpatient_center_id),
                 TextInput::make('first_name')
                     ->label('Nombre')
                     ->required(),
@@ -188,13 +192,17 @@ class PatientResource extends Resource
     {
         return [
             'index' => ManagePatients::route('/'),
+            'create' => CreatePatient::route('/create'),
+            'view' => ViewPatient::route('/{record}'),
+            'edit' => EditPatient::route('/{record}/edit'),
         ];
     }
 
     public static function getRelations(): array
     {
         return [
-            \App\Filament\Resources\Patients\RelationManagers\DiseasesRelationManager::class,
+            DiseasesRelationManager::class,
+            LesionsRelationManager::class,
         ];
     }
 
@@ -208,7 +216,7 @@ class PatientResource extends Resource
 
     public static function canCreate(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
@@ -218,7 +226,7 @@ class PatientResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

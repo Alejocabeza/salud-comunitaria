@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Communities;
 
+use App\Filament\Resources\Communities\Pages\CreateCommunity;
+use App\Filament\Resources\Communities\Pages\EditCommunity;
 use App\Filament\Resources\Communities\Pages\ManageCommunities;
+use App\Filament\Resources\Communities\Pages\ViewCommunity;
 use App\Models\Community;
 use BackedEnum;
 use Filament\Actions\ActionGroup;
@@ -129,6 +132,9 @@ class CommunityResource extends Resource
     {
         return [
             'index' => ManageCommunities::route('/'),
+            'create' => CreateCommunity::route('/create'),
+            'view' => ViewCommunity::route('/{record}'),
+            'edit' => EditCommunity::route('/{record}/edit'),
         ];
     }
 
@@ -142,7 +148,7 @@ class CommunityResource extends Resource
 
     public static function canCreate(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
@@ -152,7 +158,7 @@ class CommunityResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

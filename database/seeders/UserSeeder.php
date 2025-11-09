@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
                 // Reset permission cache and reload
                 Artisan::call('permission:cache-reset');
             } catch (\Throwable $e) {
-                $this->command?->error('Failed to generate permissions: ' . $e->getMessage());
+                $this->command?->error('Failed to generate permissions: '.$e->getMessage());
             }
 
             $permissions = Permission::where('guard_name', $guard)->get();

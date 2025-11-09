@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lesion extends Model
 {
-    use HasFactory, SoftDeletes, FillsCreatedBy;
+    use FillsCreatedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'patient_id',

@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Doctors;
 
+use App\Filament\Resources\Doctors\Pages\CreateDoctor;
+use App\Filament\Resources\Doctors\Pages\EditDoctor;
 use App\Filament\Resources\Doctors\Pages\ManageDoctors;
+use App\Filament\Resources\Doctors\Pages\ViewDoctor;
 use App\Models\Doctor;
 use App\Models\OutpatientCenter;
 use BackedEnum;
@@ -60,7 +63,7 @@ class DoctorResource extends Resource
         return $schema
             ->components([
                 Hidden::make('outpatient_center_id')
-                    ->default(fn() => OutpatientCenter::where('email', auth()->user()->email)->first()?->id ?? null),
+                    ->default(fn () => OutpatientCenter::where('email', auth()->guard()->user()->email)->first()?->id ?? null),
                 TextInput::make('first_name')
                     ->label('Nombre')
                     ->required(),
@@ -177,6 +180,9 @@ class DoctorResource extends Resource
     {
         return [
             'index' => ManageDoctors::route('/'),
+            'create' => CreateDoctor::route('/create'),
+            'view' => ViewDoctor::route('/{record}'),
+            'edit' => EditDoctor::route('/{record}/edit'),
         ];
     }
 
@@ -190,7 +196,7 @@ class DoctorResource extends Resource
 
     public static function canCreate(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
@@ -200,7 +206,7 @@ class DoctorResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

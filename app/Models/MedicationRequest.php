@@ -11,9 +11,13 @@ class MedicationRequest extends Model
     use HasFactory;
 
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_APPROVED = 'approved';
+
     public const STATUS_REJECTED = 'rejected';
+
     public const STATUS_FULFILLED = 'fulfilled';
+
     public const STATUS_CANCELLED = 'cancelled';
 
     protected $fillable = [
@@ -54,16 +58,13 @@ class MedicationRequest extends Model
 
     /**
      * Approve the request and decrement stock atomically.
-     *
-     * @param  int|null  $processorId
-     * @return void
      */
     public function approve(?int $processorId = null): void
     {
         DB::transaction(function () use ($processorId) {
             $resource = $this->medicalResource()->lockForUpdate()->first();
 
-            if (!$resource) {
+            if (! $resource) {
                 throw new \RuntimeException('Medical resource not found');
             }
 
@@ -81,7 +82,7 @@ class MedicationRequest extends Model
         });
     }
 
-    public function reject(string $reason = null, ?int $processorId = null): void
+    public function reject(?string $reason = null, ?int $processorId = null): void
     {
         $this->status = self::STATUS_REJECTED;
         $this->notes = $reason ?? $this->notes;

@@ -74,7 +74,7 @@ class LoggerResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        $user = auth()->user();
+        $user = auth()->guard()->user();
 
         if (! $user) {
             return $query->whereRaw('1 = 0');
@@ -89,7 +89,7 @@ class LoggerResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

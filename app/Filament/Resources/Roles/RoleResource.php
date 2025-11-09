@@ -25,7 +25,7 @@ class RoleResource extends ShieldRoleResource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

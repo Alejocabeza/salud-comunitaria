@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Auth\DniEloquentUserProvider;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Auth\Notifications\ResetPassword;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +32,8 @@ class AppServiceProvider extends ServiceProvider
 
         ResetPassword::createUrlUsing(function ($notifiable, string $token): string {
             $email = $notifiable->getEmailForPasswordReset();
-            return rtrim(config('app.url'), '/') . '/reset-password/' . $token . '?email=' . urlencode($email);
+
+            return rtrim(config('app.url'), '/').'/reset-password/'.$token.'?email='.urlencode($email);
         });
     }
 }

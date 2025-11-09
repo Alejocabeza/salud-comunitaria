@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Filament\Resources\Users\Pages\CreateUser;
+use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ManageUsers;
+use App\Filament\Resources\Users\Pages\ViewUser;
 use App\Models\User;
 use BackedEnum;
 use Filament\Forms\Components\Select;
@@ -78,6 +81,8 @@ class UserResource extends Resource
                 TextEntry::make('name')->label('Nombre'),
                 TextEntry::make('email')
                     ->label('Correo Electrónico'),
+                TextEntry::make('roles.name')
+                    ->label('Roles'),
                 TextEntry::make('created_at')
                     ->label('Creado el')
                     ->dateTime()
@@ -103,6 +108,9 @@ class UserResource extends Resource
                 TextColumn::make('email')
                     ->label('Correo Electrónico')
                     ->searchable(),
+                TextColumn::make('roles.name')
+                    ->label('Rol')
+                    ->sortable(),
                 IconColumn::make('active')
                     ->label('Activo')
                     ->boolean(),
@@ -116,12 +124,15 @@ class UserResource extends Resource
     {
         return [
             'index' => ManageUsers::route('/'),
+            'create' => CreateUser::route('/create'),
+            'view' => ViewUser::route('/{record}'),
+            'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

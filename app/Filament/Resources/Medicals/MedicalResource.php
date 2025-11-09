@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Medicals;
 
+use App\Filament\Resources\Medicals\Pages\CreateMedical;
+use App\Filament\Resources\Medicals\Pages\EditMedical;
 use App\Filament\Resources\Medicals\Pages\ManageMedicals;
+use App\Filament\Resources\Medicals\Pages\ViewMedical;
 use App\Models\MedicalResource as Medical;
 use BackedEnum;
 use Filament\Actions\ActionGroup;
@@ -160,6 +163,9 @@ class MedicalResource extends Resource
     {
         return [
             'index' => ManageMedicals::route('/'),
+            'create' => CreateMedical::route('/create'),
+            'view' => ViewMedical::route('/{record}'),
+            'edit' => EditMedical::route('/{record}/edit'),
         ];
     }
 
@@ -173,7 +179,7 @@ class MedicalResource extends Resource
 
     public static function canCreate(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
@@ -183,7 +189,7 @@ class MedicalResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\MedicationRequest;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class MedicationRequestPolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAll(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAll:MedicationRequest');
@@ -66,5 +66,4 @@ class MedicationRequestPolicy
     {
         return $authUser->can('Reorder:MedicationRequest');
     }
-
 }

@@ -2,8 +2,12 @@
 
 namespace App\Filament\Resources\MedicationRequests;
 
+use App\Filament\Resources\MedicationRequests\Pages\CreateMedicationRequest;
+use App\Filament\Resources\MedicationRequests\Pages\EditMedicationRequest;
 use App\Filament\Resources\MedicationRequests\Pages\ManageMedicationRequests;
+use App\Filament\Resources\MedicationRequests\Pages\ViewMedicationRequest;
 use App\Models\MedicationRequest;
+use App\Models\Patient;
 use BackedEnum;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -14,19 +18,15 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Hidden;
-use App\Models\Patient;
-use App\Models\MedicalResource as MedResource;
-use Illuminate\Support\Facades\Auth;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
@@ -34,7 +34,9 @@ use UnitEnum;
 class MedicationRequestResource extends Resource
 {
     protected static ?string $model = MedicationRequest::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
     protected static ?string $recordTitleAttribute = 'MedicationRequest';
 
     public static function getNavigationIcon(): string|BackedEnum|null
@@ -57,10 +59,10 @@ class MedicationRequestResource extends Resource
         return $schema
             ->components([
                 Hidden::make('patient_id')
-                    ->default(fn() => Patient::where('email', auth()->guard()->user()->email)->first()->id),
+                    ->default(fn () => Patient::where('email', auth()->guard()->user()->email)->first()->id),
 
                 Hidden::make('outpatient_center_id')
-                    ->default(fn() => Patient::where('email', auth()->guard()->user()->email)->first()->outpatient_center_id),
+                    ->default(fn () => Patient::where('email', auth()->guard()->user()->email)->first()->outpatient_center_id),
 
                 Select::make('medical_resource_id')
                     ->label('Medicamento')
@@ -145,12 +147,15 @@ class MedicationRequestResource extends Resource
     {
         return [
             'index' => ManageMedicationRequests::route('/'),
+            'create' => CreateMedicationRequest::route('/create'),
+            'view' => ViewMedicationRequest::route('/{record}'),
+            'edit' => EditMedicationRequest::route('/{record}/edit'),
         ];
     }
 
     public static function canCreate(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
@@ -160,7 +165,7 @@ class MedicationRequestResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

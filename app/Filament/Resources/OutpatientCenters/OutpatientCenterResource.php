@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\OutpatientCenters;
 
+use App\Filament\Resources\OutpatientCenters\Pages\CreateOutpatientCenter;
+use App\Filament\Resources\OutpatientCenters\Pages\EditOutpatientCenter;
 use App\Filament\Resources\OutpatientCenters\Pages\ManageOutpatientCenters;
+use App\Filament\Resources\OutpatientCenters\Pages\ViewOutpatientCenter;
 use App\Models\OutpatientCenter;
 use BackedEnum;
 use Filament\Actions\ActionGroup;
@@ -198,6 +201,9 @@ class OutpatientCenterResource extends Resource
     {
         return [
             'index' => ManageOutpatientCenters::route('/'),
+            'create' => CreateOutpatientCenter::route('/create'),
+            'view' => ViewOutpatientCenter::route('/{record}'),
+            'edit' => EditOutpatientCenter::route('/{record}/edit'),
         ];
     }
 
@@ -211,7 +217,7 @@ class OutpatientCenterResource extends Resource
 
     public static function canCreate(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
@@ -221,7 +227,7 @@ class OutpatientCenterResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

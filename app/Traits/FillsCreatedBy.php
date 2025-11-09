@@ -32,6 +32,7 @@ trait FillsCreatedBy
 
             if (Auth::check()) {
                 $model->created_by = Auth::id();
+
                 return;
             }
 

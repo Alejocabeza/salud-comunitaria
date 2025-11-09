@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Diseases;
 
+use App\Filament\Resources\Diseases\Pages\CreateDisease;
+use App\Filament\Resources\Diseases\Pages\EditDisease;
 use App\Filament\Resources\Diseases\Pages\ManageDiseases;
+use App\Filament\Resources\Diseases\Pages\ViewDisease;
 use App\Models\Disease;
 use BackedEnum;
 use Filament\Actions\ActionGroup;
@@ -177,6 +180,9 @@ class DiseaseResource extends Resource
     {
         return [
             'index' => ManageDiseases::route('/'),
+            'create' => CreateDisease::route('/create'),
+            'view' => ViewDisease::route('/{record}'),
+            'edit' => EditDisease::route('/{record}/edit'),
         ];
     }
 
@@ -190,7 +196,7 @@ class DiseaseResource extends Resource
 
     public static function canCreate(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
@@ -200,7 +206,7 @@ class DiseaseResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }
