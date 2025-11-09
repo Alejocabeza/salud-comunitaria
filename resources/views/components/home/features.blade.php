@@ -31,16 +31,6 @@ $features = [
         'description' => 'Protege los datos de salud con encriptación de nivel médico y cumplimiento HIPAA.',
     ],
     [
-        'icon' => 'calendar',
-        'title' => 'Programación Inteligente',
-        'description' => 'Planifica eventos, citas y actividades con un sistema de calendario colaborativo.',
-    ],
-    [
-        'icon' => 'shield',
-        'title' => 'Privacidad Garantizada',
-        'description' => 'Protege los datos de salud con encriptación de nivel médico y cumplimiento HIPAA.',
-    ],
-    [
         'icon' => 'smartphone',
         'title' => 'Acceso Móvil',
         'description' => 'Aplicación móvil nativa para que tu comunidad acceda desde cualquier dispositivo.',

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Doctors;
 
 use App\Filament\Resources\Doctors\Pages\ManageDoctors;
 use App\Models\Doctor;
+use App\Models\OutpatientCenter;
 use BackedEnum;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -15,6 +16,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\IconEntry;
@@ -57,6 +59,8 @@ class DoctorResource extends Resource
     {
         return $schema
             ->components([
+                Hidden::make('outpatient_center_id')
+                    ->default(fn() => OutpatientCenter::where('email', auth()->user()->email)->first()?->id ?? null),
                 TextInput::make('first_name')
                     ->label('Nombre')
                     ->required(),

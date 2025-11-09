@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Patients;
 
 use App\Filament\Resources\Patients\Pages\ManagePatients;
+use App\Models\Doctor;
 use App\Models\Patient;
 use BackedEnum;
 use Filament\Actions\ActionGroup;
@@ -15,6 +16,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\IconEntry;
@@ -26,6 +28,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
@@ -57,6 +60,8 @@ class PatientResource extends Resource
     {
         return $schema
             ->components([
+                Hidden::make('outpatient_center_id')
+                    ->default(fn() => Doctor::where('id', Auth()->user()->id)->first()?->outpatient_center_id),
                 TextInput::make('first_name')
                     ->label('Nombre')
                     ->required(),
@@ -183,6 +188,13 @@ class PatientResource extends Resource
     {
         return [
             'index' => ManagePatients::route('/'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            \App\Filament\Resources\Patients\RelationManagers\DiseasesRelationManager::class,
         ];
     }
 

@@ -50,4 +50,19 @@ class OutpatientCenter extends Model
     {
         return $this->hasMany(MedicalResource::class);
     }
+
+    public function medicationRequests()
+    {
+        return $this->hasMany(MedicationRequest::class);
+    }
+
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
+    }
+
+    public function patients()
+    {
+        return $this->hasMany(Patient::class);
+    }
 }

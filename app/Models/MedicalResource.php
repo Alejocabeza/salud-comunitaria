@@ -37,4 +37,9 @@ class MedicalResource extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function medicationRequests()
+    {
+        return $this->hasMany(MedicationRequest::class);
+    }
 }

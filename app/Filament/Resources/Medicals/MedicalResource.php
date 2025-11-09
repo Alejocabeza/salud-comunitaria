@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Medicals;
 use App\Filament\Resources\Medicals\Pages\ManageMedicals;
 use App\Models\MedicalResource as Medical;
 use BackedEnum;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -47,7 +48,7 @@ class MedicalResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Recursos Médicos';
+        return 'Medicamentos';
     }
 
     public static function getNavigationGroup(): string|UnitEnum|null
@@ -60,7 +61,7 @@ class MedicalResource extends Resource
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Recurso Médico')
+                    ->label('Nombre')
                     ->required(),
                 TextInput::make('sku')
                     ->label('SKU')
@@ -138,11 +139,13 @@ class MedicalResource extends Resource
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
-                ForceDeleteAction::make(),
-                RestoreAction::make(),
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    RestoreAction::make(),
+                    ForceDeleteAction::make(),
+                ])->icon(Heroicon::Bars4),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

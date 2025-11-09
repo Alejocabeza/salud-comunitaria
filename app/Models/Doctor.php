@@ -23,6 +23,7 @@ class Doctor extends Model
         'registration_number',
         'is_active',
         'created_by',
+        'outpatient_center_id',
     ];
 
     protected $casts = [
@@ -44,5 +45,10 @@ class Doctor extends Model
     public function getFullNameAttribute(): string
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function outpatientCenter(): BelongsTo
+    {
+        return $this->belongsTo(OutpatientCenter::class);
     }
 }

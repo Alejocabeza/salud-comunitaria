@@ -40,7 +40,7 @@ class PatientObserver
     {
         if ($patient->is_active) {
             User::where('email', $patient->email)->update([
-                'name' => $patient->name,
+                'name' => $patient->full_name,
                 'dni' => $patient->dni,
                 'email' => $patient->email,
             ]);

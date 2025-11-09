@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Traits\FillsCreatedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Patient extends Model
@@ -22,6 +24,7 @@ class Patient extends Model
         'age',
         'blood_type',
         'is_active',
+        'outpatient_center_id',
     ];
 
     protected $hidden = [
@@ -39,5 +42,22 @@ class Patient extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function medicationRequests()
+    {
+        return $this->hasMany(MedicationRequest::class);
+    }
+
+    public function outpatientCenter(): BelongsTo
+    {
+        return $this->belongsTo(OutpatientCenter::class);
+    }
+
+    public function diseases(): BelongsToMany
+    {
+        return $this->belongsToMany(Disease::class)
+            ->withPivot(['diagnosed_at', 'status', 'notes'])
+            ->withTimestamps();
     }
 }
