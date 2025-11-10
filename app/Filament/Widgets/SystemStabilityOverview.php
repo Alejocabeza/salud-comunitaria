@@ -76,7 +76,7 @@ class SystemStabilityOverview extends ChartWidget
 
     public static function canView(): bool
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
         if (! $user) {
             return false;
         }

@@ -7,9 +7,12 @@ use App\Models\Appointment;
 use App\Models\MedicalHistoryEvent;
 use App\Policies\AppointmentPolicy;
 use App\Policies\MedicalHistoryEventPolicy;
+use Filament\Support\Assets\Css as FilamentCss;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,7 +45,14 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::createUrlUsing(function ($notifiable, string $token): string {
             $email = $notifiable->getEmailForPasswordReset();
 
-            return rtrim(config('app.url'), '/') . '/reset-password/' . $token . '?email=' . urlencode($email);
+            return rtrim(config('app.url'), '/').'/reset-password/'.$token.'?email='.urlencode($email);
         });
+
+        // Register filament-specific widget CSS to force uniform chart heights
+        if (class_exists(FilamentAsset::class)) {
+            FilamentAsset::register([
+                FilamentCss::make('filament-widgets', Vite::asset('resources/css/filament-widgets.css')),
+            ]);
+        }
     }
 }

@@ -1,0 +1,10 @@
+.filament-widget .filament-chart canvas {
+    /* Force charts to match widget maxHeight so canvases render uniformly */
+    height: 420px !important;
+    max-height: 420px !important;
+}
+
+.filament-widget .filament-chart {
+    /* Ensure the chart container also reserves space */
+    min-height: 420px !important;
+}

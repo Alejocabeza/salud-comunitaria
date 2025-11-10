@@ -3,6 +3,10 @@
 namespace App\Filament\Resources\Patients\Pages;
 
 use App\Filament\Resources\Patients\PatientResource;
+use App\Filament\Widgets\ActiveDiseasesWidget;
+use App\Filament\Widgets\PatientHealthStats;
+use App\Filament\Widgets\PendingMedicationRequestsWidget;
+use App\Filament\Widgets\UpcomingAppointmentsWidget;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Infolists\Components\IconEntry;
@@ -11,6 +15,8 @@ use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ViewPatient extends ViewRecord implements HasInfolists
 {
@@ -57,5 +63,22 @@ class ViewPatient extends ViewRecord implements HasInfolists
                             ->boolean(),
                     ]),
             ]);
+    }
+
+    protected function getWidgets(): array
+    {
+        // Solo mostrar widgets si el usuario tiene el rol 'Paciente'
+        if (! Auth::check() || ! Auth::user()->hasRole('Paciente')) {
+            return [];
+        }
+
+        Session::put('current_patient_view_id', $this->record->id);
+
+        return [
+            PatientHealthStats::class,
+            UpcomingAppointmentsWidget::class,
+            ActiveDiseasesWidget::class,
+            PendingMedicationRequestsWidget::class,
+        ];
     }
 }

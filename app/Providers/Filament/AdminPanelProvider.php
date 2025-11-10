@@ -2,6 +2,14 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\AdoptionSummary;
+use App\Filament\Widgets\OutpatientCenterAppointmentsTrend;
+use App\Filament\Widgets\OutpatientCenterDemographics;
+use App\Filament\Widgets\OutpatientCenterDiseaseBreakdown;
+use App\Filament\Widgets\OutpatientCenterStatsOverview;
+use App\Filament\Widgets\RecentErrorsWidget;
+use App\Filament\Widgets\SystemStabilityOverview;
+use App\Filament\Widgets\TopErrorsWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -42,7 +50,16 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([])
+            ->widgets([
+                OutpatientCenterStatsOverview::class,
+                OutpatientCenterAppointmentsTrend::class,
+                OutpatientCenterDemographics::class,
+                OutpatientCenterDiseaseBreakdown::class,
+                AdoptionSummary::class,
+                SystemStabilityOverview::class,
+                TopErrorsWidget::class,
+                RecentErrorsWidget::class,
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
