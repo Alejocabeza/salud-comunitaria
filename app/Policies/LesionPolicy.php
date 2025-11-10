@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Lesion;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Foundation\Auth\User as AuthUser;
 
 class LesionPolicy
 {
     use HandlesAuthorization;
-
+    
     public function viewAll(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAll:Lesion');
@@ -66,4 +66,5 @@ class LesionPolicy
     {
         return $authUser->can('Reorder:Lesion');
     }
+
 }

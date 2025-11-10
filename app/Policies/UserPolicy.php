@@ -2,13 +2,13 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
     use HandlesAuthorization;
-
+    
     public function viewAll(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAll:User');
@@ -63,4 +63,5 @@ class UserPolicy
     {
         return $authUser->can('Reorder:User');
     }
+
 }

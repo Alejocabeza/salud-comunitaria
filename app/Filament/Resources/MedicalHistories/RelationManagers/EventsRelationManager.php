@@ -45,6 +45,7 @@ class EventsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
+                    ->label('Agregar Evento Médico')
                     ->authorize(fn() => true),
             ])
             ->recordActions([

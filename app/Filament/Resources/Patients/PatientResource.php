@@ -6,6 +6,7 @@ use App\Filament\Resources\Patients\Pages\CreatePatient;
 use App\Filament\Resources\Patients\Pages\EditPatient;
 use App\Filament\Resources\Patients\Pages\ManagePatients;
 use App\Filament\Resources\Patients\Pages\ViewPatient;
+use App\Filament\Resources\Patients\RelationManagers\AppointmentsRelationManager;
 use App\Filament\Resources\Patients\RelationManagers\DiseasesRelationManager;
 use App\Filament\Resources\Patients\RelationManagers\LesionsRelationManager;
 use App\Filament\Resources\Patients\RelationManagers\MedicalHistoriesRelationManager;
@@ -26,6 +27,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -63,37 +65,42 @@ class PatientResource extends Resource
     {
         return $schema
             ->components([
-                Hidden::make('outpatient_center_id')
-                    ->default(fn () => Doctor::where('id', auth()->guard()->user()->id)->first()?->outpatient_center_id),
-                TextInput::make('first_name')
-                    ->label('Nombre')
-                    ->required(),
-                TextInput::make('last_name')
-                    ->label('Apellido')
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Correo Electrónico')
-                    ->email()
-                    ->required(),
-                TextInput::make('phone')
-                    ->label('Teléfono'),
-                TextInput::make('address')
-                    ->label('Dirección'),
-                TextInput::make('dni')
-                    ->label('Cedula')
-                    ->required(),
-                TextInput::make('weight')
-                    ->label('Peso')
-                    ->numeric(),
-                TextInput::make('age')
-                    ->label('Edad')
-                    ->numeric(),
-                TextInput::make('blood_type')
-                    ->label('Tipo de Sangre'),
-                Toggle::make('is_active')
-                    ->label('Activo')
+                Section::make()
                     ->columnSpanFull()
-                    ->required(),
+                    ->columns(2)
+                    ->components([
+                        Hidden::make('outpatient_center_id')
+                            ->default(fn() => Doctor::where('email', auth()->guard()->user()->email)->first()->outpatient_center_id),
+                        TextInput::make('first_name')
+                            ->label('Nombre')
+                            ->required(),
+                        TextInput::make('last_name')
+                            ->label('Apellido')
+                            ->required(),
+                        TextInput::make('email')
+                            ->label('Correo Electrónico')
+                            ->email()
+                            ->required(),
+                        TextInput::make('phone')
+                            ->label('Teléfono'),
+                        TextInput::make('address')
+                            ->label('Dirección'),
+                        TextInput::make('dni')
+                            ->label('Cedula')
+                            ->required(),
+                        TextInput::make('weight')
+                            ->label('Peso')
+                            ->numeric(),
+                        TextInput::make('age')
+                            ->label('Edad')
+                            ->numeric(),
+                        TextInput::make('blood_type')
+                            ->label('Tipo de Sangre'),
+                        Toggle::make('is_active')
+                            ->label('Activo')
+                            ->columnSpanFull()
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -166,6 +173,7 @@ class PatientResource extends Resource
     public static function getRelations(): array
     {
         return [
+            AppointmentsRelationManager::class,
             DiseasesRelationManager::class,
             LesionsRelationManager::class,
             MedicalHistoriesRelationManager::class,

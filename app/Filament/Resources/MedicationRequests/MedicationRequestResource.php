@@ -91,12 +91,12 @@ class MedicationRequestResource extends Resource
             ->components([
                 TextEntry::make('patient.full_name')
                     ->label('Paciente'),
-                TextEntry::make('medical_resource.name')
+                TextEntry::make('medicalResource.name')
                     ->label('Medicamento'),
                 TextEntry::make('quantity')
                     ->label('Cantidad')
                     ->numeric(),
-                IconEntry::make('status'),
+                IconEntry::make('status')->boolean(),
                 TextEntry::make('processed_at')
                     ->dateTime()
                     ->placeholder('-'),

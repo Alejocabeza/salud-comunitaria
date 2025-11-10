@@ -15,20 +15,20 @@
     </x-filament::tabs>
 
     <div x-show="$wire.activeTab === 'patient'" class="py-4">
-        {{ $this->infolist }}
+        {{ $this->form }}
     </div>
 
     <div x-show="$wire.activeTab === 'diseases'" class="py-4">
-        @livewire(\App\Filament\Resources\Patients\RelationManagers\DiseasesRelationManager::class, ['ownerRecord' => $record, 'pageClass' => \App\Filament\Resources\Patients\Pages\ViewPatient::class])
+        @livewire(\App\Filament\Resources\Patients\RelationManagers\DiseasesRelationManager::class, ['ownerRecord' => $record, 'pageClass' => \App\Filament\Resources\Patients\Pages\EditPatient::class])
     </div>
 
     <div x-show="$wire.activeTab === 'lesions'" class="py-4">
-        @livewire(\App\Filament\Resources\Patients\RelationManagers\LesionsRelationManager::class, ['ownerRecord' => $record, 'pageClass' => \App\Filament\Resources\Patients\Pages\ViewPatient::class])
+        @livewire(\App\Filament\Resources\Patients\RelationManagers\LesionsRelationManager::class, ['ownerRecord' => $record, 'pageClass' => \App\Filament\Resources\Patients\Pages\EditPatient::class])
     </div>
 
     <div x-show="$wire.activeTab === 'events'" class="py-4">
         @if ($record->medicalHistory)
-            @livewire(\App\Filament\Resources\MedicalHistories\RelationManagers\EventsRelationManager::class, ['ownerRecord' => $record->medicalHistory, 'pageClass' => \App\Filament\Resources\Patients\Pages\ViewPatient::class])
+            @livewire(\App\Filament\Resources\MedicalHistories\RelationManagers\EventsRelationManager::class, ['ownerRecord' => $record->medicalHistory, 'pageClass' => \App\Filament\Resources\Patients\Pages\EditPatient::class])
         @else
             <p class="text-center text-gray-500">No hay un historial médico principal para este paciente.</p>
         @endif

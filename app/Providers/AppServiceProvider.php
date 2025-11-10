@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Auth\DniEloquentUserProvider;
+use App\Models\Appointment;
 use App\Models\MedicalHistoryEvent;
+use App\Policies\AppointmentPolicy;
 use App\Policies\MedicalHistoryEventPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Register policy for MedicalHistoryEvent so Gate/Filament can find it.
         Gate::policy(MedicalHistoryEvent::class, MedicalHistoryEventPolicy::class);
+        Gate::policy(Appointment::class, AppointmentPolicy::class);
 
         Auth::provider('dni-eloquent', function ($app, array $config) {
             return new DniEloquentUserProvider($app['hash'], $config['model']);
@@ -39,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::createUrlUsing(function ($notifiable, string $token): string {
             $email = $notifiable->getEmailForPasswordReset();
 
-            return rtrim(config('app.url'), '/').'/reset-password/'.$token.'?email='.urlencode($email);
+            return rtrim(config('app.url'), '/') . '/reset-password/' . $token . '?email=' . urlencode($email);
         });
     }
 }
