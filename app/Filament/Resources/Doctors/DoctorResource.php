@@ -130,7 +130,8 @@ class DoctorResource extends Resource
             ->columns([
                 TextColumn::make('full_name')
                     ->label('Nombre Completo')
-                    ->searchable(),
+                    ->sortable(['first_name', 'last_name'])
+                    ->searchable(['first_name', 'last_name']),
                 TextColumn::make('email')
                     ->label('Correo electrónico')
                     ->searchable(),
