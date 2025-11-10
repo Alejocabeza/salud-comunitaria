@@ -27,7 +27,11 @@
     </div>
 
     <div x-show="$wire.activeTab === 'medical_history'" class="py-4">
-        @livewire(\App\Filament\Resources\Patients\RelationManagers\MedicalHistoriesRelationManager::class, ['ownerRecord' => $record, 'pageClass' => \App\Filament\Resources\Patients\Pages\ViewPatient::class])
+        @if ($record->medicalHistory)
+            @livewire(\App\Filament\Resources\MedicalHistories\RelationManagers\EventsRelationManager::class, ['ownerRecord' => $record->medicalHistory])
+        @else
+            <p class="text-center text-gray-500">No hay un historial médico principal para este paciente.</p>
+        @endif
     </div>
 
 </x-filament-panels::page>

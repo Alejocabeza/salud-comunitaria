@@ -4,7 +4,6 @@ namespace App\Filament\Resources\MedicalHistories\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
@@ -17,19 +16,18 @@ class MedicalHistoriesTable
     {
         return $table
             ->columns([
-                TextColumn::make('date')->label('Fecha')->date(),
-                TextColumn::make('type')->label('Tipo')->badge(),
-                TextColumn::make('summary')->label('Resumen')->searchable(),
                 TextColumn::make('patient.full_name')->label('Paciente')->searchable(),
-                TextColumn::make('doctor.full_name')->label('Médico')->searchable(),
-                TextColumn::make('attachments')->label('Adjuntos')->getStateUsing(fn ($record) => is_array($record->attachments) ? count($record->attachments) : 0),
+                TextColumn::make('events_count')
+                    ->label('Eventos')
+                    ->getStateUsing(fn ($record) => $record->events()->count()),
+                TextColumn::make('last_event_date')
+                    ->label('Último Evento')
+                    ->getStateUsing(fn ($record) => optional($record->events()->orderByDesc('date')->first())->date)->date(),
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
+            ->recordActions([])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

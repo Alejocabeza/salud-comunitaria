@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\MedicalHistories\Schemas;
 
+use App\Models\Patient;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -15,12 +17,10 @@ class MedicalHistoryForm
     {
         return $schema
             ->components([
-                Select::make('patient_id')
-                    ->label('Paciente')
-                    ->relationship('patient', 'full_name')
-                    ->searchable()
-                    ->required(),
-
+                Hidden::make('patient_id')
+                    ->default(fn() => Patient::where('email', auth()->guard()->user()->email)->first()->id),
+                Hidden::make('medical_history_id')
+                    ->default(fn() => Patient::where('email', auth()->guard()->user()->email)->first()->medicalHistory->id),
                 Select::make('type')
                     ->label('Tipo')
                     ->options([
@@ -37,17 +37,14 @@ class MedicalHistoryForm
 
                 TextInput::make('summary')
                     ->label('Resumen')
+                    ->extraAttributes(['style' => 'min-height: 75px;'])
                     ->required(),
 
-                Select::make('doctor_id')
-                    ->label('Médico')
-                    ->relationship('doctor', 'full_name')
-                    ->searchable()
-                    ->nullable(),
-
-                Textarea::make('notes')
-                    ->label('Notas')
-                    ->columnSpanFull(),
+                // Select::make('doctor_id')
+                //     ->label('Médico')
+                //     ->relationship('doctor', 'full_name')
+                //     ->searchable()
+                //     ->nullable(),
 
                 FileUpload::make('attachments')
                     ->label('Adjuntos (PDF / imágenes)')
@@ -57,6 +54,11 @@ class MedicalHistoryForm
                     ->maxSize(10240)
                     ->acceptedFileTypes(['application/pdf', 'image/png', 'image/jpeg'])
                     ->preserveFilenames(),
+
+                RichEditor::make('notes')
+                    ->label('Notas')
+                    ->columnSpanFull(),
+
             ]);
     }
 }

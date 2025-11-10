@@ -3,12 +3,14 @@
 namespace App\Filament\Resources\MedicalHistories;
 
 use App\Filament\Resources\MedicalHistories\Pages\CreateMedicalHistory;
-use App\Filament\Resources\MedicalHistories\Pages\EditMedicalHistory;
 use App\Filament\Resources\MedicalHistories\Pages\ListMedicalHistories;
-use App\Filament\Resources\MedicalHistories\Schemas\MedicalHistoryForm;
+use App\Filament\Resources\MedicalHistories\Pages\ViewMedicalHistory;
+use App\Filament\Resources\MedicalHistories\RelationManagers\EventsRelationManager;
+use App\Filament\Resources\MedicalHistories\Schemas\MedicalHistoryParentForm;
 use App\Filament\Resources\MedicalHistories\Tables\MedicalHistoriesTable;
 use App\Models\MedicalHistory;
 use BackedEnum;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -40,7 +42,7 @@ class MedicalHistoryResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return MedicalHistoryForm::configure($schema);
+        return MedicalHistoryParentForm::configure($schema);
     }
 
     public static function table(Table $table): Table
@@ -48,10 +50,20 @@ class MedicalHistoryResource extends Resource
         return MedicalHistoriesTable::configure($table);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextEntry::make('patient.full_name')->label('Paciente'),
+                TextEntry::make('events_count')->label('Número de eventos')->getStateUsing(fn ($record) => $record->events()->count()),
+                TextEntry::make('last_event')->label('Último evento')->getStateUsing(fn ($record) => optional($record->events()->orderByDesc('date')->first())->summary),
+            ]);
+    }
+
     public static function getRelations(): array
     {
         return [
-            //
+            EventsRelationManager::class,
         ];
     }
 
@@ -60,7 +72,7 @@ class MedicalHistoryResource extends Resource
         return [
             'index' => ListMedicalHistories::route('/'),
             'create' => CreateMedicalHistory::route('/create'),
-            'edit' => EditMedicalHistory::route('/{record}/edit'),
+            'view' => ViewMedicalHistory::route('/{record}'),
         ];
     }
 
@@ -79,6 +91,6 @@ class MedicalHistoryResource extends Resource
             return false;
         }
 
-        return $user->can('ViewAll:MedicalHistoryResource');
+        return $user->can('ViewAll:MedicalHistory');
     }
 }

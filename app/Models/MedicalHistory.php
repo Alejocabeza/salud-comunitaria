@@ -13,20 +13,11 @@ class MedicalHistory extends Model
 
     protected $fillable = [
         'patient_id',
-        'doctor_id',
-        'type',
-        'date',
-        'summary',
-        'notes',
-        'related_diseases',
-        'attachments',
         'created_by',
     ];
 
     protected $casts = [
-        'attachments' => 'array',
-        'related_diseases' => 'array',
-        'date' => 'datetime',
+        'patient_id' => 'integer',
     ];
 
     public function patient()
@@ -34,9 +25,9 @@ class MedicalHistory extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function doctor()
+    public function events()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->hasMany(MedicalHistoryEvent::class);
     }
 
     public function createdBy()

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Events\ActionLoggerEvent;
 use App\Helps\PasswordGenerate;
+use App\Models\MedicalHistory;
 use App\Models\Patient;
 use App\Models\User;
 use App\Notifications\SendInitialPassword;
@@ -25,6 +26,10 @@ class PatientObserver
             ]);
             $user->assignRole('Paciente');
             $user->notify(new SendInitialPassword($plainPassword));
+            MedicalHistory::create([
+                'patient_id' => $patient->id,
+                'created_by' => $patient->id,
+            ]);
             event(new ActionLoggerEvent(
                 'create',
                 Patient::class,

@@ -3,14 +3,14 @@
 namespace Database\Factories;
 
 use App\Models\Doctor;
-use App\Models\MedicalHistory;
+use App\Models\MedicalHistoryEvent;
 use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MedicalHistoryFactory extends Factory
 {
-    protected $model = MedicalHistory::class;
+    protected $model = MedicalHistoryEvent::class;
 
     public function definition(): array
     {
