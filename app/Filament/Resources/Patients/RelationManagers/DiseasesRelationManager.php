@@ -29,7 +29,6 @@ class DiseasesRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                // Fields for creating the related Disease model
                 TextInput::make('name')
                     ->label('Nombre')
                     ->required(),
@@ -48,7 +47,6 @@ class DiseasesRelationManager extends RelationManager
                     ->label('Activa')
                     ->default(true),
 
-                // Pivot fields
                 DatePicker::make('diagnosed_at')
                     ->label('Fecha diagnóstico'),
                 Select::make('status')
@@ -87,7 +85,7 @@ class DiseasesRelationManager extends RelationManager
                 AttachAction::make()
                     ->label('Asociar enfermedad')
                     ->preloadRecordSelect()
-                    ->recordSelectOptionsQuery(fn (Builder $q) => $q->where('active', true))
+                    ->recordSelectOptionsQuery(fn(Builder $q) => $q->where('active', true))
                     ->schema([
                         DatePicker::make('diagnosed_at')
                             ->label('Fecha diagnóstico'),
