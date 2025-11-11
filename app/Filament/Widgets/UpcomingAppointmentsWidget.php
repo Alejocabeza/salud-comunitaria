@@ -60,4 +60,15 @@ class UpcomingAppointmentsWidget extends ChartWidget
     {
         return 'bar';
     }
+
+    public static function canView(): bool
+    {
+        $user = auth()->guard()->user();
+
+        if (! $user) {
+            return false;
+        }
+
+        return method_exists($user, 'hasRole') && $user->hasRole('Paciente');
+    }
 }

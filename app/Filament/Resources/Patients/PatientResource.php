@@ -13,6 +13,8 @@ use App\Filament\Resources\Patients\RelationManagers\MedicalHistoriesRelationMan
 use App\Models\Doctor;
 use App\Models\Patient;
 use BackedEnum;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -70,7 +72,7 @@ class PatientResource extends Resource
                     ->columns(2)
                     ->components([
                         Hidden::make('outpatient_center_id')
-                            ->default(fn() => Doctor::where('email', auth()->guard()->user()->email)->first()->outpatient_center_id),
+                            ->default(fn () => Doctor::where('email', auth()->guard()->user()->email)->first()->outpatient_center_id),
                         TextInput::make('first_name')
                             ->label('Nombre')
                             ->required(),
@@ -146,6 +148,18 @@ class PatientResource extends Resource
                 ActionGroup::make([
                     ViewAction::make(),
                     EditAction::make(),
+                    Action::make('generate_report')
+                        ->label('Generar Reporte')
+                        ->icon(Heroicon::DocumentArrowDown)
+                        ->action(function (Patient $record) {
+                            $pdf = Pdf::loadView('reports.patient', [
+                                'patient' => $record->load(['medicalHistories', 'appointments.doctor', 'diseases', 'lesions']),
+                            ]);
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'reporte-paciente-'.$record->id.'.pdf');
+                        }),
                     DeleteAction::make(),
                     RestoreAction::make(),
                     ForceDeleteAction::make(),

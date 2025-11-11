@@ -6,6 +6,7 @@ use App\Models\Disease;
 use App\Models\Patient;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class ActiveDiseasesWidget extends ChartWidget
 {
@@ -30,7 +31,7 @@ class ActiveDiseasesWidget extends ChartWidget
             ->pluck('name')
             ->toArray();
 
-        $data = array_fill(0, count($diseases), 1); // Each disease has count 1
+        $data = array_fill(0, count($diseases), 1);
 
         return [
             'datasets' => [
@@ -49,5 +50,16 @@ class ActiveDiseasesWidget extends ChartWidget
     protected function getType(): string
     {
         return 'bar';
+    }
+
+    public static function canView(): bool
+    {
+        $user = Auth::user();
+
+        if (! $user) {
+            return false;
+        }
+
+        return method_exists($user, 'hasRole') && $user->hasRole('Paciente');
     }
 }

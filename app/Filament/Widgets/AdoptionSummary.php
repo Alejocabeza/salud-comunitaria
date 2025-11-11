@@ -24,18 +24,15 @@ class AdoptionSummary extends ChartWidget
 
             $driver = DB::getDriverName();
             if ($driver === 'pgsql') {
-                // cast to timestamp to be explicit for Postgres
                 $formatExpr = "to_char(created_at::timestamp, 'YYYY-MM')";
             } elseif ($driver === 'sqlite') {
                 $formatExpr = "strftime('%Y-%m', created_at)";
             } else {
-                // mysql
                 $formatExpr = "DATE_FORMAT(created_at, '%Y-%m')";
             }
 
             $rows = OutpatientCenter::selectRaw("{$formatExpr} as month, count(*) as total")
                 ->where('created_at', '>=', $start)
-                // group/order by the raw expression (safer across drivers than using the alias)
                 ->groupBy(DB::raw($formatExpr))
                 ->orderByRaw($formatExpr)
                 ->get()

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Appointments\Tables;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -16,6 +17,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -128,7 +130,7 @@ class AppointmentsTable
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
                         ->visible(fn () => auth()->guard()->user()->hasRole('Doctor'))
-                        ->authorize(fn() => true)
+                        ->authorize(fn () => true)
                         ->form([
                             \Filament\Forms\Components\DateTimePicker::make('scheduled_date')
                                 ->label('Fecha y Hora Programada')
@@ -148,7 +150,7 @@ class AppointmentsTable
                         ->icon('heroicon-o-x-circle')
                         ->visible(fn () => auth()->guard()->user()->hasRole('Doctor'))
                         ->color('danger')
-                        ->authorize(fn() => true)
+                        ->authorize(fn () => true)
                         ->form([
                             \Filament\Forms\Components\Textarea::make('doctor_notes')
                                 ->label('Motivo del Rechazo')
@@ -165,7 +167,7 @@ class AppointmentsTable
                         ->icon('heroicon-o-check-badge')
                         ->visible(fn () => auth()->guard()->user()->hasRole('Doctor'))
                         ->color('info')
-                        ->authorize(fn() => true)
+                        ->authorize(fn () => true)
                         ->requiresConfirmation()
                         ->action(function (Appointment $record): void {
                             $record->complete(auth()->guard()->user());
@@ -177,7 +179,7 @@ class AppointmentsTable
                         ->icon('heroicon-o-x-mark')
                         ->color('warning')
                         ->visible(fn () => auth()->guard()->user()->hasRole('Doctor'))
-                        ->authorize(fn() => true)
+                        ->authorize(fn () => true)
                         ->form([
                             \Filament\Forms\Components\Textarea::make('doctor_notes')
                                 ->label('Motivo de la Cancelación')
@@ -189,6 +191,19 @@ class AppointmentsTable
                         ->successNotificationTitle('Cita cancelada'),
 
                     ViewAction::make(),
+                    Action::make('generate_report')
+                        ->label('Generar Reporte')
+                        ->icon(Heroicon::DocumentArrowDown)
+                        ->authorize(fn () => true)
+                        ->action(function (Appointment $record) {
+                            $pdf = Pdf::loadView('reports.appointment', [
+                                'appointment' => $record->load(['patient', 'doctor', 'outpatientCenter']),
+                            ]);
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'reporte-cita-'.$record->id.'.pdf');
+                        }),
                     EditAction::make(),
                     DeleteAction::make(),
                     RestoreAction::make(),
